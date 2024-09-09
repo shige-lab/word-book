@@ -72,3 +72,16 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# CocoaPods
+/ios/Pods/
+
+.env
+
+google-services.json
+GoogleService-Info.plist
+
+*.aab
+*.apk
+output-metadata.json
+.vscode
