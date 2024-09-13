@@ -16,7 +16,6 @@ export const createProficiencyAndFrequency = () => {
   ];
   const db = openDb();
 
-  let proficiencyLength = 0;
   db.transaction(
     tx => {
       // check if the proficiency records exists
@@ -30,43 +29,41 @@ export const createProficiencyAndFrequency = () => {
         (tx, results) => {
           const rows = results.rows;
           if (rows.length > 0) {
-            console.log('proficiency table exists');
-            proficiencyLength = rows.length;
+            console.log('proficiency records exists');
             return;
           }
+          // Insert proficiency levels
+          proficiencyLevels.forEach(level => {
+            tx.executeSql(
+              'INSERT INTO proficiency (name, `order_index`) VALUES (?, ?)',
+              [level.name, level.order_index],
+              (tx, result) => {
+                console.log(`Inserted proficiency: ${level.name}`);
+              },
+              (tx, error) => {
+                console.log(
+                  `Error inserting proficiency: ${level.name}`,
+                  error,
+                );
+              },
+            );
+          });
+
+          // Insert frequency levels
+          frequencyLevels.forEach(level => {
+            tx.executeSql(
+              'INSERT INTO frequency (name, `order_index`) VALUES (?, ?)',
+              [level.name, level.order_index],
+              (tx, result) => {
+                console.log(`Inserted frequency: ${level.name}`);
+              },
+              (tx, error) => {
+                console.log(`Error inserting frequency: ${level.name}`, error);
+              },
+            );
+          });
         },
       );
-      if (proficiencyLength > 0) {
-        return;
-      }
-
-      // Insert proficiency levels
-      proficiencyLevels.forEach(level => {
-        tx.executeSql(
-          'INSERT INTO proficiency (name, `order_index`) VALUES (?, ?)',
-          [level.name, level.order_index],
-          (tx, result) => {
-            console.log(`Inserted proficiency: ${level.name}`);
-          },
-          (tx, error) => {
-            console.log(`Error inserting proficiency: ${level.name}`, error);
-          },
-        );
-      });
-
-      // Insert frequency levels
-      frequencyLevels.forEach(level => {
-        tx.executeSql(
-          'INSERT INTO frequency (name, `order_index`) VALUES (?, ?)',
-          [level.name, level.order_index],
-          (tx, result) => {
-            console.log(`Inserted frequency: ${level.name}`);
-          },
-          (tx, error) => {
-            console.log(`Error inserting frequency: ${level.name}`, error);
-          },
-        );
-      });
     },
     error => {
       console.log('Error during transaction:', error);

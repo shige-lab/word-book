@@ -38,7 +38,6 @@ export const createCategoriesAndWords = () => {
 
   db.transaction(
     tx => {
-      let categoriesLength = 0;
       // check if some categories exists
       //   if it does, not insert categories and words and return function
       tx.executeSql(
@@ -51,57 +50,53 @@ export const createCategoriesAndWords = () => {
           const rows = results.rows;
           if (rows?.length > 0) {
             console.log('Categories exists');
-            categoriesLength = rows.length;
             return;
           }
+          // Insert categories
+          categories.forEach(category => {
+            tx.executeSql(
+              'INSERT INTO Category (name, `order_index`, childrenLength) VALUES (?, ?, ?)',
+              [category.name, category.order_index, category.childrenLength],
+              (tx, result) => {
+                console.log(`Inserted Category: ${category.name}`);
+              },
+              (tx, error) => {
+                console.log(
+                  `Error inserting category: ${category.name}`,
+                  tx,
+                  error,
+                );
+              },
+            );
+          });
+
+          // Insert words
+          words.forEach(word => {
+            tx.executeSql(
+              `INSERT INTO Word (word, meaning, category_id, priority_id, proficiency_id, frequency_id, example1, example2, example3, image) 
+				  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                word.word,
+                word.meaning,
+                word.category_id,
+                word.priority_id,
+                word.proficiency_id,
+                word.frequency_id,
+                word.example1,
+                word.example2,
+                word.example3,
+                word.image,
+              ],
+              (tx, result) => {
+                console.log(`Inserted Word: ${word.word}`);
+              },
+              (tx, error) => {
+                console.log(`Error inserting word: ${word.word}`, tx, error);
+              },
+            );
+          });
         },
       );
-      if (categoriesLength > 0) {
-        return;
-      }
-      // Insert categories
-      categories.forEach(category => {
-        tx.executeSql(
-          'INSERT INTO Category (name, `order_index`, childrenLength) VALUES (?, ?, ?)',
-          [category.name, category.order_index, category.childrenLength],
-          (tx, result) => {
-            console.log(`Inserted Category: ${category.name}`);
-          },
-          (tx, error) => {
-            console.log(
-              `Error inserting category: ${category.name}`,
-              tx,
-              error,
-            );
-          },
-        );
-      });
-
-      // Insert words
-      words.forEach(word => {
-        tx.executeSql(
-          `INSERT INTO Word (word, meaning, category_id, priority_id, proficiency_id, frequency_id, example1, example2, example3, image) 
-		  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [
-            word.word,
-            word.meaning,
-            word.category_id,
-            word.priority_id,
-            word.proficiency_id,
-            word.frequency_id,
-            word.example1,
-            word.example2,
-            word.example3,
-            word.image,
-          ],
-          (tx, result) => {
-            console.log(`Inserted Word: ${word.word}`);
-          },
-          (tx, error) => {
-            console.log(`Error inserting word: ${word.word}`, tx, error);
-          },
-        );
-      });
     },
     error => {
       console.log('Error during transaction:', error);
