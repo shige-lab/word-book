@@ -13,10 +13,15 @@ import Header from '../Header/Header';
 
 type MainLayoutProps = {
   headerTitle: string;
+  withPadding?: boolean;
   children: React.ReactNode;
 };
 
-const MainLayout: React.FC<MainLayoutProps> = ({headerTitle, children}) => {
+const MainLayout: React.FC<MainLayoutProps> = ({
+  headerTitle,
+  withPadding = true,
+  children,
+}) => {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   return (
     <>
@@ -38,7 +43,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({headerTitle, children}) => {
         }}>
         <GestureHandlerRootView style={{flex: 1}}>
           <Header title={headerTitle} />
-          <Div w="100%" h="100%" p="md" bg={isDarkMode ? 'black' : 'white'}>
+          <Div w="100%" h="100%" p={withPadding ? 'md' : 0} bg="base">
             {children}
           </Div>
         </GestureHandlerRootView>

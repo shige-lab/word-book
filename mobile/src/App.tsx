@@ -36,6 +36,11 @@ function App(): React.JSX.Element {
     },
   };
 
+  useEffect(() => {
+    createTables();
+    createProficiencyAndFrequency();
+    createCategoriesAndWords();
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>
