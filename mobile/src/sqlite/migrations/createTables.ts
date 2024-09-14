@@ -54,16 +54,16 @@ export const createTables = () => {
       },
     );
     // drop table word
-    tx.executeSql(
-      `DROP TABLE IF EXISTS word;`,
-      [],
-      (tx, result) => {
-        console.log('word table dropped successfully');
-      },
-      error => {
-        console.log('Error dropping word table:', error);
-      },
-    );
+    // tx.executeSql(
+    //   `DROP TABLE IF EXISTS word;`,
+    //   [],
+    //   (tx, result) => {
+    //     console.log('word table dropped successfully');
+    //   },
+    //   error => {
+    //     console.log('Error dropping word table:', error);
+    //   },
+    // );
 
     // Create word table
     tx.executeSql(
