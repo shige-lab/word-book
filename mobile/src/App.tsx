@@ -13,6 +13,7 @@ import {createTables} from './sqlite/migrations/createTables';
 import {createProficiencyAndFrequency} from './sqlite/seed/tags/createProficiencyAndFrequency';
 import {createCategoriesAndWords} from './sqlite/seed/categoriesAndWords/createCategoriesAndWords';
 import {useColor} from './hooks/common/useColor';
+import CategoryDetail from './screens/category';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -49,6 +50,11 @@ function App(): React.JSX.Element {
           <Stack.Screen
             name="Home"
             component={Home}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Category"
+            component={CategoryDetail}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
