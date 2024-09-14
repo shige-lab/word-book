@@ -1,4 +1,4 @@
-export const headerColor = '#90cdf4';
+export const headerColor = '#4299e1';
 
 export const darkColor = {
   base: 'black',
@@ -10,4 +10,9 @@ export const whiteColor = {
   base: 'white',
   base1: '#edf2f7',
   base2: 'cbd5e0',
+};
+
+export const borderBottom = {
+  borderBottomWidth: 0.5,
+  borderBottomColor: 'gray300',
 };
