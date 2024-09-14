@@ -8,6 +8,7 @@ import {Category} from '../../types/navigator/type';
 import {FlatList} from 'react-native';
 import CategoryCard from '../../components/CategoryCard';
 import {useColor} from '../../hooks/common/useColor';
+import {borderBottom} from '../../utils/color/color';
 
 const Home: React.FC = () => {
   const {categories, setCategories} = useStateStore(
@@ -26,13 +27,10 @@ const Home: React.FC = () => {
     fetchData();
   }, [setCategories]);
 
-  const borderBottom = {
-    borderBottomWidth: 0.5,
-    borderBottomColor: 'gray300',
-  };
-
   return (
-    <MainLayout headerTitle="Word Book" withPadding={false}>
+    <MainLayout
+      headerProps={{title: 'Word Book', leftIcon: 'setting'}}
+      withPadding={false}>
       <FlatList
         style={{width: '100%', padding: 8}}
         contentContainerStyle={{

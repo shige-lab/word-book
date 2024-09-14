@@ -9,16 +9,16 @@ import {
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Div} from 'react-native-magnus';
 import {headerColor} from '../../utils/color/color';
-import Header from '../Header/Header';
+import Header, {HeaderProps} from '../Header/Header';
 
 type MainLayoutProps = {
-  headerTitle: string;
+  headerProps: HeaderProps;
   withPadding?: boolean;
   children: React.ReactNode;
 };
 
 const MainLayout: React.FC<MainLayoutProps> = ({
-  headerTitle,
+  headerProps,
   withPadding = true,
   children,
 }) => {
@@ -42,8 +42,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           width: '100%',
         }}>
         <GestureHandlerRootView style={{flex: 1}}>
-          <Header title={headerTitle} />
-          <Div w="100%" h="100%" p={withPadding ? 'md' : 0} bg="base">
+          <Header {...headerProps} />
+          <Div w="100%" h="100%" p={withPadding ? 'lg' : 0} bg="base">
             {children}
           </Div>
         </GestureHandlerRootView>
