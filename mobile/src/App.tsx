@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   NavigationContainer,
   useNavigation,
@@ -9,6 +9,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from './types/navigator/RootStackParamList';
 import Home from './screens/home';
 import {ThemeProvider, ThemeType} from 'react-native-magnus';
+import {createTables} from './sqlite/migrations/createTables';
+import {createProficiencyAndFrequency} from './sqlite/seed/tags/createProficiencyAndFrequency';
+import {createCategoriesAndWords} from './sqlite/seed/categoriesAndWords/createCategoriesAndWords';
+import {useColor} from './hooks/common/useColor';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -16,10 +20,12 @@ function App(): React.JSX.Element {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   const navigationRef = useNavigationContainerRef<any>();
 
+  const {baseColor} = useColor();
+
   const theme: ThemeType = {
     // if dark mode, set default font color to white, otherwise set it to black
     colors: {
-      primary: isDarkMode ? 'white' : 'black',
+      ...baseColor,
     },
     spacing: {
       none: 0 as 0,
@@ -29,6 +35,7 @@ function App(): React.JSX.Element {
       lg: 12,
     },
   };
+
 
   return (
     <ThemeProvider theme={theme}>
