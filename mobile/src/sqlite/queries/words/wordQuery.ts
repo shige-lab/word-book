@@ -31,3 +31,30 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
     });
   });
 };
+
+export const getWordDetail = async (wordId: number): Promise<Word> => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `SELECT 
+		 *
+		FROM 
+		word
+		WHERE
+		word.id = ?;`,
+        [wordId],
+        (tx, results) => {
+          const rows = results.rows;
+          let word = rows.item(0);
+          console.log('word:', word);
+          resolve(word); // Resolve with the data
+        },
+        (tx, error) => {
+          console.log('Error getting word:', tx, error);
+          reject(error); // Reject in case of error
+        },
+      );
+    });
+  });
+};
