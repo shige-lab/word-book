@@ -12,6 +12,7 @@ import {useNavigation, useRoute} from '@react-navigation/native';
 import {
   CategoryNavigation,
   CategoryRoute,
+  navigationProp,
 } from '../../types/navigator/RouteProps';
 import {getWords} from '../../sqlite/queries/words/wordQuery';
 import {borderBottom} from '../../utils/color/color';
@@ -19,7 +20,7 @@ import WordCard from '../../components/WordCard';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
-  const navigation = useNavigation<CategoryNavigation>();
+  const navigation = useNavigation<navigationProp>();
   const id = route.params.id;
   const {categories, setCategories} = useStateStore(
     useShallow(state => ({
