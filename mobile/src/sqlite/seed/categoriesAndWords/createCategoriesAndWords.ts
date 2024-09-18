@@ -50,6 +50,7 @@ export const createCategoriesAndWords = () => {
           const rows = results.rows;
           if (rows?.length > 0) {
             console.log('Categories exists');
+            return;
           }
           // Insert categories
           categories.forEach(category => {
@@ -68,33 +69,33 @@ export const createCategoriesAndWords = () => {
               },
             );
           });
+          // Insert words
+          words.forEach(word => {
+            tx.executeSql(
+              `INSERT INTO Word (word, meaning, category_id, priority_id, proficiency_id, frequency_id, example1, example2, example3, image) 
+			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+              [
+                word.word,
+                word.meaning,
+                word.category_id,
+                word.priority_id,
+                word.proficiency_id,
+                word.frequency_id,
+                word.example1,
+                word.example2,
+                word.example3,
+                word.image,
+              ],
+              (tx, result) => {
+                console.log(`Inserted Word: ${word.word}`);
+              },
+              (tx, error) => {
+                console.log(`Error inserting word: ${word.word}`, tx, error);
+              },
+            );
+          });
         },
       );
-      // Insert words
-      words.forEach(word => {
-        tx.executeSql(
-          `INSERT INTO Word (word, meaning, category_id, priority_id, proficiency_id, frequency_id, example1, example2, example3, image) 
-			VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-          [
-            word.word,
-            word.meaning,
-            word.category_id,
-            word.priority_id,
-            word.proficiency_id,
-            word.frequency_id,
-            word.example1,
-            word.example2,
-            word.example3,
-            word.image,
-          ],
-          (tx, result) => {
-            console.log(`Inserted Word: ${word.word}`);
-          },
-          (tx, error) => {
-            console.log(`Error inserting word: ${word.word}`, tx, error);
-          },
-        );
-      });
     },
     error => {
       console.log('Error during transaction:', error);
