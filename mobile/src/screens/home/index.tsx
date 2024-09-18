@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
 import {Button, Div, Text} from 'react-native-magnus';
 import {getCategories} from '../../sqlite/queries/categories/categoriesQuery';
@@ -6,9 +6,10 @@ import useStateStore from '../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {Category} from '../../types/navigator/type';
 import {FlatList} from 'react-native';
-import CategoryCard from '../../components/CategoryCard';
+import CategoryCard from '../../components/Category/CategoryCard';
 import {useColor} from '../../hooks/common/useColor';
 import {borderBottom} from '../../utils/color/color';
+import CategoryModal from '../../components/Category/CategoryModal';
 
 const Home: React.FC = () => {
   const {categories, setCategories} = useStateStore(
@@ -27,10 +28,20 @@ const Home: React.FC = () => {
     fetchData();
   }, [setCategories]);
 
+  const onRightPress = () => {
+    setIsOpen(true);
+  };
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <MainLayout
-      headerProps={{title: 'Word Book', leftIcon: 'setting'}}
+      headerProps={{
+        title: 'Word Book',
+        leftIcon: 'setting',
+        rightButton: [{icon: 'new', onPress: onRightPress}],
+      }}
       withPadding={false}>
+      <CategoryModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
       <FlatList
         style={{width: '100%', padding: 8}}
         contentContainerStyle={{

@@ -5,20 +5,34 @@ import {headerColor} from '../../utils/color/color';
 import {useNavigation} from '@react-navigation/native';
 import {navigationProp} from '../../types/navigator/RouteProps';
 import {useColor} from '../../hooks/common/useColor';
+import {iconFontFamilyType} from 'react-native-magnus/lib/typescript/src/ui/icon/icon.type';
+
+export type rightButton = {
+  icon: 'new' | string;
+  onPress: () => void;
+};
 
 export type HeaderProps = {
   title: string;
   leftIcon?: 'setting' | 'back';
-  rightIcon?: 'new';
-  onRightPress?: () => void;
+  rightButton?: rightButton[];
 };
 
-const Header: React.FC<HeaderProps> = ({
-  title,
-  leftIcon,
-  rightIcon,
-  onRightPress,
-}) => {
+const getIconProps = (
+  icon: string,
+): {
+  name: string;
+  fontFamily?: iconFontFamilyType;
+} => {
+  switch (icon) {
+    case 'new':
+      return {name: 'plus', fontFamily: 'Feather'};
+    default:
+      return {name: icon};
+  }
+};
+
+const Header: React.FC<HeaderProps> = ({title, leftIcon, rightButton = []}) => {
   const navigation = useNavigation<navigationProp>();
   const {baseColor, primary} = useColor();
 
@@ -63,11 +77,11 @@ const Header: React.FC<HeaderProps> = ({
           {title}
         </Text>
         <Div>
-          {rightIcon === 'new' ? (
-            <TouchableOpacity>
-              <Icon name="plus" {...iconStyle} fontSize={24} />
+          {rightButton.map((item, index) => (
+            <TouchableOpacity key={index} onPress={item.onPress}>
+              <Icon {...getIconProps(item.icon)} {...iconStyle} />
             </TouchableOpacity>
-          ) : null}
+          ))}
         </Div>
       </Div>
     </Div>

@@ -6,7 +6,7 @@ import useStateStore from '../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {Category} from '../../types/navigator/type';
 import {FlatList} from 'react-native';
-import CategoryCard from '../../components/WordCard';
+import CategoryCard from '../../components/Word/WordCard';
 import {useColor} from '../../hooks/common/useColor';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {
@@ -16,7 +16,7 @@ import {
 } from '../../types/navigator/RouteProps';
 import {getWords} from '../../sqlite/queries/words/wordQuery';
 import {borderBottom} from '../../utils/color/color';
-import WordCard from '../../components/WordCard';
+import WordCard from '../../components/Word/WordCard';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
