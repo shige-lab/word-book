@@ -5,6 +5,7 @@ export const useColor = () => {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   return {
     primary: isDarkMode ? 'white' : 'black',
+    reverseBase: isDarkMode ? 'white' : 'black',
     baseColor: isDarkMode ? darkColor : whiteColor,
   };
 };
