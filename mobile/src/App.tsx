@@ -14,6 +14,7 @@ import {createProficiencyAndFrequency} from './sqlite/seed/tags/createProficienc
 import {createCategoriesAndWords} from './sqlite/seed/categoriesAndWords/createCategoriesAndWords';
 import {useColor} from './hooks/common/useColor';
 import CategoryDetail from './screens/category';
+import WordDetail from './screens/word';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -55,6 +56,11 @@ function App(): React.JSX.Element {
           <Stack.Screen
             name="Category"
             component={CategoryDetail}
+            options={{headerShown: false}}
+          />
+          <Stack.Screen
+            name="Word"
+            component={WordDetail}
             options={{headerShown: false}}
           />
         </Stack.Navigator>
