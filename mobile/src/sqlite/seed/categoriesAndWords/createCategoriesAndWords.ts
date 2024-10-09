@@ -48,7 +48,8 @@ export const createCategoriesAndWords = () => {
         [],
         (tx, results) => {
           const rows = results.rows;
-          if (rows?.length > 0) {
+
+          if (rows?.item(0)?.count > 0) {
             console.log('Categories exists');
             return;
           }

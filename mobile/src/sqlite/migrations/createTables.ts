@@ -1,10 +1,59 @@
 import {openDb} from '../openDb';
 
 // Function to create the tables
-export const createTables = () => {
+export const createTables = (init?: boolean) => {
   const db = openDb();
 
   db.transaction(tx => {
+    if (init) {
+      // Drop table category
+      tx.executeSql(
+        `DROP TABLE IF EXISTS category;`,
+        [],
+        (tx, result) => {
+          console.log('category table dropped successfully');
+        },
+        error => {
+          console.log('Error dropping category table:', error);
+        },
+      );
+
+      // Drop table proficiency
+      tx.executeSql(
+        `DROP TABLE IF EXISTS proficiency;`,
+        [],
+        (tx, result) => {
+          console.log('proficiency table dropped successfully');
+        },
+        error => {
+          console.log('Error dropping proficiency table:', error);
+        },
+      );
+
+      // Drop table frequency
+      tx.executeSql(
+        `DROP TABLE IF EXISTS frequency;`,
+        [],
+        (tx, result) => {
+          console.log('frequency table dropped successfully');
+        },
+        error => {
+          console.log('Error dropping frequency table:', error);
+        },
+      );
+
+      // Drop table word
+      tx.executeSql(
+        `DROP TABLE IF EXISTS word;`,
+        [],
+        (tx, result) => {
+          console.log('word table dropped successfully');
+        },
+        error => {
+          console.log('Error dropping word table:', error);
+        },
+      );
+    }
     // Create category table
     tx.executeSql(
       `CREATE TABLE IF NOT EXISTS category (
