@@ -22,13 +22,12 @@ export const createProficiencyAndFrequency = () => {
       //   if it does, not insert proficiency and frequency
       tx.executeSql(
         `SELECT 
-		COUNT(id)
+		COUNT(id) as count
 		FROM 
 		proficiency;`,
         [],
         (tx, results) => {
-          const rows = results.rows;
-          if (rows.length > 0) {
+          if (results?.rows?.item(0)?.count > 0) {
             console.log('proficiency records exists');
             return;
           }
