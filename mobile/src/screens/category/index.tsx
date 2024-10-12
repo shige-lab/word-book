@@ -4,7 +4,7 @@ import {Button, Div, Text} from 'react-native-magnus';
 import {getCategories} from '../../sqlite/queries/categories/categoriesQuery';
 import useStateStore from '../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
-import {Category} from '../../types/navigator/type';
+import {Category, Word} from '../../types/navigator/type';
 import {FlatList} from 'react-native';
 import CategoryCard from '../../components/Word/WordCard';
 import {useColor} from '../../hooks/common/useColor';
@@ -14,10 +14,11 @@ import {
   CategoryRoute,
   navigationProp,
 } from '../../types/navigator/RouteProps';
-import {getWords} from '../../sqlite/queries/words/wordQuery';
+import {deleteWord, getWords} from '../../sqlite/queries/words/wordQuery';
 import {borderBottom} from '../../utils/color/color';
 import WordCard from '../../components/Word/WordCard';
 import WordFormModal from '../../components/Word/WordFormModal';
+import {Alert} from 'react-native';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
@@ -47,6 +48,32 @@ const CategoryDetail: React.FC = () => {
   const selectedCategory = useMemo(() => {
     return categories.find(c => c.id === id);
   }, [categories, id]);
+
+  const onDeleteWord = (word: Word) => {
+    const deleteWordAsync = async (word: Word) => {
+      await deleteWord(word);
+      setCategories(
+        categories.map(c =>
+          c.id === id
+            ? {...c, words: c?.words?.filter(w => w.id !== word.id)}
+            : c,
+        ),
+      );
+    };
+    Alert.alert(
+      'Warning',
+      'Are you sure you want to delete this word?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => {},
+          style: 'cancel',
+        },
+        {text: 'OK', onPress: async () => deleteWordAsync(word)},
+      ],
+      {cancelable: false},
+    );
+  };
 
   return (
     <MainLayout
@@ -83,7 +110,7 @@ const CategoryDetail: React.FC = () => {
             {...(index !== categories?.length - 1
               ? {...borderBottom}
               : undefined)}>
-            <WordCard word={item} />
+            <WordCard word={item} onDelete={() => onDeleteWord(item)} />
           </Div>
         )}
       />

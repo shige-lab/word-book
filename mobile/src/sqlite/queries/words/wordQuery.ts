@@ -136,3 +136,28 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
     );
   });
 };
+
+export const deleteWord = async (word: Word) => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      tx => {
+        tx.executeSql(
+          `DELETE FROM word WHERE id = ?`,
+          [word.id],
+          async (tx, results) => {
+            console.log('Word deleted:', results);
+            resolve(undefined);
+          },
+          (tx, error) => {
+            console.log('Error deleting word:', tx, error);
+            reject(error);
+          },
+        );
+      },
+      error => {
+        console.log('Error during transaction:', error);
+      },
+    );
+  });
+};
