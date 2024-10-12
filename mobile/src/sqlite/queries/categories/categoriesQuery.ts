@@ -131,3 +131,28 @@ export const saveCategory = async (
     );
   });
 };
+
+export const deleteCategory = async (category: Category) => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      tx => {
+        tx.executeSql(
+          `DELETE FROM category WHERE id = ?`,
+          [category.id],
+          async (tx, results) => {
+            console.log('Category deleted:', results);
+            resolve(undefined);
+          },
+          (tx, error) => {
+            console.log('Error deleting category:', tx, error);
+            reject(error);
+          },
+        );
+      },
+      error => {
+        console.log('Error during transaction:', error);
+      },
+    );
+  });
+};
