@@ -1,6 +1,6 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {Word} from '../../../types/navigator/type';
-import {Div, Text, Icon, Tag} from 'react-native-magnus';
+import {Div, Text, Icon, Tag, Select, SelectRef} from 'react-native-magnus';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {
@@ -11,13 +11,16 @@ import {
   mixedTagColors,
   proficiencyTagColor,
 } from '../../../utils/color/getTagColor';
+import {saveWord} from '../../../sqlite/queries/words/wordQuery';
 
 interface ProficiencyAndFrequencyTagProps {
   word: Word;
+  setSelectedWord?: (word: Word) => void;
 }
 
 const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
   word,
+  setSelectedWord,
 }) => {
   const {proficiencies, frequencies} = useStateStore(
     useShallow(state => ({
@@ -25,6 +28,8 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
       frequencies: state.frequencies,
     })),
   );
+  const selectProficiencyRef = useRef<SelectRef>(null);
+  const selectFrequencyRef = useRef<SelectRef>(null);
 
   const tag = useMemo(() => {
     return {
@@ -48,7 +53,62 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
         bg={getMixedTagColor(tag?.proficiency?.id, tag?.frequency?.id)}
         mr={2}
 	/> */}
+      <Select
+        value={word?.proficiency_id}
+        onSelect={async v => {
+          console.log('---', v);
+          const w = await saveWord({
+            ...word,
+            proficiency_id: v,
+          });
+          if (setSelectedWord) {
+            setSelectedWord(w);
+          }
+        }}
+        ref={selectProficiencyRef}
+        title="Select Proficiency"
+        mt="md"
+        message=""
+        roundedTop="xl"
+        data={proficiencies}
+        renderItem={item => (
+          <Select.Option value={item.id} py="md" px="xl">
+            <Text fontWeight="bold" color={getProficiencyTagColor(item.id)?.bg}>
+              {item.name}
+            </Text>
+          </Select.Option>
+        )}
+      />
+      <Select
+        value={word?.frequency_id}
+        onSelect={async v => {
+          console.log('---', v);
+          const w = await saveWord({
+            ...word,
+            frequency_id: v,
+          });
+          if (setSelectedWord) {
+            setSelectedWord(w);
+          }
+        }}
+        ref={selectFrequencyRef}
+        title="Select Frequency"
+        mt="md"
+        message=""
+        roundedTop="xl"
+        data={frequencies}
+        renderItem={item => (
+          <Select.Option value={item.id} py="md" px="xl">
+            <Text fontWeight="bold" color={getFrequencyTagColor(item.id)?.bg}>
+              {item.name}
+            </Text>
+          </Select.Option>
+        )}
+      />
       <Tag
+        onPress={() => {
+          selectProficiencyRef.current?.open();
+        }}
         fontSize={12}
         h={18}
         py={0}
@@ -59,6 +119,9 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
         {tag?.proficiency?.name}
       </Tag>
       <Tag
+        onPress={() => {
+          selectFrequencyRef.current?.open();
+        }}
         fontSize={12}
         h={18}
         px={5}

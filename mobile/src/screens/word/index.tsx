@@ -144,7 +144,10 @@ const WordDetail: React.FC = () => {
         )}
         {!!selectedWord && (
           <Div mt="md">
-            <ProficiencyAndFrequencyTag word={selectedWord} />
+            <ProficiencyAndFrequencyTag
+              word={selectedWord}
+              setSelectedWord={setSelectedWord}
+            />
           </Div>
         )}
         <Div mt="md" mb="lg">
