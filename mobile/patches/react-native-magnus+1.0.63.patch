@@ -1,0 +1,497 @@
+diff --git a/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js b/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js
+index 1f6f1eb..91205cb 100644
+--- a/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js
++++ b/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js
+@@ -1,47 +1,104 @@
+-"use strict";
++'use strict';
+ 
+-Object.defineProperty(exports, "__esModule", {
+-  value: true
++Object.defineProperty(exports, '__esModule', {
++  value: true,
+ });
+ exports.SelectOption = void 0;
+ 
+-var React = _interopRequireWildcard(require("react"));
+-
+-var _div = require("../div/div.component");
+-
+-var _icon = require("../icon/icon.component");
+-
+-var _text = require("../text/text.component");
+-
+-var _button = require("../button/button.component");
+-
+-var _useDefaultProps = require("../../utilities/useDefaultProps");
+-
+-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+-
+-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+-
+-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
++var React = _interopRequireWildcard(require('react'));
++
++var _div = require('../div/div.component');
++
++var _icon = require('../icon/icon.component');
++
++var _text = require('../text/text.component');
++
++var _button = require('../button/button.component');
++
++var _useDefaultProps = require('../../utilities/useDefaultProps');
++
++function _getRequireWildcardCache(nodeInterop) {
++  if (typeof WeakMap !== 'function') return null;
++  var cacheBabelInterop = new WeakMap();
++  var cacheNodeInterop = new WeakMap();
++  return (_getRequireWildcardCache = function (nodeInterop) {
++    return nodeInterop ? cacheNodeInterop : cacheBabelInterop;
++  })(nodeInterop);
++}
++
++function _interopRequireWildcard(obj, nodeInterop) {
++  if (!nodeInterop && obj && obj.__esModule) {
++    return obj;
++  }
++  if (obj === null || (typeof obj !== 'object' && typeof obj !== 'function')) {
++    return {default: obj};
++  }
++  var cache = _getRequireWildcardCache(nodeInterop);
++  if (cache && cache.has(obj)) {
++    return cache.get(obj);
++  }
++  var newObj = {};
++  var hasPropertyDescriptor =
++    Object.defineProperty && Object.getOwnPropertyDescriptor;
++  for (var key in obj) {
++    if (key !== 'default' && Object.prototype.hasOwnProperty.call(obj, key)) {
++      var desc = hasPropertyDescriptor
++        ? Object.getOwnPropertyDescriptor(obj, key)
++        : null;
++      if (desc && (desc.get || desc.set)) {
++        Object.defineProperty(newObj, key, desc);
++      } else {
++        newObj[key] = obj[key];
++      }
++    }
++  }
++  newObj.default = obj;
++  if (cache) {
++    cache.set(obj, newObj);
++  }
++  return newObj;
++}
++
++function _extends() {
++  _extends = Object.assign
++    ? Object.assign.bind()
++    : function (target) {
++        for (var i = 1; i < arguments.length; i++) {
++          var source = arguments[i];
++          for (var key in source) {
++            if (Object.prototype.hasOwnProperty.call(source, key)) {
++              target[key] = source[key];
++            }
++          }
++        }
++        return target;
++      };
++  return _extends.apply(this, arguments);
++}
+ 
+ const SelectOption = incomingProps => {
+-  const props = (0, _useDefaultProps.useDefaultProps)('SelectOption', incomingProps, {
+-    onSelect: () => {},
+-    rounded: 0,
+-    bg: 'white',
+-    px: 'xl',
+-    py: 'lg',
+-    color: 'black',
+-    alignItems: 'flex-start',
+-    justifyContent: 'flex-start',
+-    center: false,
+-    prefix: /*#__PURE__*/React.createElement(_icon.Icon, {
+-      name: "ios-checkmark-circle",
+-      fontFamily: "Ionicons",
+-      fontSize: "2xl",
+-      color: "green600",
+-      mr: "md"
+-    })
+-  });
++  const props = (0, _useDefaultProps.useDefaultProps)(
++    'SelectOption',
++    incomingProps,
++    {
++      onSelect: () => {},
++      rounded: 0,
++      bg: 'white',
++      px: 'xl',
++      py: 'lg',
++      color: 'black',
++      alignItems: 'flex-start',
++      justifyContent: 'flex-start',
++      center: false,
++      prefix: /*#__PURE__*/ React.createElement(_icon.Icon, {
++        name: 'checkmark-circle',
++        fontFamily: 'Ionicons',
++        fontSize: '2xl',
++        color: 'green600',
++        mr: 'md',
++      }),
++    },
++  );
+   const {
+     children,
+     value,
+@@ -51,7 +108,9 @@ const SelectOption = incomingProps => {
+     selectedValue,
+     ...rest
+   } = props;
+-  const isSelected = Array.isArray(selectedValue) ? selectedValue.includes(value) : selectedValue === value;
++  const isSelected = Array.isArray(selectedValue)
++    ? selectedValue.includes(value)
++    : selectedValue === value;
+   /**
+    * on press select option
+    *
+@@ -71,7 +130,6 @@ const SelectOption = incomingProps => {
+    * render suffix
+    */
+ 
+-
+   const renderPrefix = () => {
+     if (isSelected) {
+       return prefix;
+@@ -82,22 +140,36 @@ const SelectOption = incomingProps => {
+ 
+   const renderChildren = () => {
+     if (typeof children === 'string') {
+-      return /*#__PURE__*/React.createElement(_text.Text, null, children);
++      return /*#__PURE__*/ React.createElement(_text.Text, null, children);
+     }
+ 
+     return children;
+   };
+ 
+-  return /*#__PURE__*/React.createElement(_button.Button, _extends({}, rest, {
+-    onPress: onPress,
+-    block: true,
+-    alignItems: "center"
+-  }), prefix && /*#__PURE__*/React.createElement(_div.Div, {
+-    minW: "8%"
+-  }, renderPrefix()), /*#__PURE__*/React.createElement(_div.Div, {
+-    flex: 1,
+-    bg: "transparent"
+-  }, renderChildren()));
++  return /*#__PURE__*/ React.createElement(
++    _button.Button,
++    _extends({}, rest, {
++      onPress: onPress,
++      block: true,
++      alignItems: 'center',
++    }),
++    prefix &&
++      /*#__PURE__*/ React.createElement(
++        _div.Div,
++        {
++          minW: '8%',
++        },
++        renderPrefix(),
++      ),
++    /*#__PURE__*/ React.createElement(
++      _div.Div,
++      {
++        flex: 1,
++        bg: 'transparent',
++      },
++      renderChildren(),
++    ),
++  );
+ }; // Option.defaultProps = {
+ //   onSelect: () => {},
+ //   rounded: 0,
+@@ -109,6 +181,5 @@ const SelectOption = incomingProps => {
+ //   center: false,
+ // };
+ 
+-
+ exports.SelectOption = SelectOption;
+ //# sourceMappingURL=select.option.component.js.map
+diff --git a/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js.map b/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js.map
+index 02b16fe..69c5710 100644
+--- a/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js.map
++++ b/node_modules/react-native-magnus/lib/commonjs/ui/select/select.option.component.js.map
+@@ -1 +1,39 @@
+-{"version":3,"names":["SelectOption","incomingProps","props","useDefaultProps","onSelect","rounded","bg","px","py","color","alignItems","justifyContent","center","prefix","children","value","onPress","onPressProp","selectedValue","rest","isSelected","Array","isArray","includes","event","renderPrefix","renderChildren"],"sources":["select.option.component.tsx"],"sourcesContent":["import * as React from 'react';\nimport { GestureResponderEvent as RNGestureResponderEvent } from 'react-native';\n\nimport { Div } from '../div/div.component';\nimport { Icon } from '../icon/icon.component';\nimport { Text } from '../text/text.component';\nimport { SelectOptionProps } from './select.option.type';\nimport { Button } from '../button/button.component';\nimport { useDefaultProps } from '../../utilities/useDefaultProps';\n\nconst SelectOption: React.FunctionComponent<SelectOptionProps> = (\n  incomingProps\n) => {\n  const props = useDefaultProps('SelectOption', incomingProps, {\n    onSelect: () => {},\n    rounded: 0,\n    bg: 'white',\n    px: 'xl',\n    py: 'lg',\n    color: 'black',\n    alignItems: 'flex-start',\n    justifyContent: 'flex-start',\n    center: false,\n    prefix: (\n      <Icon\n        name=\"ios-checkmark-circle\"\n        fontFamily=\"Ionicons\"\n        fontSize=\"2xl\"\n        color=\"green600\"\n        mr=\"md\"\n      />\n    ),\n  });\n\n  const {\n    children,\n    value,\n    prefix,\n    onPress: onPressProp,\n    onSelect,\n    selectedValue,\n    ...rest\n  } = props;\n  const isSelected = Array.isArray(selectedValue)\n    ? selectedValue.includes(value)\n    : selectedValue === value;\n\n  /**\n   * on press select option\n   *\n   * @param e\n   */\n  const onPress = (event: RNGestureResponderEvent) => {\n    if (onSelect) {\n      onSelect(value);\n    }\n\n    if (onPressProp) {\n      onPressProp(event);\n    }\n  };\n\n  /**\n   * render suffix\n   */\n  const renderPrefix = () => {\n    if (isSelected) {\n      return prefix;\n    }\n\n    return null;\n  };\n\n  const renderChildren = () => {\n    if (typeof children === 'string') {\n      return <Text>{children}</Text>;\n    }\n\n    return children;\n  };\n\n  return (\n    <Button {...rest} onPress={onPress} block alignItems=\"center\">\n      {prefix && <Div minW=\"8%\">{renderPrefix()}</Div>}\n      <Div flex={1} bg=\"transparent\">\n        {renderChildren()}\n      </Div>\n    </Button>\n  );\n};\n\n// Option.defaultProps = {\n//   onSelect: () => {},\n//   rounded: 0,\n//   bg: 'white',\n//   p: 0,\n//   color: 'black',\n//   alignItems: 'flex-start',\n//   justifyContent: 'flex-start',\n//   center: false,\n// };\n\nexport { SelectOption };\n"],"mappings":";;;;;;;AAAA;;AAGA;;AACA;;AACA;;AAEA;;AACA;;;;;;;;AAEA,MAAMA,YAAwD,GAC5DC,aAD+D,IAE5D;EACH,MAAMC,KAAK,GAAG,IAAAC,gCAAA,EAAgB,cAAhB,EAAgCF,aAAhC,EAA+C;IAC3DG,QAAQ,EAAE,MAAM,CAAE,CADyC;IAE3DC,OAAO,EAAE,CAFkD;IAG3DC,EAAE,EAAE,OAHuD;IAI3DC,EAAE,EAAE,IAJuD;IAK3DC,EAAE,EAAE,IALuD;IAM3DC,KAAK,EAAE,OANoD;IAO3DC,UAAU,EAAE,YAP+C;IAQ3DC,cAAc,EAAE,YAR2C;IAS3DC,MAAM,EAAE,KATmD;IAU3DC,MAAM,eACJ,oBAAC,UAAD;MACE,IAAI,EAAC,sBADP;MAEE,UAAU,EAAC,UAFb;MAGE,QAAQ,EAAC,KAHX;MAIE,KAAK,EAAC,UAJR;MAKE,EAAE,EAAC;IALL;EAXyD,CAA/C,CAAd;EAqBA,MAAM;IACJC,QADI;IAEJC,KAFI;IAGJF,MAHI;IAIJG,OAAO,EAAEC,WAJL;IAKJb,QALI;IAMJc,aANI;IAOJ,GAAGC;EAPC,IAQFjB,KARJ;EASA,MAAMkB,UAAU,GAAGC,KAAK,CAACC,OAAN,CAAcJ,aAAd,IACfA,aAAa,CAACK,QAAd,CAAuBR,KAAvB,CADe,GAEfG,aAAa,KAAKH,KAFtB;EAIA;AACF;AACA;AACA;AACA;;EACE,MAAMC,OAAO,GAAIQ,KAAD,IAAoC;IAClD,IAAIpB,QAAJ,EAAc;MACZA,QAAQ,CAACW,KAAD,CAAR;IACD;;IAED,IAAIE,WAAJ,EAAiB;MACfA,WAAW,CAACO,KAAD,CAAX;IACD;EACF,CARD;EAUA;AACF;AACA;;;EACE,MAAMC,YAAY,GAAG,MAAM;IACzB,IAAIL,UAAJ,EAAgB;MACd,OAAOP,MAAP;IACD;;IAED,OAAO,IAAP;EACD,CAND;;EAQA,MAAMa,cAAc,GAAG,MAAM;IAC3B,IAAI,OAAOZ,QAAP,KAAoB,QAAxB,EAAkC;MAChC,oBAAO,oBAAC,UAAD,QAAOA,QAAP,CAAP;IACD;;IAED,OAAOA,QAAP;EACD,CAND;;EAQA,oBACE,oBAAC,cAAD,eAAYK,IAAZ;IAAkB,OAAO,EAAEH,OAA3B;IAAoC,KAAK,MAAzC;IAA0C,UAAU,EAAC;EAArD,IACGH,MAAM,iBAAI,oBAAC,QAAD;IAAK,IAAI,EAAC;EAAV,GAAgBY,YAAY,EAA5B,CADb,eAEE,oBAAC,QAAD;IAAK,IAAI,EAAE,CAAX;IAAc,EAAE,EAAC;EAAjB,GACGC,cAAc,EADjB,CAFF,CADF;AAQD,CA/ED,C,CAiFA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA"}
+\ No newline at end of file
++{
++  "version": 3,
++  "names": [
++    "SelectOption",
++    "incomingProps",
++    "props",
++    "useDefaultProps",
++    "onSelect",
++    "rounded",
++    "bg",
++    "px",
++    "py",
++    "color",
++    "alignItems",
++    "justifyContent",
++    "center",
++    "prefix",
++    "children",
++    "value",
++    "onPress",
++    "onPressProp",
++    "selectedValue",
++    "rest",
++    "isSelected",
++    "Array",
++    "isArray",
++    "includes",
++    "event",
++    "renderPrefix",
++    "renderChildren"
++  ],
++  "sources": [
++    "select.option.component.tsx"
++  ],
++  "sourcesContent": [
++    "import * as React from 'react';\nimport { GestureResponderEvent as RNGestureResponderEvent } from 'react-native';\n\nimport { Div } from '../div/div.component';\nimport { Icon } from '../icon/icon.component';\nimport { Text } from '../text/text.component';\nimport { SelectOptionProps } from './select.option.type';\nimport { Button } from '../button/button.component';\nimport { useDefaultProps } from '../../utilities/useDefaultProps';\n\nconst SelectOption: React.FunctionComponent<SelectOptionProps> = (\n  incomingProps\n) => {\n  const props = useDefaultProps('SelectOption', incomingProps, {\n    onSelect: () => {},\n    rounded: 0,\n    bg: 'white',\n    px: 'xl',\n    py: 'lg',\n    color: 'black',\n    alignItems: 'flex-start',\n    justifyContent: 'flex-start',\n    center: false,\n    prefix: (\n      <Icon\n        name=\"checkmark-circle\"\n        fontFamily=\"Ionicons\"\n        fontSize=\"2xl\"\n        color=\"green600\"\n        mr=\"md\"\n      />\n    ),\n  });\n\n  const {\n    children,\n    value,\n    prefix,\n    onPress: onPressProp,\n    onSelect,\n    selectedValue,\n    ...rest\n  } = props;\n  const isSelected = Array.isArray(selectedValue)\n    ? selectedValue.includes(value)\n    : selectedValue === value;\n\n  /**\n   * on press select option\n   *\n   * @param e\n   */\n  const onPress = (event: RNGestureResponderEvent) => {\n    if (onSelect) {\n      onSelect(value);\n    }\n\n    if (onPressProp) {\n      onPressProp(event);\n    }\n  };\n\n  /**\n   * render suffix\n   */\n  const renderPrefix = () => {\n    if (isSelected) {\n      return prefix;\n    }\n\n    return null;\n  };\n\n  const renderChildren = () => {\n    if (typeof children === 'string') {\n      return <Text>{children}</Text>;\n    }\n\n    return children;\n  };\n\n  return (\n    <Button {...rest} onPress={onPress} block alignItems=\"center\">\n      {prefix && <Div minW=\"8%\">{renderPrefix()}</Div>}\n      <Div flex={1} bg=\"transparent\">\n        {renderChildren()}\n      </Div>\n    </Button>\n  );\n};\n\n// Option.defaultProps = {\n//   onSelect: () => {},\n//   rounded: 0,\n//   bg: 'white',\n//   p: 0,\n//   color: 'black',\n//   alignItems: 'flex-start',\n//   justifyContent: 'flex-start',\n//   center: false,\n// };\n\nexport { SelectOption };\n"
++  ],
++  "mappings": ";;;;;;;AAAA;;AAGA;;AACA;;AACA;;AAEA;;AACA;;;;;;;;AAEA,MAAMA,YAAwD,GAC5DC,aAD+D,IAE5D;EACH,MAAMC,KAAK,GAAG,IAAAC,gCAAA,EAAgB,cAAhB,EAAgCF,aAAhC,EAA+C;IAC3DG,QAAQ,EAAE,MAAM,CAAE,CADyC;IAE3DC,OAAO,EAAE,CAFkD;IAG3DC,EAAE,EAAE,OAHuD;IAI3DC,EAAE,EAAE,IAJuD;IAK3DC,EAAE,EAAE,IALuD;IAM3DC,KAAK,EAAE,OANoD;IAO3DC,UAAU,EAAE,YAP+C;IAQ3DC,cAAc,EAAE,YAR2C;IAS3DC,MAAM,EAAE,KATmD;IAU3DC,MAAM,eACJ,oBAAC,UAAD;MACE,IAAI,EAAC,sBADP;MAEE,UAAU,EAAC,UAFb;MAGE,QAAQ,EAAC,KAHX;MAIE,KAAK,EAAC,UAJR;MAKE,EAAE,EAAC;IALL;EAXyD,CAA/C,CAAd;EAqBA,MAAM;IACJC,QADI;IAEJC,KAFI;IAGJF,MAHI;IAIJG,OAAO,EAAEC,WAJL;IAKJb,QALI;IAMJc,aANI;IAOJ,GAAGC;EAPC,IAQFjB,KARJ;EASA,MAAMkB,UAAU,GAAGC,KAAK,CAACC,OAAN,CAAcJ,aAAd,IACfA,aAAa,CAACK,QAAd,CAAuBR,KAAvB,CADe,GAEfG,aAAa,KAAKH,KAFtB;EAIA;AACF;AACA;AACA;AACA;;EACE,MAAMC,OAAO,GAAIQ,KAAD,IAAoC;IAClD,IAAIpB,QAAJ,EAAc;MACZA,QAAQ,CAACW,KAAD,CAAR;IACD;;IAED,IAAIE,WAAJ,EAAiB;MACfA,WAAW,CAACO,KAAD,CAAX;IACD;EACF,CARD;EAUA;AACF;AACA;;;EACE,MAAMC,YAAY,GAAG,MAAM;IACzB,IAAIL,UAAJ,EAAgB;MACd,OAAOP,MAAP;IACD;;IAED,OAAO,IAAP;EACD,CAND;;EAQA,MAAMa,cAAc,GAAG,MAAM;IAC3B,IAAI,OAAOZ,QAAP,KAAoB,QAAxB,EAAkC;MAChC,oBAAO,oBAAC,UAAD,QAAOA,QAAP,CAAP;IACD;;IAED,OAAOA,QAAP;EACD,CAND;;EAQA,oBACE,oBAAC,cAAD,eAAYK,IAAZ;IAAkB,OAAO,EAAEH,OAA3B;IAAoC,KAAK,MAAzC;IAA0C,UAAU,EAAC;EAArD,IACGH,MAAM,iBAAI,oBAAC,QAAD;IAAK,IAAI,EAAC;EAAV,GAAgBY,YAAY,EAA5B,CADb,eAEE,oBAAC,QAAD;IAAK,IAAI,EAAE,CAAX;IAAc,EAAE,EAAC;EAAjB,GACGC,cAAc,EADjB,CAFF,CADF;AAQD,CA/ED,C,CAiFA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA"
++}
+diff --git a/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js b/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js
+index 55a5346..82f4ca4 100644
+--- a/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js
++++ b/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js
+@@ -1,11 +1,26 @@
+-function _extends() { _extends = Object.assign ? Object.assign.bind() : function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
++function _extends() {
++  _extends = Object.assign
++    ? Object.assign.bind()
++    : function (target) {
++        for (var i = 1; i < arguments.length; i++) {
++          var source = arguments[i];
++          for (var key in source) {
++            if (Object.prototype.hasOwnProperty.call(source, key)) {
++              target[key] = source[key];
++            }
++          }
++        }
++        return target;
++      };
++  return _extends.apply(this, arguments);
++}
+ 
+ import * as React from 'react';
+-import { Div } from '../div/div.component';
+-import { Icon } from '../icon/icon.component';
+-import { Text } from '../text/text.component';
+-import { Button } from '../button/button.component';
+-import { useDefaultProps } from '../../utilities/useDefaultProps';
++import {Div} from '../div/div.component';
++import {Icon} from '../icon/icon.component';
++import {Text} from '../text/text.component';
++import {Button} from '../button/button.component';
++import {useDefaultProps} from '../../utilities/useDefaultProps';
+ 
+ const SelectOption = incomingProps => {
+   const props = useDefaultProps('SelectOption', incomingProps, {
+@@ -18,13 +33,13 @@ const SelectOption = incomingProps => {
+     alignItems: 'flex-start',
+     justifyContent: 'flex-start',
+     center: false,
+-    prefix: /*#__PURE__*/React.createElement(Icon, {
+-      name: "ios-checkmark-circle",
+-      fontFamily: "Ionicons",
+-      fontSize: "2xl",
+-      color: "green600",
+-      mr: "md"
+-    })
++    prefix: /*#__PURE__*/ React.createElement(Icon, {
++      name: 'checkmark-circle',
++      fontFamily: 'Ionicons',
++      fontSize: '2xl',
++      color: 'green600',
++      mr: 'md',
++    }),
+   });
+   const {
+     children,
+@@ -35,7 +50,9 @@ const SelectOption = incomingProps => {
+     selectedValue,
+     ...rest
+   } = props;
+-  const isSelected = Array.isArray(selectedValue) ? selectedValue.includes(value) : selectedValue === value;
++  const isSelected = Array.isArray(selectedValue)
++    ? selectedValue.includes(value)
++    : selectedValue === value;
+   /**
+    * on press select option
+    *
+@@ -55,7 +72,6 @@ const SelectOption = incomingProps => {
+    * render suffix
+    */
+ 
+-
+   const renderPrefix = () => {
+     if (isSelected) {
+       return prefix;
+@@ -66,22 +82,36 @@ const SelectOption = incomingProps => {
+ 
+   const renderChildren = () => {
+     if (typeof children === 'string') {
+-      return /*#__PURE__*/React.createElement(Text, null, children);
++      return /*#__PURE__*/ React.createElement(Text, null, children);
+     }
+ 
+     return children;
+   };
+ 
+-  return /*#__PURE__*/React.createElement(Button, _extends({}, rest, {
+-    onPress: onPress,
+-    block: true,
+-    alignItems: "center"
+-  }), prefix && /*#__PURE__*/React.createElement(Div, {
+-    minW: "8%"
+-  }, renderPrefix()), /*#__PURE__*/React.createElement(Div, {
+-    flex: 1,
+-    bg: "transparent"
+-  }, renderChildren()));
++  return /*#__PURE__*/ React.createElement(
++    Button,
++    _extends({}, rest, {
++      onPress: onPress,
++      block: true,
++      alignItems: 'center',
++    }),
++    prefix &&
++      /*#__PURE__*/ React.createElement(
++        Div,
++        {
++          minW: '8%',
++        },
++        renderPrefix(),
++      ),
++    /*#__PURE__*/ React.createElement(
++      Div,
++      {
++        flex: 1,
++        bg: 'transparent',
++      },
++      renderChildren(),
++    ),
++  );
+ }; // Option.defaultProps = {
+ //   onSelect: () => {},
+ //   rounded: 0,
+@@ -93,6 +123,5 @@ const SelectOption = incomingProps => {
+ //   center: false,
+ // };
+ 
+-
+-export { SelectOption };
++export {SelectOption};
+ //# sourceMappingURL=select.option.component.js.map
+diff --git a/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js.map b/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js.map
+index e8c6220..1b3e781 100644
+--- a/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js.map
++++ b/node_modules/react-native-magnus/lib/module/ui/select/select.option.component.js.map
+@@ -1 +1,44 @@
+-{"version":3,"names":["React","Div","Icon","Text","Button","useDefaultProps","SelectOption","incomingProps","props","onSelect","rounded","bg","px","py","color","alignItems","justifyContent","center","prefix","children","value","onPress","onPressProp","selectedValue","rest","isSelected","Array","isArray","includes","event","renderPrefix","renderChildren"],"sources":["select.option.component.tsx"],"sourcesContent":["import * as React from 'react';\nimport { GestureResponderEvent as RNGestureResponderEvent } from 'react-native';\n\nimport { Div } from '../div/div.component';\nimport { Icon } from '../icon/icon.component';\nimport { Text } from '../text/text.component';\nimport { SelectOptionProps } from './select.option.type';\nimport { Button } from '../button/button.component';\nimport { useDefaultProps } from '../../utilities/useDefaultProps';\n\nconst SelectOption: React.FunctionComponent<SelectOptionProps> = (\n  incomingProps\n) => {\n  const props = useDefaultProps('SelectOption', incomingProps, {\n    onSelect: () => {},\n    rounded: 0,\n    bg: 'white',\n    px: 'xl',\n    py: 'lg',\n    color: 'black',\n    alignItems: 'flex-start',\n    justifyContent: 'flex-start',\n    center: false,\n    prefix: (\n      <Icon\n        name=\"ios-checkmark-circle\"\n        fontFamily=\"Ionicons\"\n        fontSize=\"2xl\"\n        color=\"green600\"\n        mr=\"md\"\n      />\n    ),\n  });\n\n  const {\n    children,\n    value,\n    prefix,\n    onPress: onPressProp,\n    onSelect,\n    selectedValue,\n    ...rest\n  } = props;\n  const isSelected = Array.isArray(selectedValue)\n    ? selectedValue.includes(value)\n    : selectedValue === value;\n\n  /**\n   * on press select option\n   *\n   * @param e\n   */\n  const onPress = (event: RNGestureResponderEvent) => {\n    if (onSelect) {\n      onSelect(value);\n    }\n\n    if (onPressProp) {\n      onPressProp(event);\n    }\n  };\n\n  /**\n   * render suffix\n   */\n  const renderPrefix = () => {\n    if (isSelected) {\n      return prefix;\n    }\n\n    return null;\n  };\n\n  const renderChildren = () => {\n    if (typeof children === 'string') {\n      return <Text>{children}</Text>;\n    }\n\n    return children;\n  };\n\n  return (\n    <Button {...rest} onPress={onPress} block alignItems=\"center\">\n      {prefix && <Div minW=\"8%\">{renderPrefix()}</Div>}\n      <Div flex={1} bg=\"transparent\">\n        {renderChildren()}\n      </Div>\n    </Button>\n  );\n};\n\n// Option.defaultProps = {\n//   onSelect: () => {},\n//   rounded: 0,\n//   bg: 'white',\n//   p: 0,\n//   color: 'black',\n//   alignItems: 'flex-start',\n//   justifyContent: 'flex-start',\n//   center: false,\n// };\n\nexport { SelectOption };\n"],"mappings":";;AAAA,OAAO,KAAKA,KAAZ,MAAuB,OAAvB;AAGA,SAASC,GAAT,QAAoB,sBAApB;AACA,SAASC,IAAT,QAAqB,wBAArB;AACA,SAASC,IAAT,QAAqB,wBAArB;AAEA,SAASC,MAAT,QAAuB,4BAAvB;AACA,SAASC,eAAT,QAAgC,iCAAhC;;AAEA,MAAMC,YAAwD,GAC5DC,aAD+D,IAE5D;EACH,MAAMC,KAAK,GAAGH,eAAe,CAAC,cAAD,EAAiBE,aAAjB,EAAgC;IAC3DE,QAAQ,EAAE,MAAM,CAAE,CADyC;IAE3DC,OAAO,EAAE,CAFkD;IAG3DC,EAAE,EAAE,OAHuD;IAI3DC,EAAE,EAAE,IAJuD;IAK3DC,EAAE,EAAE,IALuD;IAM3DC,KAAK,EAAE,OANoD;IAO3DC,UAAU,EAAE,YAP+C;IAQ3DC,cAAc,EAAE,YAR2C;IAS3DC,MAAM,EAAE,KATmD;IAU3DC,MAAM,eACJ,oBAAC,IAAD;MACE,IAAI,EAAC,sBADP;MAEE,UAAU,EAAC,UAFb;MAGE,QAAQ,EAAC,KAHX;MAIE,KAAK,EAAC,UAJR;MAKE,EAAE,EAAC;IALL;EAXyD,CAAhC,CAA7B;EAqBA,MAAM;IACJC,QADI;IAEJC,KAFI;IAGJF,MAHI;IAIJG,OAAO,EAAEC,WAJL;IAKJb,QALI;IAMJc,aANI;IAOJ,GAAGC;EAPC,IAQFhB,KARJ;EASA,MAAMiB,UAAU,GAAGC,KAAK,CAACC,OAAN,CAAcJ,aAAd,IACfA,aAAa,CAACK,QAAd,CAAuBR,KAAvB,CADe,GAEfG,aAAa,KAAKH,KAFtB;EAIA;AACF;AACA;AACA;AACA;;EACE,MAAMC,OAAO,GAAIQ,KAAD,IAAoC;IAClD,IAAIpB,QAAJ,EAAc;MACZA,QAAQ,CAACW,KAAD,CAAR;IACD;;IAED,IAAIE,WAAJ,EAAiB;MACfA,WAAW,CAACO,KAAD,CAAX;IACD;EACF,CARD;EAUA;AACF;AACA;;;EACE,MAAMC,YAAY,GAAG,MAAM;IACzB,IAAIL,UAAJ,EAAgB;MACd,OAAOP,MAAP;IACD;;IAED,OAAO,IAAP;EACD,CAND;;EAQA,MAAMa,cAAc,GAAG,MAAM;IAC3B,IAAI,OAAOZ,QAAP,KAAoB,QAAxB,EAAkC;MAChC,oBAAO,oBAAC,IAAD,QAAOA,QAAP,CAAP;IACD;;IAED,OAAOA,QAAP;EACD,CAND;;EAQA,oBACE,oBAAC,MAAD,eAAYK,IAAZ;IAAkB,OAAO,EAAEH,OAA3B;IAAoC,KAAK,MAAzC;IAA0C,UAAU,EAAC;EAArD,IACGH,MAAM,iBAAI,oBAAC,GAAD;IAAK,IAAI,EAAC;EAAV,GAAgBY,YAAY,EAA5B,CADb,eAEE,oBAAC,GAAD;IAAK,IAAI,EAAE,CAAX;IAAc,EAAE,EAAC;EAAjB,GACGC,cAAc,EADjB,CAFF,CADF;AAQD,CA/ED,C,CAiFA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;;AAEA,SAASzB,YAAT"}
+\ No newline at end of file
++{
++  "version": 3,
++  "names": [
++    "React",
++    "Div",
++    "Icon",
++    "Text",
++    "Button",
++    "useDefaultProps",
++    "SelectOption",
++    "incomingProps",
++    "props",
++    "onSelect",
++    "rounded",
++    "bg",
++    "px",
++    "py",
++    "color",
++    "alignItems",
++    "justifyContent",
++    "center",
++    "prefix",
++    "children",
++    "value",
++    "onPress",
++    "onPressProp",
++    "selectedValue",
++    "rest",
++    "isSelected",
++    "Array",
++    "isArray",
++    "includes",
++    "event",
++    "renderPrefix",
++    "renderChildren"
++  ],
++  "sources": [
++    "select.option.component.tsx"
++  ],
++  "sourcesContent": [
++    "import * as React from 'react';\nimport { GestureResponderEvent as RNGestureResponderEvent } from 'react-native';\n\nimport { Div } from '../div/div.component';\nimport { Icon } from '../icon/icon.component';\nimport { Text } from '../text/text.component';\nimport { SelectOptionProps } from './select.option.type';\nimport { Button } from '../button/button.component';\nimport { useDefaultProps } from '../../utilities/useDefaultProps';\n\nconst SelectOption: React.FunctionComponent<SelectOptionProps> = (\n  incomingProps\n) => {\n  const props = useDefaultProps('SelectOption', incomingProps, {\n    onSelect: () => {},\n    rounded: 0,\n    bg: 'white',\n    px: 'xl',\n    py: 'lg',\n    color: 'black',\n    alignItems: 'flex-start',\n    justifyContent: 'flex-start',\n    center: false,\n    prefix: (\n      <Icon\n        name=\"checkmark-circle\"\n        fontFamily=\"Ionicons\"\n        fontSize=\"2xl\"\n        color=\"green600\"\n        mr=\"md\"\n      />\n    ),\n  });\n\n  const {\n    children,\n    value,\n    prefix,\n    onPress: onPressProp,\n    onSelect,\n    selectedValue,\n    ...rest\n  } = props;\n  const isSelected = Array.isArray(selectedValue)\n    ? selectedValue.includes(value)\n    : selectedValue === value;\n\n  /**\n   * on press select option\n   *\n   * @param e\n   */\n  const onPress = (event: RNGestureResponderEvent) => {\n    if (onSelect) {\n      onSelect(value);\n    }\n\n    if (onPressProp) {\n      onPressProp(event);\n    }\n  };\n\n  /**\n   * render suffix\n   */\n  const renderPrefix = () => {\n    if (isSelected) {\n      return prefix;\n    }\n\n    return null;\n  };\n\n  const renderChildren = () => {\n    if (typeof children === 'string') {\n      return <Text>{children}</Text>;\n    }\n\n    return children;\n  };\n\n  return (\n    <Button {...rest} onPress={onPress} block alignItems=\"center\">\n      {prefix && <Div minW=\"8%\">{renderPrefix()}</Div>}\n      <Div flex={1} bg=\"transparent\">\n        {renderChildren()}\n      </Div>\n    </Button>\n  );\n};\n\n// Option.defaultProps = {\n//   onSelect: () => {},\n//   rounded: 0,\n//   bg: 'white',\n//   p: 0,\n//   color: 'black',\n//   alignItems: 'flex-start',\n//   justifyContent: 'flex-start',\n//   center: false,\n// };\n\nexport { SelectOption };\n"
++  ],
++  "mappings": ";;AAAA,OAAO,KAAKA,KAAZ,MAAuB,OAAvB;AAGA,SAASC,GAAT,QAAoB,sBAApB;AACA,SAASC,IAAT,QAAqB,wBAArB;AACA,SAASC,IAAT,QAAqB,wBAArB;AAEA,SAASC,MAAT,QAAuB,4BAAvB;AACA,SAASC,eAAT,QAAgC,iCAAhC;;AAEA,MAAMC,YAAwD,GAC5DC,aAD+D,IAE5D;EACH,MAAMC,KAAK,GAAGH,eAAe,CAAC,cAAD,EAAiBE,aAAjB,EAAgC;IAC3DE,QAAQ,EAAE,MAAM,CAAE,CADyC;IAE3DC,OAAO,EAAE,CAFkD;IAG3DC,EAAE,EAAE,OAHuD;IAI3DC,EAAE,EAAE,IAJuD;IAK3DC,EAAE,EAAE,IALuD;IAM3DC,KAAK,EAAE,OANoD;IAO3DC,UAAU,EAAE,YAP+C;IAQ3DC,cAAc,EAAE,YAR2C;IAS3DC,MAAM,EAAE,KATmD;IAU3DC,MAAM,eACJ,oBAAC,IAAD;MACE,IAAI,EAAC,sBADP;MAEE,UAAU,EAAC,UAFb;MAGE,QAAQ,EAAC,KAHX;MAIE,KAAK,EAAC,UAJR;MAKE,EAAE,EAAC;IALL;EAXyD,CAAhC,CAA7B;EAqBA,MAAM;IACJC,QADI;IAEJC,KAFI;IAGJF,MAHI;IAIJG,OAAO,EAAEC,WAJL;IAKJb,QALI;IAMJc,aANI;IAOJ,GAAGC;EAPC,IAQFhB,KARJ;EASA,MAAMiB,UAAU,GAAGC,KAAK,CAACC,OAAN,CAAcJ,aAAd,IACfA,aAAa,CAACK,QAAd,CAAuBR,KAAvB,CADe,GAEfG,aAAa,KAAKH,KAFtB;EAIA;AACF;AACA;AACA;AACA;;EACE,MAAMC,OAAO,GAAIQ,KAAD,IAAoC;IAClD,IAAIpB,QAAJ,EAAc;MACZA,QAAQ,CAACW,KAAD,CAAR;IACD;;IAED,IAAIE,WAAJ,EAAiB;MACfA,WAAW,CAACO,KAAD,CAAX;IACD;EACF,CARD;EAUA;AACF;AACA;;;EACE,MAAMC,YAAY,GAAG,MAAM;IACzB,IAAIL,UAAJ,EAAgB;MACd,OAAOP,MAAP;IACD;;IAED,OAAO,IAAP;EACD,CAND;;EAQA,MAAMa,cAAc,GAAG,MAAM;IAC3B,IAAI,OAAOZ,QAAP,KAAoB,QAAxB,EAAkC;MAChC,oBAAO,oBAAC,IAAD,QAAOA,QAAP,CAAP;IACD;;IAED,OAAOA,QAAP;EACD,CAND;;EAQA,oBACE,oBAAC,MAAD,eAAYK,IAAZ;IAAkB,OAAO,EAAEH,OAA3B;IAAoC,KAAK,MAAzC;IAA0C,UAAU,EAAC;EAArD,IACGH,MAAM,iBAAI,oBAAC,GAAD;IAAK,IAAI,EAAC;EAAV,GAAgBY,YAAY,EAA5B,CADb,eAEE,oBAAC,GAAD;IAAK,IAAI,EAAE,CAAX;IAAc,EAAE,EAAC;EAAjB,GACGC,cAAc,EADjB,CAFF,CADF;AAQD,CA/ED,C,CAiFA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;AACA;;;AAEA,SAASzB,YAAT"
++}
+diff --git a/node_modules/react-native-magnus/src/ui/select/select.option.component.tsx b/node_modules/react-native-magnus/src/ui/select/select.option.component.tsx
+index 789a03a..d2bd785 100644
+--- a/node_modules/react-native-magnus/src/ui/select/select.option.component.tsx
++++ b/node_modules/react-native-magnus/src/ui/select/select.option.component.tsx
+@@ -1,16 +1,16 @@
+ import * as React from 'react';
+-import { GestureResponderEvent as RNGestureResponderEvent } from 'react-native';
++import {GestureResponderEvent as RNGestureResponderEvent} from 'react-native';
+ 
+-import { Div } from '../div/div.component';
+-import { Icon } from '../icon/icon.component';
+-import { Text } from '../text/text.component';
+-import { SelectOptionProps } from './select.option.type';
+-import { Button } from '../button/button.component';
+-import { useDefaultProps } from '../../utilities/useDefaultProps';
++import {Div} from '../div/div.component';
++import {Icon} from '../icon/icon.component';
++import {Text} from '../text/text.component';
++import {SelectOptionProps} from './select.option.type';
++import {Button} from '../button/button.component';
++import {useDefaultProps} from '../../utilities/useDefaultProps';
+ 
+-const SelectOption: React.FunctionComponent<SelectOptionProps> = (
+-  incomingProps
+-) => {
++const SelectOption: React.FunctionComponent<
++  SelectOptionProps
++> = incomingProps => {
+   const props = useDefaultProps('SelectOption', incomingProps, {
+     onSelect: () => {},
+     rounded: 0,
+@@ -23,7 +23,7 @@ const SelectOption: React.FunctionComponent<SelectOptionProps> = (
+     center: false,
+     prefix: (
+       <Icon
+-        name="ios-checkmark-circle"
++        name="checkmark-circle"
+         fontFamily="Ionicons"
+         fontSize="2xl"
+         color="green600"
+@@ -100,4 +100,4 @@ const SelectOption: React.FunctionComponent<SelectOptionProps> = (
+ //   center: false,
+ // };
+ 
+-export { SelectOption };
++export {SelectOption};
