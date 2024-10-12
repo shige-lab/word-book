@@ -1,5 +1,5 @@
 import React from 'react';
-import {Div, Text} from 'react-native-magnus';
+import {Div, Icon, Text} from 'react-native-magnus';
 import {Category} from '../../../types/navigator/type';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
@@ -36,9 +36,15 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             drag,
           })
         }>
-        <Div h={40} py="sm" justifyContent="center">
-          <Text fontSize={16} fontWeight="bold">
-            {category.name}
+        <Div h={40} row py="sm" alignItems="center">
+          <Icon
+            name="folder"
+            fontFamily="Feather"
+            fontSize={18}
+            color="gray500"
+          />
+          <Text ml="md" fontSize={16} fontWeight="bold">
+            {category.name} ({category.childrenLength})
           </Text>
         </Div>
       </Swipeable>
