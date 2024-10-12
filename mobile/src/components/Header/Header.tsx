@@ -8,7 +8,7 @@ import {useColor} from '../../hooks/common/useColor';
 import {iconFontFamilyType} from 'react-native-magnus/lib/typescript/src/ui/icon/icon.type';
 
 export type rightButton = {
-  icon: 'new' | string;
+  icon: 'new' | 'edit' | string;
   onPress: () => void;
 };
 
@@ -27,6 +27,8 @@ const getIconProps = (
   switch (icon) {
     case 'new':
       return {name: 'plus', fontFamily: 'Feather'};
+    case 'edit':
+      return {name: 'edit-2', fontFamily: 'Feather'};
     default:
       return {name: icon};
   }

@@ -9,6 +9,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   TextInput,
+  Alert,
 } from 'react-native';
 import {Category} from '../../../types/navigator/type';
 import {useFormik} from 'formik';
@@ -46,6 +47,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       const newCategories = await saveCategory(v, categories);
       if (newCategories) {
         setCategories(newCategories);
+        Alert.alert('Success', 'Category created successfully');
       }
       onClose();
     },
