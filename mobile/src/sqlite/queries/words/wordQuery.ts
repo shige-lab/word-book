@@ -11,7 +11,11 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
 		FROM 
 		word
 		WHERE
-		word.category_id = ?;`,
+		word.category_id = ?
+    ORDER BY
+    word.id
+    DESC
+    ;`,
         [categoryId],
         (tx, results) => {
           const rows = results.rows;
@@ -56,5 +60,79 @@ export const getWordDetail = async (wordId: number): Promise<Word> => {
         },
       );
     });
+  });
+};
+
+export const saveWord = async (word: Partial<Word>): Promise<Word> => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      tx => {
+        if (word.id) {
+          tx.executeSql(
+            `UPDATE word SET 
+            word = ?,
+            meaning = ?,
+            category_id = ?,
+            proficiency_id = ?,
+            frequency_id = ?,
+            example1 = ?,
+            example2 = ?,
+            example3 = ?,
+            image = ?
+            WHERE id = ?`,
+            [
+              word.word,
+              word.meaning,
+              word.category_id,
+              word.proficiency_id,
+              word.frequency_id,
+              word.example1,
+              word.example2,
+              word.example3,
+              word.image,
+              word.id,
+            ],
+            (tx, result) => {
+              console.log(`Updated Word: ${word.word}`);
+              resolve(word as Word);
+            },
+            (tx, error) => {
+              console.log(`Error updating word: ${word.word}`, tx, error);
+              reject(error);
+            },
+          );
+          return;
+        }
+        tx.executeSql(
+          `INSERT INTO word (word, meaning, category_id, proficiency_id, frequency_id, example1, example2, example3, image) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          [
+            word.word,
+            word.meaning,
+            word.category_id,
+            word.proficiency_id,
+            word.frequency_id,
+            word.example1,
+            word.example2,
+            word.example3,
+            word.image,
+          ],
+          (tx, result) => {
+            console.log(`Inserted Word: ${word.word}`);
+            word.id = result.insertId;
+            resolve(word as Word);
+          },
+          (tx, error) => {
+            console.log(`Error inserting word: ${word.word}`, tx, error);
+            reject(error);
+          },
+        );
+      },
+      error => {
+        console.log('Error during transaction:', error);
+        reject(error);
+      },
+    );
   });
 };
