@@ -37,7 +37,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
     })),
   );
   const inputRef = useRef<TextInput>(null);
-  const {values, handleChange, handleSubmit} = useFormik({
+  const {values, setValues, handleChange, handleSubmit, resetForm} = useFormik({
     initialValues: category || {
       name: '',
       order_index: 0,
@@ -47,7 +47,8 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       const newCategories = await saveCategory(v, categories);
       if (newCategories) {
         setCategories(newCategories);
-        Alert.alert('Success', 'Category created successfully');
+        resetForm();
+        // Alert.alert('Success', 'Category created successfully');
       }
       onClose();
     },
@@ -77,8 +78,11 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus();
+      if (category) {
+        setValues(category);
+      }
     }
-  }, [isOpen]);
+  }, [isOpen, category, setValues]);
 
   return (
     <Modal transparent={true} visible={isOpen} onRequestClose={onClose}>
@@ -93,7 +97,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
         <Div alignItems="center" w={300} bg="base" rounded={10}>
           <Div w="100%" alignItems="center" px="lg">
             <Text fontWeight={'bold'} fontSize={18} lineHeight={24} my="lg">
-              Create new folder
+              {category ? 'Edit folder' : 'Create new folder'}
             </Text>
             <Input
               bg="base1"
