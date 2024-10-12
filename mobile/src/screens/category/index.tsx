@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
 import {Button, Div, Text} from 'react-native-magnus';
 import {getCategories} from '../../sqlite/queries/categories/categoriesQuery';
@@ -17,6 +17,7 @@ import {
 import {getWords} from '../../sqlite/queries/words/wordQuery';
 import {borderBottom} from '../../utils/color/color';
 import WordCard from '../../components/Word/WordCard';
+import WordFormModal from '../../components/Word/WordFormModal';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
@@ -28,6 +29,7 @@ const CategoryDetail: React.FC = () => {
       setCategories: state.setCategories,
     })),
   );
+  const [isOpened, setIsOpened] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,9 +53,23 @@ const CategoryDetail: React.FC = () => {
       headerProps={{
         title: selectedCategory?.name || '',
         leftIcon: 'back',
-        rightIcon: 'new',
+        rightButton: [
+          {
+            icon: 'new',
+            onPress: () => {
+              setIsOpened(true);
+            },
+          },
+        ],
       }}
       withPadding={false}>
+      {!!selectedCategory && (
+        <WordFormModal
+          isOpen={isOpened}
+          onClose={() => setIsOpened(false)}
+          category_id={selectedCategory.id}
+        />
+      )}
       <FlatList
         // style={{width: '100%', padding: 12}}
         contentContainerStyle={{

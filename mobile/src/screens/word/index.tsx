@@ -11,12 +11,16 @@ import {getWordDetail} from '../../sqlite/queries/words/wordQuery';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import axios from 'axios';
 import {useSound} from '../../hooks/common/useSound';
+import ProficiencyAndFrequencyTag from '../../components/Tag/ProficiencyAndFrequencyTag';
+import {getProficiencyAndFrequency} from '../../sqlite/queries/tags/tagsQuery';
+import WordFormModal from '../../components/Word/WordFormModal';
 
 const WordDetail: React.FC = () => {
   const route = useRoute<WordRoute>();
   const navigation = useNavigation<navigationProp>();
   const id = route.params.id;
   const [selectedWord, setSelectedWord] = useState<Word>();
+  const [isOpened, setIsOpened] = useState(false);
 
   const {playSound, stopSound} = useSound();
 
@@ -36,6 +40,7 @@ const WordDetail: React.FC = () => {
       });
     }
   };
+  console.log('---', id, selectedWord);
 
   const {categories, setCategories} = useStateStore(
     useShallow(state => ({
@@ -66,14 +71,17 @@ const WordDetail: React.FC = () => {
     setLoading(true);
     try {
       const response = await axios.get(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord?.word}`,
+        `https://api.dictionaryapi.dev/api/v2/entries/en/${w}`,
       );
       const data = response.data[0];
 
       // Extract phonetic symbols and audio from the API response
       if (data.phonetics && data.phonetics.length > 0) {
         setPhonetics(data.phonetics);
-        console.log('---phonetics---', data.phonetics);
+        console.log(
+          '---phonetics---',
+          data.meanings?.map(m => m.definitions),
+        );
       } else {
         setPhonetics([]);
       }
@@ -90,7 +98,26 @@ const WordDetail: React.FC = () => {
       headerProps={{
         title: selectedWord?.word || '',
         leftIcon: 'back',
+        rightButton: [
+          {
+            icon: 'edit',
+            onPress: () => {
+              setIsOpened(true);
+            },
+          },
+        ],
       }}>
+      {!!selectedWord && (
+        <WordFormModal
+          isOpen={isOpened}
+          onClose={() => setIsOpened(false)}
+          word={selectedWord}
+          category_id={selectedWord.category_id}
+          onSave={w => {
+            setSelectedWord(w);
+          }}
+        />
+      )}
       <Div w="100%">
         <Text fontSize={30} fontWeight="bold">
           {selectedWord?.word}
@@ -113,6 +140,11 @@ const WordDetail: React.FC = () => {
                 />
               </Div>
             </TouchableOpacity>
+          </Div>
+        )}
+        {!!selectedWord && (
+          <Div mt="md">
+            <ProficiencyAndFrequencyTag word={selectedWord} />
           </Div>
         )}
         <Div mt="md" mb="lg">

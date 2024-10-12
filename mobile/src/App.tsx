@@ -28,6 +28,18 @@ function App(): React.JSX.Element {
     // if dark mode, set default font color to white, otherwise set it to black
     colors: {
       ...baseColor,
+      brand25: '#F5FAFF',
+      brand50: '#EBF5FF',
+      brand100: '#D1E9FE',
+      brand150: '#B7DEFD',
+      brand200: '#9DD2FC',
+      brand300: '#7ABDF9',
+      brand400: '#4FA9F5',
+      brand500: '#4299E1', // Base color
+      brand600: '#3B87CC',
+      brand700: '#326FA8',
+      brand800: '#26517A',
+      brand900: '#1A3A53',
     },
     spacing: {
       none: 0 as 0,
