@@ -128,7 +128,7 @@ export const createTables = (init?: boolean) => {
         example2 TEXT,
         example3 TEXT,
         image TEXT,
-        FOREIGN KEY (category_id) REFERENCES category(id),
+        FOREIGN KEY (category_id) REFERENCES category(id) ON DELETE CASCADE,
         FOREIGN KEY (proficiency_id) REFERENCES proficiency(id),
         FOREIGN KEY (frequency_id) REFERENCES frequency(id)
       );`,

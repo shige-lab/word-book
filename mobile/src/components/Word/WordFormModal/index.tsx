@@ -86,6 +86,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
               return {
                 ...c,
                 words: [newWord, ...(c?.words || [])],
+                childrenLength: (c?.childrenLength || 0) + 1,
               };
             }
             return c;
