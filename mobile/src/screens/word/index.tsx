@@ -97,10 +97,12 @@ const WordDetail: React.FC = () => {
     <MainLayout
       headerProps={{
         title: selectedWord?.word || '',
-        leftIcon: 'back',
+        leftButton: {
+          type: 'back',
+        },
         rightButton: [
           {
-            icon: 'edit',
+            type: 'edit',
             onPress: () => {
               setIsOpened(true);
             },

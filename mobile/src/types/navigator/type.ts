@@ -4,6 +4,7 @@ export interface Category {
   order_index: number;
   words?: Word[];
   childrenLength?: number;
+  selected?: boolean;
 }
 
 export interface Proficiency {

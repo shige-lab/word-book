@@ -55,7 +55,11 @@ const CategoryDetail: React.FC = () => {
       setCategories(
         categories.map(c =>
           c.id === id
-            ? {...c, words: c?.words?.filter(w => w.id !== word.id)}
+            ? {
+                ...c,
+                words: c?.words?.filter(w => w.id !== word.id),
+                childrenLength: (c?.childrenLength || 0) - 1,
+              }
             : c,
         ),
       );
@@ -79,10 +83,12 @@ const CategoryDetail: React.FC = () => {
     <MainLayout
       headerProps={{
         title: selectedCategory?.name || '',
-        leftIcon: 'back',
+        leftButton: {
+          type: 'back',
+        },
         rightButton: [
           {
-            icon: 'new',
+            type: 'new',
             onPress: () => {
               setIsOpened(true);
             },

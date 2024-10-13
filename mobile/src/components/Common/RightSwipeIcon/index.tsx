@@ -35,11 +35,7 @@ export const RightSwipeIcon = ({
   prog,
   drag,
 }: RightSwipeIconProps) => {
-  console.log('icon', icon);
   const styleAnimation = useAnimatedStyle(() => {
-    console.log('showRightProgress:', prog.value);
-    console.log('appliedTranslation:', drag.value);
-
     return {
       transform: [{translateX: drag.value + 50}],
     };
