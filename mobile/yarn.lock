@@ -6076,6 +6076,11 @@ react-native-cloud-store@^0.12.0:
   resolved "https://registry.yarnpkg.com/react-native-cloud-store/-/react-native-cloud-store-0.12.0.tgz#724a3a4d545463f2ba9245d20e9dc2aee7907567"
   integrity sha512-K9bonx25kzxxCTA0nlJL+vECTWTTNMBc3ALllBn87XImS0S2RdQD4VyQDglkOwGF4qs4LvTTMd6Vz1x9VSjQNg==
 
+react-native-drag-sort@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/react-native-drag-sort/-/react-native-drag-sort-2.4.4.tgz#7c7aeea8729423a920b8db5900ea3c704ee1ff29"
+  integrity sha512-MixkgMzybt8tn9m850YK5VOSlicytV41mOp/b1gAE7cK94bou27ApvVJH9oCM61vY5EN6g9VT5PwLOahbYc+BQ==
+
 react-native-gesture-handler@^2.16.2:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-2.20.0.tgz#2d9ec4e9bd22619ebe36269dda3ecb1173928276"
