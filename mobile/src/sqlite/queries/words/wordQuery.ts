@@ -24,7 +24,6 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
           for (let i = 0; i < rows.length; i++) {
             words.push(rows.item(i));
           }
-          console.log('words:', words);
           resolve(words); // Resolve with the data
         },
         (tx, error) => {
@@ -121,6 +120,20 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
           (tx, result) => {
             console.log(`Inserted Word: ${word.word}`);
             word.id = result.insertId;
+            tx.executeSql(
+              `UPDATE category SET childrenLength = childrenLength + 1 WHERE id = ?`,
+              [word.category_id],
+              (tx, result) => {
+                console.log(`Updated category: ${word.category_id}`);
+              },
+              (tx, error) => {
+                console.log(
+                  `Error updating category: ${word.category_id}`,
+                  tx,
+                  error,
+                );
+              },
+            );
             resolve(word as Word);
           },
           (tx, error) => {
@@ -147,6 +160,22 @@ export const deleteWord = async (word: Word) => {
           [word.id],
           async (tx, results) => {
             console.log('Word deleted:', results);
+            tx.executeSql(
+              `UPDATE category SET childrenLength = childrenLength - 1 WHERE id = ?`,
+              [word.category_id],
+              (tx, result) => {
+                console.log(`Updated category: ${word.category_id}`);
+                resolve(undefined);
+              },
+              (tx, error) => {
+                console.log(
+                  `Error updating category: ${word.category_id}`,
+                  tx,
+                  error,
+                );
+                reject(error);
+              },
+            );
             resolve(undefined);
           },
           (tx, error) => {
