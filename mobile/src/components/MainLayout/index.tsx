@@ -12,14 +12,16 @@ import {headerColor} from '../../utils/color/color';
 import Header, {HeaderProps} from '../Header/Header';
 
 type MainLayoutProps = {
-  headerProps: HeaderProps;
+  headerProps?: HeaderProps;
   withPadding?: boolean;
+  withoutHeader?: boolean;
   children: React.ReactNode;
 };
 
 const MainLayout: React.FC<MainLayoutProps> = ({
   headerProps,
   withPadding = true,
+  withoutHeader = false,
   children,
 }) => {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
@@ -42,7 +44,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
           width: '100%',
         }}>
         <GestureHandlerRootView style={{flex: 1}}>
-          <Header {...headerProps} />
+          {!withoutHeader && !!headerProps && <Header {...headerProps} />}
           <Div w="100%" h="100%" p={withPadding ? 'lg' : 0} bg="base">
             {children}
           </Div>

@@ -18,7 +18,7 @@ export interface LeftButtonProps {
 
 export interface RightButtonProps {
   isNotIcon?: boolean;
-  type: 'new' | 'edit' | 'check' | string;
+  type: 'new' | 'edit' | 'check' | 'search' | string;
   onPress: () => void;
 }
 export interface MenuProps {
