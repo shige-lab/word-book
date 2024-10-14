@@ -9,10 +9,10 @@ export const createProficiencyAndFrequency = () => {
   ];
 
   const frequencyLevels = [
-    {name: 'Rare', order_index: 0},
-    {name: 'Occasional', order_index: 1},
-    {name: 'Frequent', order_index: 2},
-    {name: 'Very Frequent', order_index: 3},
+    {name: 'Very Frequent', order_index: 0},
+    {name: 'Frequent', order_index: 1},
+    {name: 'Occasional', order_index: 2},
+    {name: 'Rare', order_index: 3},
   ];
   const db = openDb();
 

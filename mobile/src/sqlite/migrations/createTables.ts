@@ -121,7 +121,6 @@ export const createTables = (init?: boolean) => {
         word TEXT DEFAULT "",
         meaning TEXT DEFAULT "",
         category_id INTEGER,
-        priority_id INTEGER,
         proficiency_id INTEGER,
         frequency_id INTEGER,
         example1 TEXT,
