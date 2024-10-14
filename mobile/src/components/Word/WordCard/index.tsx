@@ -6,6 +6,8 @@ import {navigationProp} from '../../../types/navigator/RouteProps';
 import {useNavigation} from '@react-navigation/native';
 import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import {RightSwipeIcon} from '../../Common/RightSwipeIcon';
+import {useColor} from '../../../hooks/common/useColor';
+import ProficiencyAndFrequencyTagBadge from '../../Tag/ProficiencyAndFrequencyTagBadge';
 
 interface WordCardProps {
   word: Word;
@@ -14,6 +16,7 @@ interface WordCardProps {
 
 const WordCard: React.FC<WordCardProps> = ({word, onDelete}) => {
   const navigation = useNavigation<navigationProp>();
+  const {primary} = useColor();
   return (
     <TouchableOpacity
       onPress={() => {
@@ -30,8 +33,12 @@ const WordCard: React.FC<WordCardProps> = ({word, onDelete}) => {
             drag,
           })
         }>
-        <Div h={40} py="sm" justifyContent="center">
-          <Text fontSize={16} fontWeight="bold">
+        <Div w="100%" h={40} row py="sm" alignItems="center">
+          <ProficiencyAndFrequencyTagBadge
+            proficiency_id={word.proficiency_id}
+            frequency_id={word.frequency_id}
+          />
+          <Text ml="md" fontSize={16} fontWeight="bold">
             {word.word}
           </Text>
         </Div>
