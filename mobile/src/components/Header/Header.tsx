@@ -97,16 +97,17 @@ const Header: React.FC<HeaderProps> = ({
         <Div w="30%" alignItems="flex-start">
           {renderLeftButton(leftButton)}
         </Div>
-        <Text
-          w="40%"
-          fontSize={18}
-          fontWeight="bold"
-          numberOfLines={1}
-          color="white"
-          ellipsizeMode="tail"
-          maxW={200}>
-          {title}
-        </Text>
+        <Div w="40%" alignItems="center">
+          <Text
+            fontSize={18}
+            fontWeight="bold"
+            numberOfLines={1}
+            color="white"
+            ellipsizeMode="tail"
+            maxW={200}>
+            {title}
+          </Text>
+        </Div>
         <Div row w="30%" justifyContent="flex-end">
           {rightButton.map((item, index) => (
             <TouchableOpacity key={index} onPress={item.onPress}>

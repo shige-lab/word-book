@@ -253,12 +253,16 @@ const CategoryDetail: React.FC = () => {
           onCancel={() => endEditMode()}
           actions={[
             {
+              disabled: !selectedCategory?.words?.filter(w => w.selected)
+                ?.length,
               label: 'Move',
               onPress: () => {
                 setVisibleSelectCategoryModal(true);
               },
             },
             {
+              disabled: !selectedCategory?.words?.filter(w => w.selected)
+                ?.length,
               label: 'Delete',
               onPress: () => {
                 const selected =
