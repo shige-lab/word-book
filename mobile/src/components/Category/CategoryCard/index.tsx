@@ -8,6 +8,7 @@ import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import {RightSwipeIcon} from '../../Common/RightSwipeIcon';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
+import CustomCheckBox from '../../Common/CustomCheckBox';
 
 interface CategoryCardProps {
   category: Category;
@@ -35,38 +36,16 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
     return (
       <Div w="100%" h={40} row py="sm" alignItems="center">
         {!pressable && (
-          <Div ml="sm" mr="lg">
-            <Checkbox
-              checked={category.selected}
-              onPress={() => {
-                setCategories(
-                  categories.map(c =>
-                    c.id === category.id
-                      ? {...c, selected: !category.selected}
-                      : c,
-                  ),
-                );
-              }}>
-              {({checked}) => (
-                <Div
-                  bg={checked ? 'blue600' : 'transparent'}
-                  w={20}
-                  h={20}
-                  borderWidth={2}
-                  borderColor={checked ? 'blue600' : 'gray300'}
-                  rounded="circle">
-                  {checked && (
-                    <Icon
-                      name="check"
-                      fontFamily="Feather"
-                      fontSize={16}
-                      color="white"
-                    />
-                  )}
-                </Div>
-              )}
-            </Checkbox>
-          </Div>
+          <CustomCheckBox
+            checked={!!category.selected}
+            onPress={() => {
+              setCategories(
+                categories.map(c =>
+                  c.id === category.id ? {...c, selected: !c.selected} : c,
+                ),
+              );
+            }}
+          />
         )}
         <Icon
           name="folder"
