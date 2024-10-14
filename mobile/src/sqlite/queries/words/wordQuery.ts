@@ -13,8 +13,10 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
 		WHERE
 		word.category_id = ?
     ORDER BY
-    word.id
-    DESC
+    proficiency_id
+    ASC,
+    frequency_id
+    ASC
     ;`,
         [categoryId],
         (tx, results) => {
