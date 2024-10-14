@@ -7,13 +7,15 @@ import {Word} from '../../types/navigator/type';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {navigationProp, WordRoute} from '../../types/navigator/RouteProps';
-import {getWordDetail} from '../../sqlite/queries/words/wordQuery';
+import {getWordDetail, moveWords} from '../../sqlite/queries/words/wordQuery';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import axios from 'axios';
 import {useSound} from '../../hooks/common/useSound';
 import ProficiencyAndFrequencyTag from '../../components/Tag/ProficiencyAndFrequencyTag';
 import {getProficiencyAndFrequency} from '../../sqlite/queries/tags/tagsQuery';
 import WordFormModal from '../../components/Word/WordFormModal';
+import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
+import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 
 const WordDetail: React.FC = () => {
   const route = useRoute<WordRoute>();
@@ -62,6 +64,8 @@ const WordDetail: React.FC = () => {
   }, [id]);
 
   const [phonetics, setPhonetics] = useState<any[]>([]);
+  const [isVisibleSelectCategoryModal, setVisibleSelectCategoryModal] =
+    useState(false);
   const [loading, setLoading] = useState(false);
 
   const fetchPronunciationAndPhonetics = async (w: string) => {
@@ -108,6 +112,31 @@ const WordDetail: React.FC = () => {
             },
           },
         ],
+        menu: [
+          {
+            type: 'move',
+            label: 'Move Word',
+            onPress: () => {
+              setVisibleSelectCategoryModal(true);
+            },
+          },
+          {
+            type: 'delete',
+            label: 'Delete',
+            onPress: async () => {
+              if (selectedWord) {
+                await handleDeleteWord({
+                  word: selectedWord,
+                  setCategories,
+                  categories,
+                  onSucess: () => {
+                    navigation.goBack();
+                  },
+                });
+              }
+            },
+          },
+        ],
       }}>
       {!!selectedWord && (
         <WordFormModal
@@ -118,6 +147,42 @@ const WordDetail: React.FC = () => {
           onSave={w => {
             setSelectedWord(w);
           }}
+        />
+      )}
+      {!!selectedWord && (
+        <SelectCategoryModal
+          isOpen={isVisibleSelectCategoryModal}
+          onClose={() => setVisibleSelectCategoryModal(false)}
+          onSelect={async category_id => {
+            await moveWords({
+              words: [selectedWord],
+              categoryId: category_id,
+              previousCategoryId: selectedWord?.category_id,
+            });
+            setCategories(
+              categories.map(c =>
+                c.id === category_id
+                  ? {
+                      ...c,
+                      childrenLength: (c?.childrenLength || 0) + 1,
+                    }
+                  : c.id === selectedWord.category_id
+                  ? {
+                      ...c,
+                      words: (c?.words || [])?.filter(
+                        w => w.id !== selectedWord.id,
+                      ),
+                      childrenLength: (c?.childrenLength || 0) - 1,
+                    }
+                  : c,
+              ),
+            );
+            setVisibleSelectCategoryModal(false);
+          }}
+          categories={categories?.filter(
+            c => c.id !== selectedWord.category_id,
+          )}
+          buttonText="Move"
         />
       )}
       <Div w="100%">

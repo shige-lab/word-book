@@ -1,59 +1,48 @@
-import React from 'react';
+import React, {Fragment} from 'react';
 import {Text, Div, Icon} from 'react-native-magnus';
 import {TouchableOpacity} from 'react-native';
-import {headerColor} from '../../utils/color/color';
+import {borderBottom, headerColor} from '../../utils/color/color';
 import {useNavigation} from '@react-navigation/native';
 import {navigationProp} from '../../types/navigator/RouteProps';
 import {useColor} from '../../hooks/common/useColor';
 import {iconFontFamilyType} from 'react-native-magnus/lib/typescript/src/ui/icon/icon.type';
+import {Menu, Divider} from 'react-native-paper';
+import MenuItem from '../Common/MenuItem/indes';
+import {getIconProps} from '../../utils/icon/getIconProps';
 
-export type LeftButtonProps = {
+export interface LeftButtonProps {
   isNotIcon?: boolean;
   type: 'setting' | 'back' | 'select-all' | 'deselect-all';
   onPress?: () => void;
-};
+}
 
-export type RightButtonProps = {
+export interface RightButtonProps {
   isNotIcon?: boolean;
   type: 'new' | 'edit' | 'check' | string;
   onPress: () => void;
-};
+}
+export interface MenuProps {
+  type: 'delete' | 'move';
+  label: string;
+  onPress: () => void;
+}
 
-export type HeaderProps = {
+export interface HeaderProps {
   title: string;
   leftButton?: LeftButtonProps;
   rightButton?: RightButtonProps[];
-};
-
-const getIconProps = (
-  icon: string,
-): {
-  name: string;
-  fontFamily?: iconFontFamilyType;
-} => {
-  switch (icon) {
-    case 'new':
-      return {name: 'plus', fontFamily: 'Octicons'};
-    case 'edit':
-      return {name: 'edit-2', fontFamily: 'Feather'};
-    case 'check':
-      return {name: 'check', fontFamily: 'Feather'};
-    case 'setting':
-      return {name: 'settings', fontFamily: 'Feather'};
-    case 'back':
-      return {name: 'left'};
-    default:
-      return {name: icon};
-  }
-};
+  menu?: MenuProps[];
+}
 
 const Header: React.FC<HeaderProps> = ({
   title,
   leftButton,
   rightButton = [],
+  menu = [],
 }) => {
   const navigation = useNavigation<navigationProp>();
   const {baseColor, primary} = useColor();
+  const [visibleMenu, setVisibleMenu] = React.useState(false);
 
   const iconStyle = {
     fontSize: 20,
@@ -114,6 +103,46 @@ const Header: React.FC<HeaderProps> = ({
               <Icon ml="md" {...getIconProps(item.type)} {...iconStyle} />
             </TouchableOpacity>
           ))}
+          {!!menu?.length && (
+            // <Div flex={1} justifyContent="center" alignItems="center">
+            <Menu
+              style={{paddingTop: 20, paddingRight: -20}}
+              statusBarHeight={0}
+              contentStyle={{
+                alignItems: 'center',
+                borderRadius: 5,
+                paddingTop: 0,
+                paddingBottom: 0,
+                height: 30 * menu.length,
+                width: 180,
+              }}
+              visible={visibleMenu}
+              onDismiss={() => setVisibleMenu(false)}
+              anchor={
+                <TouchableOpacity
+                  onPress={() => {
+                    if (!visibleMenu) {
+                      setVisibleMenu(true);
+                    }
+                  }}>
+                  <Icon ml="md" {...getIconProps('menu')} {...iconStyle} />
+                </TouchableOpacity>
+              }>
+              {menu.map((item, index) => (
+                <Fragment key={index}>
+                  <MenuItem key={index} {...item} />
+                  {index !== menu.length - 1 && (
+                    <Div
+                      w="100%"
+                      borderBottomWidth={0.3}
+                      borderColor="gray500"
+                    />
+                  )}
+                </Fragment>
+              ))}
+            </Menu>
+            // </Div>
+          )}
         </Div>
       </Div>
     </Div>

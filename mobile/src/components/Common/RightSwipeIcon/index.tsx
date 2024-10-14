@@ -4,6 +4,7 @@ import Reanimated, {
   SharedValue,
   useAnimatedStyle,
 } from 'react-native-reanimated';
+import {getIconProps} from '../../../utils/icon/getIconProps';
 
 interface RightSwipeIconProps {
   onPress: () => void;
@@ -17,11 +18,10 @@ const getIcon = (icon: string) => {
     case 'delete':
       return (
         <Icon
-          fontSize={24}
+          fontSize={18}
           bg="red500"
           color="white"
-          name="delete"
-          fontFamily="MaterialCommunityIcons"
+          {...getIconProps('delete')}
         />
       );
     default:

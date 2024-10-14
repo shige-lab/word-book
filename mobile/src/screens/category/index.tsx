@@ -27,6 +27,7 @@ import {Alert} from 'react-native';
 import {LeftButtonProps} from '../../components/Header/Header';
 import BottomActionButton from '../../components/Common/BottomActionButton';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
+import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
@@ -59,36 +60,6 @@ const CategoryDetail: React.FC = () => {
   const selectedCategory = useMemo(() => {
     return categories.find(c => c.id === id);
   }, [categories, id]);
-
-  const onDeleteWord = (word: Word) => {
-    const deleteWordAsync = async (word: Word) => {
-      await deleteWord(word);
-      setCategories(
-        categories.map(c =>
-          c.id === id
-            ? {
-                ...c,
-                words: c?.words?.filter(w => w.id !== word.id),
-                childrenLength: (c?.childrenLength || 0) - 1,
-              }
-            : c,
-        ),
-      );
-    };
-    Alert.alert(
-      'Warning',
-      'Are you sure you want to delete this word?',
-      [
-        {
-          text: 'Cancel',
-          onPress: () => {},
-          style: 'cancel',
-        },
-        {text: 'OK', onPress: async () => deleteWordAsync(word)},
-      ],
-      {cancelable: false},
-    );
-  };
 
   const selectAll = (): LeftButtonProps => {
     const wordLength = selectedCategory?.words?.length;
@@ -242,7 +213,13 @@ const CategoryDetail: React.FC = () => {
               : undefined)}>
             <WordCard
               word={item}
-              onDelete={() => onDeleteWord(item)}
+              onDelete={async () =>
+                handleDeleteWord({
+                  word: item,
+                  setCategories,
+                  categories,
+                })
+              }
               pressable={!isEditMode}
             />
           </Div>
