@@ -53,6 +53,18 @@ export const createTables = (init?: boolean) => {
           console.log('Error dropping word table:', error);
         },
       );
+
+      // Drop table search_history
+      tx.executeSql(
+        `DROP TABLE IF EXISTS search_history;`,
+        [],
+        (tx, result) => {
+          console.log('search_history table dropped successfully');
+        },
+        error => {
+          console.log('Error dropping search_history table:', error);
+        },
+      );
     }
     // Create category table
     tx.executeSql(
@@ -137,6 +149,36 @@ export const createTables = (init?: boolean) => {
       },
       error => {
         console.log('Error creating word table:', error);
+      },
+    );
+
+    // drop search_history table
+    // tx.executeSql(
+    //   `DROP TABLE IF EXISTS search_history;`,
+    //   [],
+    //   (tx, result) => {
+    //     console.log('search_history dropped successfully');
+    //   },
+    //   error => {
+    //     console.log('Error dropping search_history:', error);
+    //   },
+    // );
+
+    // Create search_history table
+    tx.executeSql(
+      `CREATE TABLE IF NOT EXISTS search_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        word TEXT DEFAULT "",
+        search_count INTEGER DEFAULT 1,
+        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+        );`,
+      [],
+      (tx, result) => {
+        console.log('search_history table created successfully');
+      },
+      error => {
+        console.log('Error creating search_history table:', error);
       },
     );
   });

@@ -39,6 +39,45 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
   });
 };
 
+export const searchWords = async (searchText: string): Promise<Word[]> => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(tx => {
+      tx.executeSql(
+        `SELECT 
+     *
+    FROM 
+    word
+    WHERE
+    word LIKE ? 
+    ORDER BY
+    proficiency_id
+    ASC,
+    frequency_id
+    ASC
+    ;`,
+        [`%${searchText}%`],
+        // OR meaning LIKE ?
+        // [`%${searchText}%`, `%${searchText}%`],
+        (tx, results) => {
+          const rows = results.rows;
+          let words = [];
+
+          for (let i = 0; i < rows.length; i++) {
+            words.push(rows.item(i));
+          }
+          resolve(words); // Resolve with the data
+        },
+        (tx, error) => {
+          console.log('Error getting words:', tx, error);
+          Alert.alert('Error getting words');
+          reject(error); // Reject in case of error
+        },
+      );
+    });
+  });
+};
+
 export const getWordDetail = async (wordId: number): Promise<Word> => {
   const db = openDb();
   return new Promise((resolve, reject) => {
