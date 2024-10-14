@@ -17,6 +17,7 @@ import {useColor} from './hooks/common/useColor';
 import CategoryDetail from './screens/category';
 import WordDetail from './screens/word';
 import MagnusThemeSwitcher from './components/Common/MagnusThemeSwitcher';
+import Search from './screens/search';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -50,6 +51,11 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Word"
               component={WordDetail}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Search"
+              component={Search}
               options={{headerShown: false}}
             />
           </Stack.Navigator>
