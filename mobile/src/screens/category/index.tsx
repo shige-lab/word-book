@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
 import {Button, Div, Text} from 'react-native-magnus';
 import {getCategories} from '../../sqlite/queries/categories/categoriesQuery';
@@ -29,6 +29,7 @@ import BottomActionButton from '../../components/Common/BottomActionButton';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SwipeableMethods} from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
@@ -46,6 +47,7 @@ const CategoryDetail: React.FC = () => {
     })),
   );
   const [isOpened, setIsOpened] = useState(false);
+  const swipeableRef = useRef<SwipeableMethods[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -121,6 +123,17 @@ const CategoryDetail: React.FC = () => {
           : c,
       ),
     );
+  };
+
+  const resetSwipeable = (index?: number) => {
+    console.log('resetSwipeable');
+
+    for (let i = 0; i < swipeableRef.current.length; i++) {
+      if (i === index) {
+        continue;
+      }
+      swipeableRef?.current?.[i]?.close();
+    }
   };
 
   return (
@@ -209,6 +222,7 @@ const CategoryDetail: React.FC = () => {
           paddingBottom: !isEditMode ? bottomSpace : 10,
           //   backgroundColor: baseColor.base1,
         }}
+        onScroll={() => resetSwipeable()}
         data={selectedCategory?.words || []}
         renderItem={({item, index}) => (
           <Div
@@ -216,15 +230,24 @@ const CategoryDetail: React.FC = () => {
               ? {...borderBottom}
               : undefined)}>
             <WordCard
+              ref={el => {
+                if (el) {
+                  swipeableRef.current[index] = el;
+                }
+              }}
               word={item}
-              onDelete={async () =>
+              onDelete={async () => {
                 handleDeleteWord({
                   word: item,
                   setCategories,
                   categories,
-                })
-              }
+                });
+                if (swipeableRef.current[index]) {
+                  swipeableRef.current[index].close();
+                }
+              }}
               isEditMode={isEditMode}
+              resetSwipeable={() => resetSwipeable(index)}
             />
           </Div>
         )}

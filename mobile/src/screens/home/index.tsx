@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
 import {Button, Div, ScrollDiv, Text} from 'react-native-magnus';
 import {
@@ -22,6 +22,7 @@ import BottomActionButton from '../../components/Common/BottomActionButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useNavigation} from '@react-navigation/native';
 import {navigationProp} from '../../types/navigator/RouteProps';
+import {SwipeableMethods} from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
 
 const Home: React.FC = () => {
   const {categories, setCategories, setProficiencies, setFrequencies} =
@@ -57,6 +58,7 @@ const Home: React.FC = () => {
   const [scrollEnabled, setScrollEnabled] = useState(true);
   const insets = useSafeAreaInsets();
   const bottomSpace = insets.bottom + 10;
+  const swipeableRef = useRef<SwipeableMethods[]>([]);
 
   const onDeleteCategory = (category: Category) => {
     const deleteCategoryAsync = async (category: Category) => {
@@ -103,6 +105,17 @@ const Home: React.FC = () => {
   const endEditMode = () => {
     setIsEditMode(false);
     setCategories(categories.map(c => ({...c, selected: false})));
+  };
+
+  const resetSwipeable = (index?: number) => {
+    console.log('resetSwipeable');
+
+    for (let i = 0; i < swipeableRef.current.length; i++) {
+      if (i === index) {
+        continue;
+      }
+      swipeableRef?.current?.[i]?.close();
+    }
   };
 
   return (
@@ -174,6 +187,7 @@ const Home: React.FC = () => {
           contentContainerStyle={{
             paddingBottom: bottomSpace,
           }}
+          onScroll={() => resetSwipeable()}
           data={categories}
           renderItem={({item, index}) => (
             <Div
@@ -182,8 +196,19 @@ const Home: React.FC = () => {
                 ? {...borderBottom}
                 : undefined)}>
               <CategoryCard
+                ref={el => {
+                  if (el) {
+                    swipeableRef.current[index] = el;
+                  }
+                }}
+                resetSwipeable={() => resetSwipeable(index)}
                 category={item}
-                onDelete={() => onDeleteCategory(item)}
+                onDelete={() => {
+                  onDeleteCategory(item);
+                  if (swipeableRef.current[index]) {
+                    swipeableRef.current[index].close();
+                  }
+                }}
                 onLongPress={() => setSelectedCategory(item)}
               />
             </Div>
