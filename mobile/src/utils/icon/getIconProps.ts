@@ -23,6 +23,12 @@ export const getIconProps = (
       return {name: 'trash-outline', fontFamily: 'Ionicons'};
     case 'folder':
       return {name: 'folder', fontFamily: 'Feather'};
+    case 'search':
+      return {name: 'search', fontFamily: 'Feather'};
+    case 'close':
+      return {name: 'close'};
+    case 'history':
+      return {name: 'history', fontFamily: 'Octicons'};
     default:
       return {name: icon};
   }
