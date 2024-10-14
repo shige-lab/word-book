@@ -194,7 +194,7 @@ const CategoryDetail: React.FC = () => {
       {!selectedCategory?.words?.length && (
         <Div mt={50} alignItems="center">
           <Text fontSize="xl" color="gray500">
-            No words found
+            No words found.
           </Text>
         </Div>
       )}
@@ -220,7 +220,7 @@ const CategoryDetail: React.FC = () => {
                   categories,
                 })
               }
-              pressable={!isEditMode}
+              isEditMode={isEditMode}
             />
           </Div>
         )}

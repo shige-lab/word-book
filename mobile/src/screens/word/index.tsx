@@ -191,7 +191,7 @@ const WordDetail: React.FC = () => {
         </Text>
         {!!phonetics?.[0] && (
           <Div w="100%" flexDir="row" alignItems="center">
-            <Text color="blue500" fontSize={16}>
+            <Text color="brand500" fontSize={16}>
               {phonetics?.[0]?.text}
             </Text>
             <TouchableOpacity
@@ -202,7 +202,7 @@ const WordDetail: React.FC = () => {
                 <Icon
                   name="volume-high"
                   fontSize={24}
-                  color="blue500"
+                  color="brand500"
                   fontFamily="MaterialCommunityIcons"
                 />
               </Div>

@@ -225,7 +225,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                   name="auto-fix"
                   fontFamily="MaterialCommunityIcons"
                   fontSize={18}
-                  color="blue500"
+                  color="brand500"
                 />
               </TouchableOpacity>
             )

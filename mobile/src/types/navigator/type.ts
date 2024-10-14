@@ -35,3 +35,11 @@ export interface Word {
   image?: string;
   selected?: boolean;
 }
+
+export interface SearchHistory {
+  id: number;
+  word: string;
+  search_count: number;
+  created_at: Date;
+  updated_at: Date;
+}

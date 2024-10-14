@@ -20,6 +20,8 @@ import {DragSortableView} from 'react-native-drag-sort';
 import {LeftButtonProps} from '../../components/Header/Header';
 import BottomActionButton from '../../components/Common/BottomActionButton';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {useNavigation} from '@react-navigation/native';
+import {navigationProp} from '../../types/navigator/RouteProps';
 
 const Home: React.FC = () => {
   const {categories, setCategories, setProficiencies, setFrequencies} =
@@ -33,6 +35,7 @@ const Home: React.FC = () => {
     );
   const {baseColor} = useColor();
   const {width} = Dimensions.get('window');
+  const navigation = useNavigation<navigationProp>();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -110,6 +113,7 @@ const Home: React.FC = () => {
         rightButton: isEditMode
           ? [{type: 'check', onPress: () => endEditMode()}]
           : [
+              {type: 'search', onPress: () => navigation.navigate('Search')},
               {type: 'edit', onPress: () => setIsEditMode(true)},
               {type: 'new', onPress: onRightPress},
             ],
