@@ -1,3 +1,4 @@
+import {Alert} from 'react-native';
 import {Word} from '../../../types/navigator/type';
 import {openDb} from '../../openDb';
 
@@ -30,6 +31,7 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
         },
         (tx, error) => {
           console.log('Error getting words:', tx, error);
+          Alert.alert('Error getting words');
           reject(error); // Reject in case of error
         },
       );
@@ -57,6 +59,7 @@ export const getWordDetail = async (wordId: number): Promise<Word> => {
         },
         (tx, error) => {
           console.log('Error getting word:', tx, error);
+          Alert.alert('Error getting word');
           reject(error); // Reject in case of error
         },
       );
@@ -100,6 +103,7 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
             },
             (tx, error) => {
               console.log(`Error updating word: ${word.word}`, tx, error);
+              Alert.alert('Error updating word');
               reject(error);
             },
           );
@@ -134,6 +138,7 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
                   tx,
                   error,
                 );
+                Alert.alert('Error updating category');
               },
             );
             resolve(word as Word);
@@ -146,6 +151,7 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
       },
       error => {
         console.log('Error during transaction:', error);
+        Alert.alert('Error during transaction');
         reject(error);
       },
     );
@@ -182,12 +188,59 @@ export const deleteWord = async (word: Word) => {
           },
           (tx, error) => {
             console.log('Error deleting word:', tx, error);
+            Alert.alert('Error deleting word');
             reject(error);
           },
         );
       },
       error => {
         console.log('Error during transaction:', error);
+        Alert.alert('Error during transaction');
+      },
+    );
+  });
+};
+
+export const deleteWords = async (words: Word[]) => {
+  const db = openDb();
+  return new Promise((resolve, reject) => {
+    db.transaction(
+      tx => {
+        words.forEach(word => {
+          tx.executeSql(
+            `DELETE FROM word WHERE id = ?`,
+            [word.id],
+            async (tx, results) => {
+              console.log('Word deleted:', results);
+              tx.executeSql(
+                `UPDATE category SET childrenLength = childrenLength - 1 WHERE id = ?`,
+                [word.category_id],
+                (tx, result) => {
+                  console.log(`Updated category: ${word.category_id}`);
+                },
+                (tx, error) => {
+                  console.log(
+                    `Error updating category: ${word.category_id}`,
+                    tx,
+                    error,
+                  );
+                  Alert.alert('Error updating category');
+                  reject(error);
+                },
+              );
+            },
+            (tx, error) => {
+              console.log('Error deleting word:', tx, error);
+              Alert.alert('Error deleting word');
+              reject(error);
+            },
+          );
+        });
+        resolve(undefined);
+      },
+      error => {
+        console.log('Error during transaction:', error);
+        Alert.alert('Error during transaction');
       },
     );
   });

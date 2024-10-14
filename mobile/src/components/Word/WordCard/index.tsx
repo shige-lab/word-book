@@ -8,15 +8,67 @@ import Swipeable from 'react-native-gesture-handler/ReanimatedSwipeable';
 import {RightSwipeIcon} from '../../Common/RightSwipeIcon';
 import {useColor} from '../../../hooks/common/useColor';
 import ProficiencyAndFrequencyTagBadge from '../../Tag/ProficiencyAndFrequencyTagBadge';
+import CustomCheckBox from '../../Common/CustomCheckBox';
+import useStateStore from '../../../hooks/zustand/useStateStore';
+import {useShallow} from 'zustand/react/shallow';
 
 interface WordCardProps {
   word: Word;
   onDelete: () => void;
+  pressable?: boolean;
 }
 
-const WordCard: React.FC<WordCardProps> = ({word, onDelete}) => {
+const WordCard: React.FC<WordCardProps> = ({
+  word,
+  onDelete,
+  pressable = true,
+}) => {
   const navigation = useNavigation<navigationProp>();
   const {primary} = useColor();
+  const {categories, setCategories} = useStateStore(
+    useShallow(state => ({
+      categories: state.categories,
+      setCategories: state.setCategories,
+    })),
+  );
+
+  const card = () => {
+    return (
+      <Div w="100%" h={40} row py="sm" alignItems="center">
+        {!pressable && (
+          <CustomCheckBox
+            checked={!!word.selected}
+            onPress={() => {
+              setCategories(
+                categories.map(c =>
+                  c.id === word.category_id
+                    ? {
+                        ...c,
+                        words: (c?.words || []).map(w =>
+                          w.id === word.id ? {...w, selected: !w.selected} : w,
+                        ),
+                      }
+                    : c,
+                ),
+              );
+            }}
+          />
+        )}
+        <ProficiencyAndFrequencyTagBadge
+          proficiency_id={word.proficiency_id}
+          frequency_id={word.frequency_id}
+        />
+        <Text ml="md" fontSize={16} fontWeight="bold">
+          {word.word}
+        </Text>
+      </Div>
+    );
+  };
+
+  if (!pressable) {
+    return card();
+  }
+
   return (
     <TouchableOpacity
       onPress={() => {
@@ -33,15 +85,7 @@ const WordCard: React.FC<WordCardProps> = ({word, onDelete}) => {
             drag,
           })
         }>
-        <Div w="100%" h={40} row py="sm" alignItems="center">
-          <ProficiencyAndFrequencyTagBadge
-            proficiency_id={word.proficiency_id}
-            frequency_id={word.frequency_id}
-          />
-          <Text ml="md" fontSize={16} fontWeight="bold">
-            {word.word}
-          </Text>
-        </Div>
+        {card()}
       </Swipeable>
     </TouchableOpacity>
   );

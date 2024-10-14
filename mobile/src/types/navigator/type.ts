@@ -33,4 +33,5 @@ export interface Word {
   example2: string;
   example3: string;
   image?: string;
+  selected?: boolean;
 }
