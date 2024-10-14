@@ -9,6 +9,7 @@ import {RightSwipeIcon} from '../../Common/RightSwipeIcon';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import CustomCheckBox from '../../Common/CustomCheckBox';
+import {getIconProps} from '../../../utils/icon/getIconProps';
 
 interface CategoryCardProps {
   category: Category;
@@ -47,12 +48,7 @@ const CategoryCard: React.FC<CategoryCardProps> = ({
             }}
           />
         )}
-        <Icon
-          name="folder"
-          fontFamily="Feather"
-          fontSize={20}
-          color="gray500"
-        />
+        <Icon {...getIconProps('folder')} fontSize={20} color="gray500" />
         <Text ml="md" fontSize={16} fontWeight="bold">
           {category.name} ({category.childrenLength})
         </Text>

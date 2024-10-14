@@ -9,6 +9,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from './types/navigator/RootStackParamList';
 import Home from './screens/home';
 import {ThemeProvider} from 'react-native-magnus';
+import {PaperProvider} from 'react-native-paper';
 import {createTables} from './sqlite/migrations/createTables';
 import {createProficiencyAndFrequency} from './sqlite/seed/tags/createProficiencyAndFrequency';
 import {createCategoriesAndWords} from './sqlite/seed/categoriesAndWords/createCategoriesAndWords';
@@ -32,26 +33,28 @@ function App(): React.JSX.Element {
 
   return (
     <ThemeProvider theme={theme}>
-      <MagnusThemeSwitcher />
-      <NavigationContainer ref={navigationRef}>
-        <Stack.Navigator initialRouteName={'Home'}>
-          <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Category"
-            component={CategoryDetail}
-            options={{headerShown: false}}
-          />
-          <Stack.Screen
-            name="Word"
-            component={WordDetail}
-            options={{headerShown: false}}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PaperProvider>
+        <MagnusThemeSwitcher />
+        <NavigationContainer ref={navigationRef}>
+          <Stack.Navigator initialRouteName={'Home'}>
+            <Stack.Screen
+              name="Home"
+              component={Home}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Category"
+              component={CategoryDetail}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="Word"
+              component={WordDetail}
+              options={{headerShown: false}}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PaperProvider>
     </ThemeProvider>
   );
 }
