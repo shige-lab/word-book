@@ -14,14 +14,14 @@ import {useShallow} from 'zustand/react/shallow';
 
 interface WordCardProps {
   word: Word;
-  onDelete: () => void;
-  pressable?: boolean;
+  onDelete?: () => void;
+  isEditMode?: boolean;
 }
 
 const WordCard: React.FC<WordCardProps> = ({
   word,
   onDelete,
-  pressable = true,
+  isEditMode = false,
 }) => {
   const navigation = useNavigation<navigationProp>();
   const {primary} = useColor();
@@ -32,10 +32,32 @@ const WordCard: React.FC<WordCardProps> = ({
     })),
   );
 
+  const baseItem = () => {
+    return (
+      <>
+        <ProficiencyAndFrequencyTagBadge
+          proficiency_id={word.proficiency_id}
+          frequency_id={word.frequency_id}
+        />
+        <Text ml="md" fontSize={16} fontWeight="bold">
+          {word.word}
+        </Text>
+      </>
+    );
+  };
+
   const card = () => {
     return (
       <Div w="100%" h={40} row py="sm" alignItems="center">
-        {!pressable && (
+        {baseItem()}
+      </Div>
+    );
+  };
+
+  const editModeCard = () => {
+    return (
+      <Div w="100%" h={40} row py="sm" alignItems="center">
+        {isEditMode && (
           <CustomCheckBox
             checked={!!word.selected}
             onPress={() => {
@@ -54,19 +76,13 @@ const WordCard: React.FC<WordCardProps> = ({
             }}
           />
         )}
-        <ProficiencyAndFrequencyTagBadge
-          proficiency_id={word.proficiency_id}
-          frequency_id={word.frequency_id}
-        />
-        <Text ml="md" fontSize={16} fontWeight="bold">
-          {word.word}
-        </Text>
+        {baseItem()}
       </Div>
     );
   };
 
-  if (!pressable) {
-    return card();
+  if (isEditMode) {
+    return editModeCard();
   }
 
   return (
@@ -76,17 +92,21 @@ const WordCard: React.FC<WordCardProps> = ({
           id: word.id,
         });
       }}>
-      <Swipeable
-        renderRightActions={(prog, drag) =>
-          RightSwipeIcon({
-            onPress: onDelete,
-            icon: 'delete',
-            prog,
-            drag,
-          })
-        }>
-        {card()}
-      </Swipeable>
+      {onDelete ? (
+        <Swipeable
+          renderRightActions={(prog, drag) =>
+            RightSwipeIcon({
+              onPress: onDelete,
+              icon: 'delete',
+              prog,
+              drag,
+            })
+          }>
+          {card()}
+        </Swipeable>
+      ) : (
+        card()
+      )}
     </TouchableOpacity>
   );
 };
