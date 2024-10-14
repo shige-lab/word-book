@@ -18,6 +18,7 @@ import {
   deleteWord,
   deleteWords,
   getWords,
+  moveWords,
 } from '../../sqlite/queries/words/wordQuery';
 import {borderBottom} from '../../utils/color/color';
 import WordCard from '../../components/Word/WordCard';
@@ -179,13 +180,46 @@ const CategoryDetail: React.FC = () => {
           category_id={selectedCategory.id}
         />
       )}
-      <SelectCategoryModal
-        isOpen={isVisibleSelectCategoryModal}
-        onClose={() => setVisibleSelectCategoryModal(false)}
-        onSelect={async category_id => {}}
-        categories={categories?.filter(c => c.id !== selectedCategory?.id)}
-        buttonText="Move"
-      />
+      {!!selectedCategory && (
+        <SelectCategoryModal
+          isOpen={isVisibleSelectCategoryModal}
+          onClose={() => setVisibleSelectCategoryModal(false)}
+          onSelect={async category_id => {
+            await moveWords({
+              words: selectedCategory?.words?.filter(w => w.selected) || [],
+              categoryId: category_id,
+              previousCategoryId: selectedCategory?.id,
+            });
+            setCategories(
+              categories.map(c =>
+                c.id === category_id
+                  ? {
+                      ...c,
+                      childrenLength:
+                        (c?.childrenLength || 0) +
+                        (selectedCategory?.words?.filter(w => w.selected)
+                          ?.length || 0),
+                    }
+                  : c.id === selectedCategory?.id
+                  ? {
+                      ...c,
+                      words: (selectedCategory?.words || [])?.filter(
+                        w => !w.selected,
+                      ),
+                      childrenLength:
+                        (c?.childrenLength || 0) -
+                        (selectedCategory?.words?.filter(w => w.selected)
+                          ?.length || 0),
+                    }
+                  : c,
+              ),
+            );
+            setVisibleSelectCategoryModal(false);
+          }}
+          categories={categories?.filter(c => c.id !== selectedCategory?.id)}
+          buttonText="Move"
+        />
+      )}
       {!selectedCategory?.words?.length && (
         <Div mt={50} alignItems="center">
           <Text fontSize="xl" color="gray500">
