@@ -37,7 +37,7 @@ const BottomActionButton: React.FC<BottomActionButtonProps> = ({
       // bottom={0}
       borderBottomWidth={1}
       pb={insets.bottom + 10}
-      bg={baseColor.base}
+      bg="base1"
       w="100%"
       p={12}
       flexDir="row"
@@ -45,10 +45,10 @@ const BottomActionButton: React.FC<BottomActionButtonProps> = ({
       alignItems="center">
       <Button
         w={buttonWidth}
-        bg="white"
+        bg="base1"
         color={primary}
         borderWidth={1}
-        borderColor="gray300"
+        borderColor="gray500"
         onPress={onCancel}>
         Cancel
       </Button>

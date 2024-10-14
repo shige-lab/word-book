@@ -1,15 +1,15 @@
 export const headerColor = '#4299e1';
 
 export const darkColor = {
-  base: 'black',
-  base1: '#2d3748',
-  base2: '#718096',
+  base: '#262626',
+  base1: '#333333',
+  base2: '#404040',
 };
 
 export const whiteColor = {
   base: 'white',
-  base1: '#edf2f7',
-  base2: 'cbd5e0',
+  base1: '#FAFAFA',
+  base2: '#edf2f7',
 };
 
 export const borderBottom = {

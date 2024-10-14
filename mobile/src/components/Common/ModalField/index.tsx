@@ -29,7 +29,7 @@ const ModalField: React.FC<ModalFieldProps> = ({
           flexDir="row"
           justifyContent={'flex-start'}
           alignItems={'center'}>
-          <Text mr={'sm'} color={'dark600'} fontWeight={'bold'} fontSize={16}>
+          <Text mr={'sm'} fontWeight={'bold'} fontSize={16}>
             {label}
           </Text>
           {isRequired ? (
@@ -46,7 +46,7 @@ const ModalField: React.FC<ModalFieldProps> = ({
         ) : null}
         {children}
         {description ? (
-          <Text mt={'md'} color={'dark600'} fontSize={14}>
+          <Text mt={'md'} fontSize={14}>
             {description}
           </Text>
         ) : null}

@@ -33,7 +33,7 @@ const getIconProps = (
 } => {
   switch (icon) {
     case 'new':
-      return {name: 'plus', fontFamily: 'Feather'};
+      return {name: 'plus', fontFamily: 'Octicons'};
     case 'edit':
       return {name: 'edit-2', fontFamily: 'Feather'};
     case 'check':
@@ -109,7 +109,7 @@ const Header: React.FC<HeaderProps> = ({
         <Div row w="30%" justifyContent="flex-end">
           {rightButton.map((item, index) => (
             <TouchableOpacity key={index} onPress={item.onPress}>
-              <Icon ml="sm" {...getIconProps(item.type)} {...iconStyle} />
+              <Icon ml="md" {...getIconProps(item.type)} {...iconStyle} />
             </TouchableOpacity>
           ))}
         </Div>

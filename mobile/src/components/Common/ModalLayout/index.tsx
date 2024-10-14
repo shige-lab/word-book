@@ -16,7 +16,7 @@ interface ModalLayoutProps {
 
 const ModalLayout: React.FC<ModalLayoutProps> = ({
   title,
-  titleColor = 'dark300',
+  titleColor,
   isOpen,
   onClose,
   children,
@@ -26,14 +26,14 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
   isDisabled = false,
 }) => {
   return (
-    <Modal isVisible={isOpen} onBackButtonPress={onClose}>
+    <Modal bg="base" isVisible={isOpen} onBackButtonPress={onClose}>
       <Text
         px="lg"
         fontWeight={'bold'}
         fontSize={18}
         lineHeight={24}
         my="xl"
-        color={titleColor}>
+        color={titleColor || 'primary'}>
         {title}
       </Text>
       <Div
@@ -42,7 +42,6 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
         px="lg">
         {children}
       </Div>
-
       <Div
         h={76}
         bottom={0}
@@ -51,8 +50,8 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
         pt={'md'}
         px="lg"
         borderTopWidth={1}
-        borderColor="brand150"
-        bg="brand25"
+        borderColor="base1"
+        bg="base2"
         row
         justifyContent={'space-between'}
         alignItems="flex-start">

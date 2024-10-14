@@ -94,13 +94,13 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
           backgroundColor: '#00000080',
           marginBottom: keyboardHeight,
         }}>
-        <Div alignItems="center" w={300} bg="base" rounded={10}>
+        <Div alignItems="center" w={300} bg="base1" rounded={10}>
           <Div w="100%" alignItems="center" px="lg">
             <Text fontWeight={'bold'} fontSize={18} lineHeight={24} my="lg">
               {category ? 'Edit folder' : 'Create new folder'}
             </Text>
             <Input
-              bg="base1"
+              bg="base2"
               value={values.name}
               onChangeText={handleChange('name')}
               ref={inputRef}

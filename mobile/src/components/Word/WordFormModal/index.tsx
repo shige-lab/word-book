@@ -224,6 +224,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
         <ModalField label="Example">
           <Input
             mb="sm"
+            bg="base1"
             placeholder="Example1"
             value={values.example1}
             onChangeText={handleChange('example1')}
