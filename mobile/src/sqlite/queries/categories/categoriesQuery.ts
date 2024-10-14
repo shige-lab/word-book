@@ -171,20 +171,20 @@ export const deleteCategories = async (categories: Category[]) => {
   return new Promise((resolve, reject) => {
     db.transaction(
       tx => {
-        categories.forEach(category => {
-          tx.executeSql(
-            `DELETE FROM category WHERE id = ?`,
-            [category.id],
-            async (tx, results) => {
-              console.log('Category deleted:', results);
-            },
-            (tx, error) => {
-              console.log('Error deleting category:', tx, error);
-              Alert.alert('Error deleting category');
-              reject(error);
-            },
-          );
-        });
+        const categoryIds = categories.map(c => c.id).join(',');
+        tx.executeSql(
+          `DELETE FROM category WHERE id IN (${categoryIds})`,
+          [],
+          (tx, results) => {
+            console.log('Categories deleted:', results);
+            resolve(undefined);
+          },
+          (tx, error) => {
+            console.log('Error deleting categories:', tx, error);
+            Alert.alert('Error deleting categories');
+            reject(error);
+          },
+        );
         resolve(undefined);
       },
       error => {
