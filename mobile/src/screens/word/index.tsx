@@ -42,7 +42,6 @@ const WordDetail: React.FC = () => {
       });
     }
   };
-  console.log('---', id, selectedWord);
 
   const {categories, setCategories} = useStateStore(
     useShallow(state => ({

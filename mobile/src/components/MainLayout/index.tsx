@@ -51,15 +51,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         }}>
         <GestureHandlerRootView style={{flex: 1}}>
           {!withoutHeader && !!headerProps && <Header {...headerProps} />}
-          <Div
-            onLayout={e => {
-              console.log('---layout', e.nativeEvent.layout.height);
-            }}
-            w="100%"
-            h={h}
-            // h="100%"
-            p={withPadding ? 'lg' : 0}
-            bg="base">
+          <Div w="100%" h={h} p={withPadding ? 'lg' : 0} bg="base">
             {children}
           </Div>
         </GestureHandlerRootView>
