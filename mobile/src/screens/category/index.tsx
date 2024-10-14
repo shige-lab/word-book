@@ -28,11 +28,14 @@ import {LeftButtonProps} from '../../components/Header/Header';
 import BottomActionButton from '../../components/Common/BottomActionButton';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
   const navigation = useNavigation<navigationProp>();
   const id = route.params.id;
+  const insets = useSafeAreaInsets();
+  const bottomSpace = insets.bottom + 10;
   const [isEditMode, setIsEditMode] = useState(false);
   const [isVisibleSelectCategoryModal, setVisibleSelectCategoryModal] =
     useState(false);
@@ -203,12 +206,13 @@ const CategoryDetail: React.FC = () => {
         contentContainerStyle={{
           padding: 12,
           borderRadius: 10,
+          paddingBottom: !isEditMode ? bottomSpace : 10,
           //   backgroundColor: baseColor.base1,
         }}
         data={selectedCategory?.words || []}
         renderItem={({item, index}) => (
           <Div
-            {...(index !== categories?.length - 1
+            {...(index !== (selectedCategory?.words || [])?.length - 1
               ? {...borderBottom}
               : undefined)}>
             <WordCard

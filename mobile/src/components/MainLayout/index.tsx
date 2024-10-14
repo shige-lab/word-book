@@ -5,9 +5,11 @@ import {
   StatusBar,
   Appearance,
   Platform,
+  Dimensions,
 } from 'react-native';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import {Div} from 'react-native-magnus';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {headerColor} from '../../utils/color/color';
 import Header, {HeaderProps} from '../Header/Header';
 
@@ -25,6 +27,10 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   children,
 }) => {
   const isDarkMode = Appearance.getColorScheme() === 'dark';
+  const {height} = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
+  const h = height - insets.top - (withoutHeader ? 0 : 40);
+
   return (
     <>
       <SafeAreaView
@@ -45,7 +51,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         }}>
         <GestureHandlerRootView style={{flex: 1}}>
           {!withoutHeader && !!headerProps && <Header {...headerProps} />}
-          <Div w="100%" h="100%" p={withPadding ? 'lg' : 0} bg="base">
+          <Div
+            onLayout={e => {
+              console.log('---layout', e.nativeEvent.layout.height);
+            }}
+            w="100%"
+            h={h}
+            // h="100%"
+            p={withPadding ? 'lg' : 0}
+            bg="base">
             {children}
           </Div>
         </GestureHandlerRootView>

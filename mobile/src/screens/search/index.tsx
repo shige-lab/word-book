@@ -7,7 +7,7 @@ import {
   getCategories,
   sortCategories,
 } from '../../sqlite/queries/categories/categoriesQuery';
-import {headerColor} from '../../utils/color/color';
+import {borderBottom, headerColor} from '../../utils/color/color';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';
 import {navigationProp} from '../../types/navigator/RouteProps';
@@ -22,6 +22,7 @@ import {
   getSearchHistories,
   saveSearchHistory,
 } from '../../sqlite/queries/searchHistories/searchHistoriesQuery';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Search: React.FC = () => {
   const navigation = useNavigation<navigationProp>();
@@ -30,6 +31,8 @@ const Search: React.FC = () => {
   const [searchedWords, setSearchedWords] = useState<Word[]>([]);
   const [searchHistories, setSearchHistories] = useState<SearchHistory[]>([]);
   const inputRef = useRef<TextInput>(null);
+  const insets = useSafeAreaInsets();
+  const bottomSpace = insets.bottom + 10;
 
   useEffect(() => {
     const getHistoriesAndFocusInput = async () => {
@@ -127,9 +130,22 @@ const Search: React.FC = () => {
       <>
         {searchedWords?.length ? (
           <FlatList
+            contentContainerStyle={{
+              padding: 12,
+              borderRadius: 10,
+              paddingBottom: bottomSpace,
+              //   backgroundColor: baseColor.base1,
+            }}
             data={searchedWords}
-            renderItem={({item}) => {
-              return <WordCard word={item} />;
+            renderItem={({item, index}) => {
+              return (
+                <Div
+                  {...(index !== searchedWords?.length - 1
+                    ? {...borderBottom}
+                    : undefined)}>
+                  <WordCard word={item} />
+                </Div>
+              );
             }}
           />
         ) : (
@@ -176,7 +192,7 @@ const Search: React.FC = () => {
   };
 
   return (
-    <MainLayout withPadding={false}>
+    <MainLayout withPadding={false} withoutHeader={true}>
       {searchBar()}
       <Div>{isSearching ? searchHistory() : searchResult()}</Div>
     </MainLayout>
