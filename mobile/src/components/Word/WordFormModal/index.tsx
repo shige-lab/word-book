@@ -1,5 +1,5 @@
 import {useFormik} from 'formik';
-import React, {useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Div,
   Modal,
@@ -9,8 +9,9 @@ import {
   Input,
   Radio,
   Icon,
+  InputProps,
 } from 'react-native-magnus';
-import {TouchableOpacity} from 'react-native';
+import {TextInput, TouchableOpacity} from 'react-native';
 import {useShallow} from 'zustand/react/shallow';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {saveWord} from '../../../sqlite/queries/words/wordQuery';
@@ -47,6 +48,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       frequencies: state.frequencies,
     })),
   );
+  const wordInputRef = useRef<TextInput>(null);
   const {values, setValues, handleChange, handleSubmit, resetForm} = useFormik({
     initialValues: word || {
       word: '',
@@ -98,7 +100,20 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       resetForm();
     },
   });
-  const [isOpena, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const focusAsync = async () => {
+      await new Promise(resolve => setTimeout(resolve, 200));
+      wordInputRef.current?.focus();
+    };
+    if (isOpen) {
+      if (word) {
+        setValues(word);
+      } else {
+        focusAsync();
+      }
+    }
+  }, [isOpen, word, setValues]);
 
   return (
     <ModalLayout
@@ -110,6 +125,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       <Div>
         <ModalField label="Word" isRequired={true}>
           <Input
+            ref={wordInputRef}
             placeholder="Word"
             value={values.word}
             onChangeText={handleChange('word')}

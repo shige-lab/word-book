@@ -98,6 +98,7 @@ const Header: React.FC<HeaderProps> = ({
           {renderLeftButton(leftButton)}
         </Div>
         <Text
+          w="40%"
           fontSize={18}
           fontWeight="bold"
           numberOfLines={1}
