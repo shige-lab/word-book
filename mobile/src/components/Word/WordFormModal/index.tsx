@@ -24,6 +24,8 @@ import ModalField from '../../Common/ModalField';
 import ModalLayout from '../../Common/ModalLayout';
 import axios from 'axios';
 import CategoryModal from '../../Category/CategoryModal';
+import {fetchWordInfoFromDictionaryApi} from '../../../hooks/api/fetchWordInfoFromDictionaryApi';
+import {handleSetWord} from '../../../utils/word/handleSetWord';
 
 interface WordFormModalProps {
   word?: Partial<Word>;
@@ -64,37 +66,12 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
     },
     onSubmit: async v => {
       const newWord = await saveWord(v);
-      if (word?.id) {
-        setCategories(
-          categories.map(c => {
-            if (c.id === category_id) {
-              return {
-                ...c,
-                words: c?.words?.map(w => {
-                  if (w.id === word.id) {
-                    return newWord;
-                  }
-                  return w;
-                }),
-              };
-            }
-            return c;
-          }),
-        );
-      } else {
-        setCategories(
-          categories.map(c => {
-            if (c.id === category_id) {
-              return {
-                ...c,
-                words: [newWord, ...(c?.words || [])],
-                childrenLength: (c?.childrenLength || 0) + 1,
-              };
-            }
-            return c;
-          }),
-        );
-      }
+      handleSetWord({
+        word: newWord,
+        categories,
+        setCategories,
+        isUpdate: !!word?.id,
+      });
       !!onSave && onSave(newWord);
       onClose();
       resetForm();
@@ -193,31 +170,20 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             !!values?.word && (
               <TouchableOpacity
                 onPress={async () => {
-                  const response = await axios.get(
-                    `https://api.dictionaryapi.dev/api/v2/entries/en/${values.word}`,
+                  const data = await fetchWordInfoFromDictionaryApi(
+                    values?.word || '',
                   );
-                  const data = response.data[0];
-                  let meanings: string[] = [];
-                  let examples: string[] = [];
-                  for (const m of data.meanings) {
-                    for (const d of m.definitions) {
-                      if (d.definition) {
-                        meanings.push(d.definition);
-                      }
-                      if (d.example) {
-                        examples.push(d.example);
-                      }
-                    }
-                  }
-                  console.log('data:', meanings, 'e----', examples);
 
                   if (data.meanings && data.meanings.length > 0) {
+                    const {meanings, examples} = data;
                     setValues({
                       ...values,
                       meaning: meanings[0] || '',
                       example1: examples[0] || '',
                       example2: examples[1] || '',
                       example3: examples[2] || '',
+                      phonetic: data.phonetics?.[0]?.text || '',
+                      audio: data.phonetics?.[0]?.audio || '',
                     });
                   }
                 }}>

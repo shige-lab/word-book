@@ -7,7 +7,11 @@ import {Word} from '../../types/navigator/type';
 import {TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {navigationProp, WordRoute} from '../../types/navigator/RouteProps';
-import {getWordDetail, moveWords} from '../../sqlite/queries/words/wordQuery';
+import {
+  getWordDetail,
+  moveWords,
+  saveWord,
+} from '../../sqlite/queries/words/wordQuery';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
 import axios from 'axios';
 import {useSound} from '../../hooks/common/useSound';
@@ -16,6 +20,7 @@ import {getProficiencyAndFrequency} from '../../sqlite/queries/tags/tagsQuery';
 import WordFormModal from '../../components/Word/WordFormModal';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
+import {fetchWordInfoFromDictionaryApi} from '../../hooks/api/fetchWordInfoFromDictionaryApi';
 
 const WordDetail: React.FC = () => {
   const route = useRoute<WordRoute>();
@@ -62,37 +67,19 @@ const WordDetail: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  const [phonetics, setPhonetics] = useState<any[]>([]);
   const [isVisibleSelectCategoryModal, setVisibleSelectCategoryModal] =
     useState(false);
-  const [loading, setLoading] = useState(false);
-
   const fetchPronunciationAndPhonetics = async (w: string) => {
-    if (!w?.trim()) {
-      return;
-    }
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `https://api.dictionaryapi.dev/api/v2/entries/en/${w}`,
-      );
-      const data = response.data[0];
+    const data = await fetchWordInfoFromDictionaryApi(w);
 
-      // Extract phonetic symbols and audio from the API response
-      if (data.phonetics && data.phonetics.length > 0) {
-        setPhonetics(data.phonetics);
-        console.log(
-          '---phonetics---',
-          data.meanings?.map(m => m.definitions),
-        );
-      } else {
-        setPhonetics([]);
-      }
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      setPhonetics([]);
-    } finally {
-      setLoading(false);
+    if (data.phonetics && data.phonetics.length > 0) {
+      const newWord = {
+        ...selectedWord,
+        phonetic: data.phonetics[0]?.text || selectedWord?.phonetic,
+        audio: data.phonetics[0]?.audio || selectedWord?.audio,
+      };
+      await saveWord(newWord);
+      setSelectedWord(newWord as Word);
     }
   };
 
@@ -188,14 +175,14 @@ const WordDetail: React.FC = () => {
         <Text fontSize={30} fontWeight="bold">
           {selectedWord?.word}
         </Text>
-        {!!phonetics?.[0] && (
+        {!!selectedWord?.audio && (
           <Div w="100%" flexDir="row" alignItems="center">
             <Text color="brand500" fontSize={16}>
-              {phonetics?.[0]?.text}
+              {selectedWord?.phonetic}
             </Text>
             <TouchableOpacity
               onPress={() => {
-                playSound(phonetics[0].audio);
+                playSound(selectedWord?.audio);
               }}>
               <Div ml={2}>
                 <Icon

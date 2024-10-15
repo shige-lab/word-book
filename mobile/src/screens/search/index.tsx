@@ -37,8 +37,6 @@ const Search: React.FC = () => {
   useEffect(() => {
     const getHistoriesAndFocusInput = async () => {
       const h = await getSearchHistories();
-      console.log('useEffect getHistoriesAndFocusInput h', h);
-
       setSearchHistories(h);
       inputRef?.current?.focus();
     };
@@ -47,15 +45,13 @@ const Search: React.FC = () => {
 
   const onSubmit = (w: string) => {
     const onSearch = async () => {
-      const data = await searchWords(w);
-      console.log('data', data);
-
+      const data = await searchWords({
+        searchText: w,
+      });
       setSearchedWords(data);
       setIsSearching(false);
       await saveSearchHistory(w);
       const newHistory = {word: w, created_at: new Date()} as SearchHistory;
-      console.log('onSubmit newHistory', newHistory);
-
       setSearchHistories(histories => {
         return [newHistory, ...histories?.filter(h => h.word !== w)];
       });
@@ -158,7 +154,6 @@ const Search: React.FC = () => {
       </>
     );
   };
-  console.log('searchHistories', searchHistories);
 
   const searchHistory = () => {
     return (
