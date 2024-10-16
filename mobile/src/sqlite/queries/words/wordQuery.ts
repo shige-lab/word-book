@@ -39,24 +39,77 @@ export const getWords = async (categoryId: number): Promise<Word[]> => {
   });
 };
 
-export const searchWords = async (searchText: string): Promise<Word[]> => {
+export interface SearchWordsQuery {
+  searchText?: string;
+  category_id?: number;
+  proficiency_id?: number;
+  frequency_id?: number;
+  limit?: number;
+  page?: number;
+  isRandom?: boolean;
+}
+
+const searchQuery = ({
+  searchText,
+  category_id,
+  proficiency_id,
+  frequency_id,
+  // limit,
+  // page = 1,
+  isRandom,
+}: SearchWordsQuery) => {
+  let whereClauses: string[] = ['1=1']; // Default where condition
+  let orderClause = '';
+  let skipClause = '';
+  let limitClause = '';
+
+  // If searchText is provided, add to where clause
+  if (searchText) {
+    whereClauses.push(`word LIKE '%${searchText}%'`);
+  }
+
+  // If category_id is provided, add to where clause
+  if (category_id) {
+    whereClauses.push(`category_id = ${category_id}`);
+  }
+
+  // If proficiency_id is provided, add to where clause
+  if (proficiency_id) {
+    whereClauses.push(`proficiency_id = ${proficiency_id}`);
+  }
+
+  // If frequency_id is provided, add to where clause
+  if (frequency_id) {
+    whereClauses.push(`frequency_id = ${frequency_id}`);
+  }
+
+  // Set order by clause (either random or based on proficiency and frequency)
+  orderClause = isRandom
+    ? 'ORDER BY RANDOM()'
+    : 'ORDER BY proficiency_id ASC, frequency_id ASC';
+
+  // // Set limit clause
+  // limitClause = limit ? `LIMIT ${limit}` : '';
+
+  // // Set skip clause
+  // skipClause = limit && page > 1 ? `OFFSET ${limit * (page - 1)}` : '';
+
+  // Build the final query
+  const finalQuery = `SELECT * FROM word WHERE ${whereClauses.join(
+    ' AND ',
+  )} ${orderClause};`;
+
+  return finalQuery;
+};
+
+export const searchWords = async (q: SearchWordsQuery): Promise<Word[]> => {
   const db = openDb();
   return new Promise((resolve, reject) => {
+    const query = searchQuery(q);
     db.transaction(tx => {
       tx.executeSql(
-        `SELECT 
-     *
-    FROM 
-    word
-    WHERE
-    word LIKE ? 
-    ORDER BY
-    proficiency_id
-    ASC,
-    frequency_id
-    ASC
-    ;`,
-        [`%${searchText}%`],
+        query,
+        [],
         // OR meaning LIKE ?
         // [`%${searchText}%`, `%${searchText}%`],
         (tx, results) => {
@@ -122,6 +175,9 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
             example1 = ?,
             example2 = ?,
             example3 = ?,
+            phonetic = ?,
+            audio = ?,
+            note = ?,
             image = ?
             WHERE id = ?`,
             [
@@ -133,6 +189,9 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
               word.example1,
               word.example2,
               word.example3,
+              word.phonetic,
+              word.audio,
+              word.note,
               word.image,
               word.id,
             ],
@@ -149,8 +208,8 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
           return;
         }
         tx.executeSql(
-          `INSERT INTO word (word, meaning, category_id, proficiency_id, frequency_id, example1, example2, example3, image) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO word (word, meaning, category_id, proficiency_id, frequency_id, example1, example2, example3, phonetic, audio, note, image) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
           [
             word.word,
             word.meaning,
@@ -160,6 +219,9 @@ export const saveWord = async (word: Partial<Word>): Promise<Word> => {
             word.example1,
             word.example2,
             word.example3,
+            word.phonetic,
+            word.audio,
+            word.note,
             word.image,
           ],
           (tx, result) => {
