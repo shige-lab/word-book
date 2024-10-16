@@ -108,8 +108,6 @@ const Home: React.FC = () => {
   };
 
   const resetSwipeable = (index?: number) => {
-    console.log('resetSwipeable');
-
     for (let i = 0; i < swipeableRef.current.length; i++) {
       if (i === index) {
         continue;

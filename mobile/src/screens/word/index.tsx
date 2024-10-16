@@ -59,13 +59,7 @@ const WordDetail: React.FC = () => {
     const fetchData = async () => {
       const data = await getWordDetail(id);
       setSelectedWord(data);
-      console.log('fetchPronunciationAndPhonetics', data.audio, data.phonetic);
       if (!data.phonetic && !data.audio) {
-        console.log(
-          'fetchPronunciationAndPhonetics2',
-          data.audio,
-          data.phonetic,
-        );
         fetchPronunciationAndPhonetics(data);
       }
     };

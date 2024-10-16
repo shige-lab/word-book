@@ -56,7 +56,6 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
       <Select
         value={word?.proficiency_id}
         onSelect={async v => {
-          console.log('---', v);
           const w = await saveWord({
             ...word,
             proficiency_id: v,
@@ -82,7 +81,6 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
       <Select
         value={word?.frequency_id}
         onSelect={async v => {
-          console.log('---', v);
           const w = await saveWord({
             ...word,
             frequency_id: v,

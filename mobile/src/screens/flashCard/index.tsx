@@ -66,12 +66,6 @@ const FlashCard: React.FC = () => {
         loadMinimal
         onIndexChanged={index => {
           if (currentIndex === targetWords.length - 1 && index === 0) {
-            console.log(
-              '---',
-              targetWords?.[targetWords.length - 1],
-              words?.[words.length - 1],
-            );
-
             const isFinished =
               targetWords?.[targetWords.length - 1].id ===
               words?.[words.length - 1].id;

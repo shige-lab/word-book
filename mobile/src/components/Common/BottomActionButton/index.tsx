@@ -25,8 +25,6 @@ const BottomActionButton: React.FC<BottomActionButtonProps> = ({
 
   const buttonWidth = useMemo(() => {
     const len = actions.length + 1;
-    console.log('len', width, (width - 12 * (len + 2)) / len);
-
     return (width - 12 * (len + 1)) / len;
   }, [actions.length, width]);
 

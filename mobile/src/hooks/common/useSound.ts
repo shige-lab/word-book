@@ -21,9 +21,6 @@ export const useSound = () => {
       });
     }
 
-    // Load the sound file from a remote URL or local path
-    console.log('---url---', url);
-
     const newSound = new Sound(url, undefined, error => {
       if (error) {
         console.log('Failed to load the sound', error);

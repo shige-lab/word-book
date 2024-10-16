@@ -172,8 +172,6 @@ const Search: React.FC = () => {
                 }}
                 onDelete={async () => {
                   await deleteSearchHistory(item.word);
-                  console.log('delete', searchHistories);
-
                   setSearchHistories(histories =>
                     histories.filter(h => h.word !== item.word),
                   );
