@@ -19,6 +19,7 @@ import WordDetail from './screens/word';
 import MagnusThemeSwitcher from './components/Common/MagnusThemeSwitcher';
 import Search from './screens/search';
 import FlashCard from './screens/flashCard';
+import * as BootSplash from 'react-native-bootsplash';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -31,6 +32,16 @@ function App(): React.JSX.Element {
     createTables();
     createProficiencyAndFrequency();
     createCategoriesAndWords();
+  }, []);
+
+  useEffect(() => {
+    async function hideBootSplash() {
+      await BootSplash.hide({fade: true}); // Tried without `fade` and `duration ` params as well.
+      // Tried BootSplash.hide() with `import BootSplash from 'react-native-bootsplash' ` import. But nothing worked.
+    }
+    setTimeout(() => {
+      hideBootSplash();
+    }, 500);
   }, []);
 
   return (
