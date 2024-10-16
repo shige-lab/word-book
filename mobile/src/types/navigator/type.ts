@@ -28,10 +28,12 @@ export interface Word {
   proficiency_id: number;
   frequency: Frequency;
   frequency_id: number;
-  note: string;
   example1: string;
   example2: string;
   example3: string;
+  phonetic: string;
+  audio: string;
+  note: string;
   image?: string;
   selected?: boolean;
 }

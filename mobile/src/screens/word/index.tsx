@@ -59,7 +59,15 @@ const WordDetail: React.FC = () => {
     const fetchData = async () => {
       const data = await getWordDetail(id);
       setSelectedWord(data);
-      fetchPronunciationAndPhonetics(data?.word);
+      console.log('fetchPronunciationAndPhonetics', data.audio, data.phonetic);
+      if (!data.phonetic && !data.audio) {
+        console.log(
+          'fetchPronunciationAndPhonetics2',
+          data.audio,
+          data.phonetic,
+        );
+        fetchPronunciationAndPhonetics(data);
+      }
     };
     if (id) {
       fetchData();
@@ -69,14 +77,14 @@ const WordDetail: React.FC = () => {
 
   const [isVisibleSelectCategoryModal, setVisibleSelectCategoryModal] =
     useState(false);
-  const fetchPronunciationAndPhonetics = async (w: string) => {
-    const data = await fetchWordInfoFromDictionaryApi(w);
+  const fetchPronunciationAndPhonetics = async (d: Word) => {
+    const data = await fetchWordInfoFromDictionaryApi(d.word);
 
     if (data.phonetics && data.phonetics.length > 0) {
       const newWord = {
-        ...selectedWord,
-        phonetic: data.phonetics[0]?.text || selectedWord?.phonetic,
-        audio: data.phonetics[0]?.audio || selectedWord?.audio,
+        ...d,
+        phonetic: data.phonetics[0]?.text || d?.phonetic,
+        audio: data.phonetics[0]?.audio || d?.audio,
       };
       await saveWord(newWord);
       setSelectedWord(newWord as Word);
@@ -175,7 +183,7 @@ const WordDetail: React.FC = () => {
         <Text fontSize={30} fontWeight="bold">
           {selectedWord?.word}
         </Text>
-        {!!selectedWord?.audio && (
+        {(!!selectedWord?.audio || !!selectedWord?.phonetic) && (
           <Div w="100%" flexDir="row" alignItems="center">
             <Text color="brand500" fontSize={16}>
               {selectedWord?.phonetic}
