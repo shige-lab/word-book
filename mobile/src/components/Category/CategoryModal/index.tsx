@@ -46,8 +46,8 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
     onSubmit: async v => {
       const newCategories = await saveCategory(v, categories);
       if (newCategories) {
-        setCategories(newCategories);
         resetForm();
+        setCategories(newCategories);
         // Alert.alert('Success', 'Category created successfully');
       }
       onClose();
@@ -103,6 +103,11 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
               bg="base2"
               value={values.name}
               onChangeText={handleChange('name')}
+              onSubmitEditing={() => {
+                handleSubmit();
+              }}
+              enablesReturnKeyAutomatically={true}
+              returnKeyType={'done'}
               ref={inputRef}
               placeholder="Folder name"
             />

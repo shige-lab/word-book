@@ -1,6 +1,13 @@
 import React from 'react';
 import {Div, Modal, Text, Button, ScrollDiv} from 'react-native-magnus';
-import {Dimensions, Platform, TouchableOpacity, View} from 'react-native';
+import {
+  Dimensions,
+  Keyboard,
+  Platform,
+  Pressable,
+  TouchableOpacity,
+} from 'react-native';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 interface ModalLayoutProps {
   title: string;
@@ -25,21 +32,23 @@ const ModalLayout: React.FC<ModalLayoutProps> = ({
   isLoading = false,
   isDisabled = false,
 }) => {
+  const {height} = Dimensions.get('window');
+  const insets = useSafeAreaInsets();
+  const h = height - insets.top - 100;
   return (
     <Modal bg="base" isVisible={isOpen} onBackButtonPress={onClose}>
-      <Text
-        px="lg"
-        fontWeight={'bold'}
-        fontSize={18}
-        lineHeight={24}
-        my="xl"
-        color={titleColor || 'primary'}>
-        {title}
-      </Text>
-      <Div
-        flex={Platform.OS === 'ios' ? undefined : 1}
-        pb={Platform.OS === 'ios' ? 0 : 76}
-        px="lg">
+      <Pressable onPressIn={Keyboard.dismiss}>
+        <Text
+          px="lg"
+          fontWeight={'bold'}
+          fontSize={18}
+          lineHeight={24}
+          my="xl"
+          color={titleColor || 'primary'}>
+          {title}
+        </Text>
+      </Pressable>
+      <Div h={h} px="lg">
         {children}
       </Div>
       <Div
