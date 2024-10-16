@@ -119,7 +119,7 @@ const Home: React.FC = () => {
   return (
     <MainLayout
       headerProps={{
-        title: 'Word Book',
+        title: 'VocabUp',
         leftButton: isEditMode ? selectAll() : undefined,
         rightButton: isEditMode
           ? [{type: 'check', onPress: () => endEditMode(), isNotIcon: true}]
@@ -138,6 +138,16 @@ const Home: React.FC = () => {
           setSelectedCategory(undefined);
         }}
       />
+      {!categories?.length && (
+        <Div mt={50} alignItems="center">
+          <Text fontSize="xl" color="gray500">
+            No folder found.
+          </Text>
+          {/* <Text mt="sm" fontSize="xl" color="gray500">
+            Please add a new folder
+          </Text> */}
+        </Div>
+      )}
       {isEditMode ? (
         <ScrollDiv
           p={8}

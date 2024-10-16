@@ -239,51 +239,50 @@ export const createCategoriesAndWords = () => {
   // Sample categories
   const categories = [
     {name: 'Fruits', order_index: 0, childrenLength: fruits.length},
-    {name: 'Animals', order_index: 1, childrenLength: animals.length * 2},
-    {name: 'Animals2', order_index: 2, childrenLength: 50},
-    {name: 'Countries', order_index: 3, childrenLength: 0},
-    {name: 'Jobs', order_index: 4, childrenLength: 0},
-    {name: 'Sports', order_index: 5, childrenLength: 0},
-    {name: 'Transportation', order_index: 6, childrenLength: 0},
-    {name: 'Weather', order_index: 7, childrenLength: 0},
-    {name: 'Food', order_index: 8, childrenLength: 0},
-    {name: 'Technology', order_index: 9, childrenLength: 0},
-    {name: 'Music', order_index: 10, childrenLength: 0},
-    {name: 'Nature', order_index: 11, childrenLength: 0},
-    {name: 'Science', order_index: 12, childrenLength: 0},
-    {name: 'Art', order_index: 13, childrenLength: 0},
-    {name: 'History', order_index: 14, childrenLength: 0},
-    {name: 'Culture', order_index: 15, childrenLength: 0},
-    {name: 'Health', order_index: 16, childrenLength: 0},
-    {name: 'Education', order_index: 17, childrenLength: 0},
-    {name: 'Business', order_index: 18, childrenLength: 0},
-    {name: 'Travel', order_index: 19, childrenLength: 0},
-    {name: 'Family', order_index: 20, childrenLength: 0},
+    {name: 'Animals', order_index: 1, childrenLength: animals.length},
+    // {name: 'Animals2', order_index: 2, childrenLength: 50},
+    // {name: 'Countries', order_index: 3, childrenLength: 0},
+    // {name: 'Jobs', order_index: 4, childrenLength: 0},
+    // {name: 'Sports', order_index: 5, childrenLength: 0},
+    // {name: 'Transportation', order_index: 6, childrenLength: 0},
+    // {name: 'Weather', order_index: 7, childrenLength: 0},
+    // {name: 'Food', order_index: 8, childrenLength: 0},
+    // {name: 'Technology', order_index: 9, childrenLength: 0},
+    // {name: 'Music', order_index: 10, childrenLength: 0},
+    // {name: 'Nature', order_index: 11, childrenLength: 0},
+    // {name: 'Science', order_index: 12, childrenLength: 0},
+    // {name: 'Art', order_index: 13, childrenLength: 0},
+    // {name: 'History', order_index: 14, childrenLength: 0},
+    // {name: 'Culture', order_index: 15, childrenLength: 0},
+    // {name: 'Health', order_index: 16, childrenLength: 0},
+    // {name: 'Education', order_index: 17, childrenLength: 0},
+    // {name: 'Business', order_index: 18, childrenLength: 0},
+    // {name: 'Travel', order_index: 19, childrenLength: 0},
+    // {name: 'Family', order_index: 20, childrenLength: 0},
   ];
   const words = [
-    ...animals,
-    ...animals,
-    ...animals.map(animal => ({
-      ...animal,
-      category_id: 3,
-    })),
-    ...animals.map(animal => ({
-      ...animal,
-      category_id: 3,
-    })),
-    ...animals.map(animal => ({
-      ...animal,
-      category_id: 3,
-    })),
-    ...animals.map(animal => ({
-      ...animal,
-      category_id: 3,
-    })),
-    ...animals.map(animal => ({
-      ...animal,
-      category_id: 3,
-    })),
     ...fruits,
+    ...animals,
+    // ...animals.map(animal => ({
+    //   ...animal,
+    //   category_id: 3,
+    // })),
+    // ...animals.map(animal => ({
+    //   ...animal,
+    //   category_id: 3,
+    // })),
+    // ...animals.map(animal => ({
+    //   ...animal,
+    //   category_id: 3,
+    // })),
+    // ...animals.map(animal => ({
+    //   ...animal,
+    //   category_id: 3,
+    // })),
+    // ...animals.map(animal => ({
+    //   ...animal,
+    //   category_id: 3,
+    // })),
     // Add more words here
   ];
   const db = openDb();
