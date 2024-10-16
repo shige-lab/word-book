@@ -75,5 +75,6 @@ export const createProficiencyAndFrequency = () => {
         console.log('proficiency and frequency levels inserted successfully');
       },
     );
+    resolve(undefined);
   });
 };

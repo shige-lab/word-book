@@ -356,5 +356,6 @@ export const createCategoriesAndWords = () => {
         console.log('Categories and Words inserted successfully');
       },
     );
+    resolve(undefined);
   });
 };

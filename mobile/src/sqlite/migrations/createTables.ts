@@ -185,5 +185,6 @@ export const createTables = (init?: boolean) => {
         },
       );
     });
+    resolve(undefined);
   });
 };
