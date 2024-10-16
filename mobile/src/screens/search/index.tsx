@@ -1,12 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
 import {Button, Div, Icon, Input, ScrollDiv, Text} from 'react-native-magnus';
-import {
-  deleteCategories,
-  deleteCategory,
-  getCategories,
-  sortCategories,
-} from '../../sqlite/queries/categories/categoriesQuery';
 import {borderBottom, headerColor} from '../../utils/color/color';
 import {TouchableOpacity, TextInput} from 'react-native';
 import {useNavigation} from '@react-navigation/native';

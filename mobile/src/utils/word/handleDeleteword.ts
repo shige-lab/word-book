@@ -9,7 +9,7 @@ interface HandleDeleteWordProps {
   onSucess?: () => void;
 }
 
-export const handleDeleteWord = ({
+export const handleDeleteWord = async ({
   word,
   categories,
   setCategories,
@@ -17,6 +17,7 @@ export const handleDeleteWord = ({
 }: HandleDeleteWordProps) => {
   const deleteWordAsync = async (word: Word) => {
     await deleteWord(word);
+    onSucess && onSucess();
     setCategories(
       categories.map(c =>
         c.id === word.category_id
@@ -28,7 +29,6 @@ export const handleDeleteWord = ({
           : c,
       ),
     );
-    onSucess && onSucess();
   };
   Alert.alert(
     'Warning',

@@ -20,6 +20,10 @@ import MagnusThemeSwitcher from './components/Common/MagnusThemeSwitcher';
 import Search from './screens/search';
 import FlashCard from './screens/flashCard';
 import * as BootSplash from 'react-native-bootsplash';
+import useStateStore from './hooks/zustand/useStateStore';
+import {useShallow} from 'zustand/react/shallow';
+import {getCategories} from './sqlite/queries/categories/categoriesQuery';
+import {getProficiencyAndFrequency} from './sqlite/queries/tags/tagsQuery';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -27,12 +31,32 @@ function App(): React.JSX.Element {
   const navigationRef = useNavigationContainerRef<any>();
 
   const {isDarkMode, theme} = useColor();
+  const {categories, setCategories, setProficiencies, setFrequencies} =
+    useStateStore(
+      useShallow(state => ({
+        categories: state.categories,
+        setCategories: state.setCategories,
+        setProficiencies: state.setProficiencies,
+        setFrequencies: state.setFrequencies,
+      })),
+    );
 
   useEffect(() => {
-    createTables(); // make sure this isn't changed
-    createProficiencyAndFrequency();
-    // createCategoriesAndWords(); // make sure this is commented out
-  }, []);
+    const initDatabase = async () => {
+      await createTables(); // make sure this isn't changed
+      await createProficiencyAndFrequency();
+      // await createCategoriesAndWords(); // make sure this is commented out
+    };
+    const fetchData = async () => {
+      await initDatabase();
+      const data = await getCategories();
+      const d = await getProficiencyAndFrequency();
+      setProficiencies(d?.proficiencies);
+      setFrequencies(d?.frequencies);
+      setCategories(data);
+    };
+    fetchData();
+  }, [setCategories, setProficiencies, setFrequencies]);
 
   useEffect(() => {
     async function hideBootSplash() {

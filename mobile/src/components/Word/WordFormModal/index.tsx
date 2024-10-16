@@ -1,17 +1,7 @@
 import {useFormik} from 'formik';
-import React, {useEffect, useRef, useState} from 'react';
-import {
-  Div,
-  Modal,
-  Text,
-  Button,
-  ScrollDiv,
-  Input,
-  Radio,
-  Icon,
-  InputProps,
-} from 'react-native-magnus';
-import {TextInput, TouchableOpacity} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Div, Text, Input, Radio, Icon, ScrollDiv} from 'react-native-magnus';
+import {ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import {useShallow} from 'zustand/react/shallow';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {saveWord} from '../../../sqlite/queries/words/wordQuery';
@@ -22,10 +12,9 @@ import {
 } from '../../../utils/color/getTagColor';
 import ModalField from '../../Common/ModalField';
 import ModalLayout from '../../Common/ModalLayout';
-import axios from 'axios';
-import CategoryModal from '../../Category/CategoryModal';
 import {fetchWordInfoFromDictionaryApi} from '../../../hooks/api/fetchWordInfoFromDictionaryApi';
 import {handleSetWord} from '../../../utils/word/handleSetWord';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 
 interface WordFormModalProps {
   word?: Partial<Word>;
@@ -50,6 +39,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       frequencies: state.frequencies,
     })),
   );
+  const scrollRef = useRef<ScrollView>();
   const wordInputRef = useRef<TextInput>(null);
   const {values, setValues, handleChange, handleSubmit, resetForm} = useFormik({
     initialValues: word || {
@@ -99,7 +89,13 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       onClose={onClose}
       isDisabled={!values.word}
       onButtonPress={() => handleSubmit()}>
-      <Div>
+      <KeyboardAwareScrollView
+        showsVerticalScrollIndicator={false}
+        // contentContainerStyle={{paddingBottom: 100}}
+        // ref={scrollRef}
+        innerRef={ref => (scrollRef.current = ref as unknown as ScrollView)}
+        // extraScrollHeight={50}
+      >
         <ModalField label="Word" isRequired={true}>
           <Input
             ref={wordInputRef}
@@ -209,35 +205,42 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             bg="base1"
             placeholder="Example1"
             value={values.example1}
-            onChangeText={handleChange('example1')}
+            onChangeText={handleChange('example2')}
             multiline={true}
           />
           <Input
             mb="sm"
-            placeholder="Example2"
+            placeholder={!values.example1 ? 'Fill Example1 first' : 'Example2'}
             editable={!!values.example1}
             value={values.example2}
             onChangeText={handleChange('example2')}
             multiline={true}
           />
           <Input
-            placeholder="Example3"
             value={values.example3}
             editable={!!values.example2}
+            placeholder={!values.example2 ? 'Fill Example2 first' : 'Example3'}
             onChangeText={handleChange('example3')}
             multiline={true}
           />
         </ModalField>
-
         <ModalField label="Note">
-          <Input
-            placeholder="Note"
-            value={values.note}
-            onChangeText={handleChange('note')}
-            multiline={true}
-          />
+          <Div pb={50}>
+            <Input
+              placeholder="Note"
+              value={values.note}
+              onChangeText={t => {
+                setValues({...values, note: t});
+                scrollRef.current?.scrollToEnd({animated: true});
+              }}
+              multiline={true}
+              onFocus={() => {
+                scrollRef.current?.scrollToEnd({animated: true});
+              }}
+            />
+          </Div>
         </ModalField>
-      </Div>
+      </KeyboardAwareScrollView>
     </ModalLayout>
   );
 };
