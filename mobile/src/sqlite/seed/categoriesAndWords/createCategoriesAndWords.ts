@@ -240,7 +240,7 @@ export const createCategoriesAndWords = () => {
   const categories = [
     {name: 'Fruits', order_index: 0, childrenLength: fruits.length},
     {name: 'Animals', order_index: 1, childrenLength: animals.length * 2},
-    {name: 'Colors', order_index: 2, childrenLength: 0},
+    {name: 'Animals2', order_index: 2, childrenLength: 50},
     {name: 'Countries', order_index: 3, childrenLength: 0},
     {name: 'Jobs', order_index: 4, childrenLength: 0},
     {name: 'Sports', order_index: 5, childrenLength: 0},
@@ -263,6 +263,26 @@ export const createCategoriesAndWords = () => {
   const words = [
     ...animals,
     ...animals,
+    ...animals.map(animal => ({
+      ...animal,
+      category_id: 3,
+    })),
+    ...animals.map(animal => ({
+      ...animal,
+      category_id: 3,
+    })),
+    ...animals.map(animal => ({
+      ...animal,
+      category_id: 3,
+    })),
+    ...animals.map(animal => ({
+      ...animal,
+      category_id: 3,
+    })),
+    ...animals.map(animal => ({
+      ...animal,
+      category_id: 3,
+    })),
     ...fruits,
     // Add more words here
   ];
