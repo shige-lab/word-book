@@ -29,9 +29,9 @@ function App(): React.JSX.Element {
   const {isDarkMode, theme} = useColor();
 
   useEffect(() => {
-    createTables();
+    createTables(); // make sure this isn't changed
     createProficiencyAndFrequency();
-    createCategoriesAndWords();
+    // createCategoriesAndWords(); // make sure this is commented out
   }, []);
 
   useEffect(() => {
