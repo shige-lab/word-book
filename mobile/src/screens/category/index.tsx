@@ -1,21 +1,12 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
-import {Button, Div, Text} from 'react-native-magnus';
-import {getCategories} from '../../sqlite/queries/categories/categoriesQuery';
+import {Div, Text} from 'react-native-magnus';
 import useStateStore from '../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
-import {Category, Word} from '../../types/navigator/type';
 import {FlatList} from 'react-native';
-import CategoryCard from '../../components/Word/WordCard';
-import {useColor} from '../../hooks/common/useColor';
 import {useNavigation, useRoute} from '@react-navigation/native';
+import {CategoryRoute, navigationProp} from '../../types/navigator/RouteProps';
 import {
-  CategoryNavigation,
-  CategoryRoute,
-  navigationProp,
-} from '../../types/navigator/RouteProps';
-import {
-  deleteWord,
   deleteWords,
   getWords,
   moveWords,
