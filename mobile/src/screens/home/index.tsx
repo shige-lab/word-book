@@ -38,17 +38,6 @@ const Home: React.FC = () => {
   const {width} = Dimensions.get('window');
   const navigation = useNavigation<navigationProp>();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const data = await getCategories();
-      const d = await getProficiencyAndFrequency();
-      setProficiencies(d?.proficiencies);
-      setFrequencies(d?.frequencies);
-      setCategories(data);
-    };
-    fetchData();
-  }, [setCategories, setProficiencies, setFrequencies]);
-
   const onRightPress = () => {
     setIsOpen(true);
   };
@@ -119,7 +108,7 @@ const Home: React.FC = () => {
   return (
     <MainLayout
       headerProps={{
-        title: 'VocabUp',
+        title: 'Wordbook',
         leftButton: isEditMode ? selectAll() : undefined,
         rightButton: isEditMode
           ? [{type: 'check', onPress: () => endEditMode(), isNotIcon: true}]
