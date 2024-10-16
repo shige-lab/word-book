@@ -124,7 +124,7 @@ const Home: React.FC = () => {
         title: 'Word Book',
         leftButton: isEditMode ? selectAll() : undefined,
         rightButton: isEditMode
-          ? [{type: 'check', onPress: () => endEditMode()}]
+          ? [{type: 'check', onPress: () => endEditMode(), isNotIcon: true}]
           : [
               {type: 'search', onPress: () => navigation.navigate('Search')},
               {type: 'edit', onPress: () => setIsEditMode(true)},

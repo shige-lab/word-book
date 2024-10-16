@@ -29,6 +29,8 @@ export const getIconProps = (
       return {name: 'close'};
     case 'history':
       return {name: 'history', fontFamily: 'Octicons'};
+    case 'flash-card':
+      return {name: 'cards-outline', fontFamily: 'MaterialCommunityIcons'};
     default:
       return {name: icon};
   }

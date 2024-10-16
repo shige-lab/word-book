@@ -100,7 +100,13 @@ const Header: React.FC<HeaderProps> = ({
         <Div row w="30%" justifyContent="flex-end">
           {rightButton.map((item, index) => (
             <TouchableOpacity key={index} onPress={item.onPress}>
-              <Icon ml="md" {...getIconProps(item.type)} {...iconStyle} />
+              {item.isNotIcon ? (
+                <Text fontSize={18} color="white">
+                  {item.type === 'check' ? 'Done' : ''}
+                </Text>
+              ) : (
+                <Icon ml="md" {...getIconProps(item.type)} {...iconStyle} />
+              )}
             </TouchableOpacity>
           ))}
           {!!menu?.length && (

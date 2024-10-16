@@ -146,10 +146,17 @@ const CategoryDetail: React.FC = () => {
               type: 'back',
             },
         rightButton: isEditMode
-          ? [{type: 'check', onPress: () => endEditMode()}]
+          ? [{type: 'check', onPress: () => endEditMode(), isNotIcon: true}]
           : [
               ...(selectedCategory?.words?.length
                 ? [
+                    {
+                      type: 'flash-card',
+                      onPress: () =>
+                        navigation.navigate('FlashCard', {
+                          category_id: selectedCategory?.id,
+                        }),
+                    },
                     {
                       type: 'edit',
                       onPress: () => setIsEditMode(true),
