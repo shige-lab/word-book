@@ -18,6 +18,7 @@ import CategoryDetail from './screens/category';
 import WordDetail from './screens/word';
 import MagnusThemeSwitcher from './components/Common/MagnusThemeSwitcher';
 import Search from './screens/search';
+import FlashCard from './screens/flashCard';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -56,6 +57,11 @@ function App(): React.JSX.Element {
             <Stack.Screen
               name="Search"
               component={Search}
+              options={{headerShown: false}}
+            />
+            <Stack.Screen
+              name="FlashCard"
+              component={FlashCard}
               options={{headerShown: false}}
             />
           </Stack.Navigator>

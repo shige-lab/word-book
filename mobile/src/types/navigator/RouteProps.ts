@@ -5,3 +5,4 @@ export type navigationProp = NavigationProp<RootStackParamList>;
 
 export type CategoryRoute = RouteProp<RootStackParamList, 'Category'>;
 export type WordRoute = RouteProp<RootStackParamList, 'Word'>;
+export type FlashCardRoute = RouteProp<RootStackParamList, 'FlashCard'>;
