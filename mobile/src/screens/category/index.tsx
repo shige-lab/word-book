@@ -25,7 +25,7 @@ import {SwipeableMethods} from 'react-native-gesture-handler/lib/typescript/comp
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
   const navigation = useNavigation<navigationProp>();
-  const id = route.params.id;
+  const {id} = route.params;
   const insets = useSafeAreaInsets();
   const bottomSpace = insets.bottom + 10;
   const [isEditMode, setIsEditMode] = useState(false);
@@ -233,10 +233,13 @@ const CategoryDetail: React.FC = () => {
               }}
               word={item}
               onDelete={async () => {
-                handleDeleteWord({
+                await handleDeleteWord({
                   word: item,
                   setCategories,
                   categories,
+                  onSucess: () => {
+                    swipeableRef.current.splice(index, 1);
+                  },
                 });
                 if (swipeableRef.current[index]) {
                   swipeableRef.current[index].close();
@@ -283,6 +286,15 @@ const CategoryDetail: React.FC = () => {
                       text: 'OK',
                       onPress: async () => {
                         await deleteWords(selected);
+                        swipeableRef.current = swipeableRef.current.filter(
+                          (c, index) =>
+                            !selectedCategory?.words
+                              ?.filter(w => w.selected)
+                              .some(
+                                w =>
+                                  w.id === selectedCategory?.words?.[index].id,
+                              ),
+                        );
                         setCategories(
                           categories.map(c =>
                             c.id === selectedCategory?.id

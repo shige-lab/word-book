@@ -45,7 +45,7 @@ const Header: React.FC<HeaderProps> = ({
   const [visibleMenu, setVisibleMenu] = React.useState(false);
 
   const iconStyle = {
-    fontSize: 20,
+    fontSize: 22,
     color: 'white',
   };
 
@@ -105,7 +105,7 @@ const Header: React.FC<HeaderProps> = ({
                   {item.type === 'check' ? 'Done' : ''}
                 </Text>
               ) : (
-                <Icon ml="md" {...getIconProps(item.type)} {...iconStyle} />
+                <Icon ml="lg" {...getIconProps(item.type)} {...iconStyle} />
               )}
             </TouchableOpacity>
           ))}
