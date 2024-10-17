@@ -4,7 +4,7 @@ import {
   useNavigation,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {Appearance} from 'react-native';
+import {Alert, Appearance} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from './types/navigator/RootStackParamList';
 import Home from './screens/home';
@@ -45,7 +45,6 @@ function App(): React.JSX.Element {
     const initDatabase = async () => {
       await createTables();
       await createProficiencyAndFrequency();
-      await createCategoriesAndWords();
     };
     const fetchData = async () => {
       await initDatabase();
@@ -54,6 +53,22 @@ function App(): React.JSX.Element {
       setProficiencies(d?.proficiencies);
       setFrequencies(d?.frequencies);
       setCategories(data);
+      if (!data?.length) {
+        Alert.alert('No data found', 'Do you want to get some samples', [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Yes',
+            onPress: async () => {
+              await createCategoriesAndWords();
+              const data = await getCategories();
+              setCategories(data);
+            },
+          },
+        ]);
+      }
     };
     fetchData();
   }, [setCategories, setProficiencies, setFrequencies]);
