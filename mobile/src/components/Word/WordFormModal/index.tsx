@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
 import React, {useEffect, useRef} from 'react';
 import {Div, Text, Input, Radio, Icon, ScrollDiv} from 'react-native-magnus';
-import {ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {Alert, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import {useShallow} from 'zustand/react/shallow';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {saveWord} from '../../../sqlite/queries/words/wordQuery';
@@ -169,7 +169,6 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                   const data = await fetchWordInfoFromDictionaryApi(
                     values?.word || '',
                   );
-
                   if (data.meanings && data.meanings.length > 0) {
                     const {meanings, examples} = data;
                     setValues({
@@ -181,12 +180,14 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       phonetic: data.phonetics?.[0]?.text || '',
                       audio: data.phonetics?.[0]?.audio || '',
                     });
+                  } else {
+                    Alert.alert('The word is not found.');
                   }
                 }}>
                 <Icon
                   name="auto-fix"
                   fontFamily="MaterialCommunityIcons"
-                  fontSize={18}
+                  fontSize={22}
                   color="brand500"
                 />
               </TouchableOpacity>
@@ -205,7 +206,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             bg="base1"
             placeholder="Example1"
             value={values.example1}
-            onChangeText={handleChange('example2')}
+            onChangeText={handleChange('example1')}
             multiline={true}
           />
           <Input
