@@ -21,6 +21,7 @@ import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SwipeableMethods} from 'react-native-gesture-handler/lib/typescript/components/ReanimatedSwipeable';
+import {Category} from '../../types/navigator/type';
 
 const CategoryDetail: React.FC = () => {
   const route = useRoute<CategoryRoute>();
@@ -39,23 +40,26 @@ const CategoryDetail: React.FC = () => {
   );
   const [isOpened, setIsOpened] = useState(false);
   const swipeableRef = useRef<SwipeableMethods[]>([]);
+  const [selectedCategory, setSelectedCategory] = useState<
+    Category | undefined
+  >(categories?.find(c => c.id === id));
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getWords(id);
-      setCategories(
-        categories.map(c => (c.id === id ? {...c, words: data} : c)),
-      );
+      const category = selectedCategory || categories.find(c => c.id === id);
+      if (category) {
+        const data = await getWords(id);
+        setSelectedCategory({
+          ...category,
+          words: data,
+        });
+      }
     };
     if (id) {
       fetchData();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-
-  const selectedCategory = useMemo(() => {
-    return categories.find(c => c.id === id);
-  }, [categories, id]);
 
   const selectAll = (): LeftButtonProps => {
     const wordLength = selectedCategory?.words?.length;
