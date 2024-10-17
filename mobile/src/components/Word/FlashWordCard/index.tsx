@@ -128,6 +128,7 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
           <Div mt={'auto'} mb={40}>
             <Radio.Group
               row
+              alignSelf="center"
               onChange={async value => {
                 await saveWord({
                   ...selectedWord,
@@ -149,7 +150,9 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
                   value={p.id}
                   activeColor={getProficiencyTagColor(p.id)?.bg}
                   checked={selectedWord?.proficiency_id === p.id}>
-                  <Text color="white">{p.name}</Text>
+                  <Text fontSize={12} color="white">
+                    {p.name}
+                  </Text>
                 </Radio>
               ))}
             </Radio.Group>

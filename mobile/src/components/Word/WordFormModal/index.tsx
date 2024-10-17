@@ -41,6 +41,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
   );
   const scrollRef = useRef<ScrollView>();
   const wordInputRef = useRef<TextInput>(null);
+  const meaningInputRef = useRef<TextInput>(null);
   const {values, setValues, handleChange, handleSubmit, resetForm} = useFormik({
     initialValues: word || {
       word: '',
@@ -94,7 +95,6 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         // contentContainerStyle={{paddingBottom: 100}}
-        // ref={scrollRef}
         innerRef={ref => (scrollRef.current = ref as unknown as ScrollView)}
         // extraScrollHeight={50}
       >
@@ -104,6 +104,10 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             placeholder="Word"
             value={values.word}
             onChangeText={handleChange('word')}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              meaningInputRef.current?.focus();
+            }}
           />
         </ModalField>
         <ModalField label="Proficiency">
@@ -128,7 +132,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       setValues({...values, proficiency_id: p.id});
                     }
                   }}>
-                  <Text>{p.name}</Text>
+                  <Text fontSize={12}>{p.name}</Text>
                 </Radio>
               ))}
             </Radio.Group>
@@ -156,7 +160,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       setValues({...values, frequency_id: f.id});
                     }
                   }}>
-                  <Text>{f.name}</Text>
+                  <Text fontSize={12}>{f.name}</Text>
                 </Radio>
               ))}
             </Radio.Group>
@@ -196,6 +200,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             )
           }>
           <Input
+            ref={meaningInputRef}
             placeholder="Meaning"
             value={values.meaning}
             onChangeText={handleChange('meaning')}
