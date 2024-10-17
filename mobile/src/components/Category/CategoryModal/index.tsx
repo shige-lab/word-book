@@ -81,8 +81,10 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
       if (category) {
         setValues(category);
       }
+    } else {
+      resetForm();
     }
-  }, [isOpen, category, setValues]);
+  }, [isOpen, category, setValues, resetForm]);
 
   return (
     <Modal transparent={true} visible={isOpen} onRequestClose={onClose}>
@@ -146,7 +148,7 @@ const CategoryModal: React.FC<CategoryModalProps> = ({
                   fontSize={18}
                   fontWeight="bold"
                   color={values.name ? headerColor : 'gray500'}>
-                  Create
+                  {category?.id ? 'Save' : 'Create'}
                 </Text>
               </Div>
             </TouchableOpacity>

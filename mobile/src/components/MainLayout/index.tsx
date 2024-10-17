@@ -29,29 +29,26 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   const isDarkMode = Appearance.getColorScheme() === 'dark';
   const {height} = Dimensions.get('window');
   const insets = useSafeAreaInsets();
-  const h = height - insets.top - (withoutHeader ? 0 : 40);
+
+  // Dynamically calculate height considering safe area and header
+  const calculatedHeight = height - insets.top - (withoutHeader ? 0 : 40);
 
   return (
     <>
-      <SafeAreaView
-        style={{
-          height: StatusBar.currentHeight,
-          backgroundColor: headerColor,
-          width: '100%',
-        }}>
+      <SafeAreaView style={{height: insets.top, backgroundColor: headerColor}}>
         <StatusBar
           barStyle={isDarkMode ? 'dark-content' : 'light-content'}
           backgroundColor={headerColor}
         />
       </SafeAreaView>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          width: '100%',
-        }}>
+      <SafeAreaView style={{flex: 1, backgroundColor: headerColor}}>
         <GestureHandlerRootView style={{flex: 1}}>
           {!withoutHeader && !!headerProps && <Header {...headerProps} />}
-          <Div w="100%" h={h} p={withPadding ? 'lg' : 0} bg="base">
+          <Div
+            w="100%"
+            h={calculatedHeight}
+            p={withPadding ? 'lg' : 0}
+            bg="base">
             {children}
           </Div>
         </GestureHandlerRootView>

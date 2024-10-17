@@ -1,7 +1,7 @@
 import {useFormik} from 'formik';
 import React, {useEffect, useRef} from 'react';
 import {Div, Text, Input, Radio, Icon, ScrollDiv} from 'react-native-magnus';
-import {ScrollView, TextInput, TouchableOpacity} from 'react-native';
+import {Alert, ScrollView, TextInput, TouchableOpacity} from 'react-native';
 import {useShallow} from 'zustand/react/shallow';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {saveWord} from '../../../sqlite/queries/words/wordQuery';
@@ -41,6 +41,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
   );
   const scrollRef = useRef<ScrollView>();
   const wordInputRef = useRef<TextInput>(null);
+  const meaningInputRef = useRef<TextInput>(null);
   const {values, setValues, handleChange, handleSubmit, resetForm} = useFormik({
     initialValues: word || {
       word: '',
@@ -79,8 +80,10 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       } else {
         focusAsync();
       }
+    } else {
+      resetForm();
     }
-  }, [isOpen, word, setValues]);
+  }, [isOpen, word, setValues, resetForm]);
 
   return (
     <ModalLayout
@@ -92,7 +95,6 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       <KeyboardAwareScrollView
         showsVerticalScrollIndicator={false}
         // contentContainerStyle={{paddingBottom: 100}}
-        // ref={scrollRef}
         innerRef={ref => (scrollRef.current = ref as unknown as ScrollView)}
         // extraScrollHeight={50}
       >
@@ -102,6 +104,10 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             placeholder="Word"
             value={values.word}
             onChangeText={handleChange('word')}
+            returnKeyType="next"
+            onSubmitEditing={() => {
+              meaningInputRef.current?.focus();
+            }}
           />
         </ModalField>
         <ModalField label="Proficiency">
@@ -126,7 +132,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       setValues({...values, proficiency_id: p.id});
                     }
                   }}>
-                  <Text>{p.name}</Text>
+                  <Text fontSize={12}>{p.name}</Text>
                 </Radio>
               ))}
             </Radio.Group>
@@ -154,7 +160,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       setValues({...values, frequency_id: f.id});
                     }
                   }}>
-                  <Text>{f.name}</Text>
+                  <Text fontSize={12}>{f.name}</Text>
                 </Radio>
               ))}
             </Radio.Group>
@@ -169,7 +175,6 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                   const data = await fetchWordInfoFromDictionaryApi(
                     values?.word || '',
                   );
-
                   if (data.meanings && data.meanings.length > 0) {
                     const {meanings, examples} = data;
                     setValues({
@@ -181,18 +186,21 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                       phonetic: data.phonetics?.[0]?.text || '',
                       audio: data.phonetics?.[0]?.audio || '',
                     });
+                  } else {
+                    Alert.alert('The word is not found.');
                   }
                 }}>
                 <Icon
                   name="auto-fix"
                   fontFamily="MaterialCommunityIcons"
-                  fontSize={18}
+                  fontSize={22}
                   color="brand500"
                 />
               </TouchableOpacity>
             )
           }>
           <Input
+            ref={meaningInputRef}
             placeholder="Meaning"
             value={values.meaning}
             onChangeText={handleChange('meaning')}
@@ -205,7 +213,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
             bg="base1"
             placeholder="Example1"
             value={values.example1}
-            onChangeText={handleChange('example2')}
+            onChangeText={handleChange('example1')}
             multiline={true}
           />
           <Input
