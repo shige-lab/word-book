@@ -79,8 +79,10 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
       } else {
         focusAsync();
       }
+    } else {
+      resetForm();
     }
-  }, [isOpen, word, setValues]);
+  }, [isOpen, word, setValues, resetForm]);
 
   return (
     <ModalLayout
