@@ -21,6 +21,7 @@ import WordFormModal from '../../components/Word/WordFormModal';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 import {fetchWordInfoFromDictionaryApi} from '../../hooks/api/fetchWordInfoFromDictionaryApi';
+import ProficiencyAndFrequencyTagBadge from '../../components/Tag/ProficiencyAndFrequencyTagBadge';
 
 const WordDetail: React.FC = () => {
   const route = useRoute<WordRoute>();
@@ -174,9 +175,20 @@ const WordDetail: React.FC = () => {
         />
       )}
       <Div w="100%">
-        <Text fontSize={30} fontWeight="bold">
-          {selectedWord?.word}
-        </Text>
+        <Div w="100%" row alignItems="center">
+          <Text fontSize={30} fontWeight="bold" maxW="90%">
+            {selectedWord?.word}
+          </Text>
+          {!!selectedWord && (
+            <Div w={26} flex={1} mt={3} ml="sm">
+              <ProficiencyAndFrequencyTagBadge
+                proficiency_id={selectedWord?.proficiency_id}
+                frequency_id={selectedWord?.frequency_id}
+                size={26}
+              />
+            </Div>
+          )}
+        </Div>
         {(!!selectedWord?.audio || !!selectedWord?.phonetic) && (
           <Div w="100%" flexDir="row" alignItems="center">
             <Text color="brand500" fontSize={16}>
@@ -195,14 +207,6 @@ const WordDetail: React.FC = () => {
                 />
               </Div>
             </TouchableOpacity>
-          </Div>
-        )}
-        {!!selectedWord && (
-          <Div mt="md">
-            <ProficiencyAndFrequencyTag
-              word={selectedWord}
-              setSelectedWord={setSelectedWord}
-            />
           </Div>
         )}
         <Div mt="md" mb="lg">

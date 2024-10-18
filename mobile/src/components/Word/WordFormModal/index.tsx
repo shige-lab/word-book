@@ -126,6 +126,16 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                   key={p.id}
                   value={p.id}
                   activeColor={getProficiencyTagColor(p.id)?.bg}
+                  activeIcon={
+                    <Icon
+                      m={3}
+                      // mr={2}
+                      name={p.icon}
+                      fontFamily="FontAwesome5"
+                      color="brand500"
+                      fontSize={22}
+                    />
+                  }
                   checked={values?.proficiency_id === p.id}
                   onChange={isChecked => {
                     if (isChecked) {
@@ -153,7 +163,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                   mr="sm"
                   key={f.id}
                   value={f.id}
-                  activeColor={getFrequencyTagColor(f.id)?.bg}
+                  activeColor={`${f.color}600`}
                   checked={values?.frequency_id === f.id}
                   onChange={isChecked => {
                     if (isChecked) {

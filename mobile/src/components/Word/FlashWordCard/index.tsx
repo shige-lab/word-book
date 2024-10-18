@@ -1,27 +1,15 @@
 import React, {useEffect, useState} from 'react';
-import MainLayout from '../../../components/MainLayout';
-import {Div, Text, Icon, Button, Radio} from 'react-native-magnus';
+import {Div, Text, Icon, Radio} from 'react-native-magnus';
 import useStateStore from '../../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {Word} from '../../../types/navigator/type';
 import {Dimensions, TouchableOpacity} from 'react-native';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {navigationProp, WordRoute} from '../../../types/navigator/RouteProps';
-import {
-  getWordDetail,
-  moveWords,
-  saveWord,
-} from '../../../sqlite/queries/words/wordQuery';
-import InAppBrowser from 'react-native-inappbrowser-reborn';
-import axios from 'axios';
+import {saveWord} from '../../../sqlite/queries/words/wordQuery';
 import {useSound} from '../../../hooks/common/useSound';
-import ProficiencyAndFrequencyTag from '../../../components/Tag/ProficiencyAndFrequencyTag';
-import {getProficiencyAndFrequency} from '../../../sqlite/queries/tags/tagsQuery';
-import WordFormModal from '../../../components/Word/WordFormModal';
-import SelectCategoryModal from '../../../components/Category/SelectCategoryModal';
-import {handleDeleteWord} from '../../../utils/word/handleDeleteword';
 import {fetchWordInfoFromDictionaryApi} from '../../../hooks/api/fetchWordInfoFromDictionaryApi';
-import {getProficiencyTagColor} from '../../../utils/color/getTagColor';
+import ProficiencyAndFrequencyTagBadge from '../../Tag/ProficiencyAndFrequencyTagBadge';
 
 interface FlashWordCardProps {
   word: Word;
@@ -38,11 +26,12 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
 
   const {playSound, stopSound} = useSound();
 
-  const {categories, setCategories, proficiencies} = useStateStore(
+  const {categories, setCategories, proficiencies, frequencies} = useStateStore(
     useShallow(state => ({
       categories: state.categories,
       setCategories: state.setCategories,
       proficiencies: state.proficiencies,
+      frequencies: state.frequencies,
     })),
   );
 
@@ -102,10 +91,23 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
       <Div w="100%" h="100%" p={12} bg={isFlipped ? 'teal400' : 'brand300'}>
         <Div row alignItems="center" justifyContent="space-between">
           <Div>
-            <ProficiencyAndFrequencyTag
+            <Div
+              w={32}
+              h={32}
+              bg="white"
+              alignItems="center"
+              justifyContent="center"
+              rounded="circle">
+              <ProficiencyAndFrequencyTagBadge
+                proficiency_id={selectedWord?.proficiency_id}
+                frequency_id={selectedWord?.frequency_id}
+                size={26}
+              />
+            </Div>
+            {/* <ProficiencyAndFrequencyTag
               word={selectedWord}
               setSelectedWord={setSelectedWord}
-            />
+            /> */}
           </Div>
           <TouchableOpacity
             onPress={() => {
@@ -148,7 +150,20 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
                   mr="sm"
                   key={p.id}
                   value={p.id}
-                  activeColor={getProficiencyTagColor(p.id)?.bg}
+                  activeIcon={
+                    <Icon
+                      m={3}
+                      // mr={2}
+                      name={p.icon}
+                      fontFamily="FontAwesome5"
+                      color={
+                        (frequencies.find(
+                          f => f.id === selectedWord.frequency_id,
+                        )?.color || 'brand') + '600'
+                      }
+                      fontSize={22}
+                    />
+                  }
                   checked={selectedWord?.proficiency_id === p.id}>
                   <Text fontSize={12} color="white">
                     {p.name}
