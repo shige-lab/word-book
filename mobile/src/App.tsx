@@ -4,7 +4,12 @@ import {
   useNavigation,
   useNavigationContainerRef,
 } from '@react-navigation/native';
-import {Alert, Appearance} from 'react-native';
+import {
+  Alert,
+  Appearance,
+  NativeEventEmitter,
+  NativeModules,
+} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from './types/navigator/RootStackParamList';
 import Home from './screens/home';
@@ -24,6 +29,7 @@ import useStateStore from './hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {getCategories} from './sqlite/queries/categories/categoriesQuery';
 import {getProficiencyAndFrequency} from './sqlite/queries/tags/tagsQuery';
+import Tts from 'react-native-tts';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -72,6 +78,22 @@ function App(): React.JSX.Element {
     };
     fetchData();
   }, [setCategories, setProficiencies, setFrequencies]);
+
+  useEffect(() => {
+    Tts.setDefaultLanguage('en-US');
+    Tts.setDefaultRate(0.5);
+    Tts.setDefaultPitch(1.0);
+    const ee = new NativeEventEmitter(NativeModules.TextToSpeech);
+    const s = ee.addListener('tts-start', () => {});
+    const f = ee.addListener('tts-finish', () => {});
+    const c = ee.addListener('tts-cancel', () => {});
+
+    return () => {
+      s.remove();
+      f.remove();
+      c.remove();
+    };
+  }, []);
 
   useEffect(() => {
     async function hideBootSplash() {
