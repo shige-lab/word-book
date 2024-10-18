@@ -10,12 +10,14 @@ export interface Category {
 export interface Proficiency {
   id: number;
   name: string;
+  icon: string;
   order_index: number;
 }
 
 export interface Frequency {
   id: number;
   name: string;
+  color: string;
   order_index: number;
 }
 
