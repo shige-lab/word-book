@@ -40,19 +40,15 @@ const CategoryDetail: React.FC = () => {
   );
   const [isOpened, setIsOpened] = useState(false);
   const swipeableRef = useRef<SwipeableMethods[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<
-    Category | undefined
-  >(categories?.find(c => c.id === id));
 
   useEffect(() => {
     const fetchData = async () => {
       const category = selectedCategory || categories.find(c => c.id === id);
       if (category) {
         const data = await getWords(id);
-        setSelectedCategory({
-          ...category,
-          words: data,
-        });
+        setCategories(
+          categories.map(c => (c.id === id ? {...c, words: data} : c)),
+        );
       }
     };
     if (id) {
@@ -60,6 +56,10 @@ const CategoryDetail: React.FC = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
+
+  const selectedCategory = useMemo(() => {
+    return categories.find(c => c.id === id);
+  }, [categories, id]);
 
   const selectAll = (): LeftButtonProps => {
     const wordLength = selectedCategory?.words?.length;
