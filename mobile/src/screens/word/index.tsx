@@ -55,9 +55,9 @@ const WordDetail: React.FC = () => {
     const fetchData = async () => {
       const data = await getWordDetail(id);
       setSelectedWord(data);
-      // if (!data.phonetic && !data.audio) {
-      fetchPronunciationAndPhonetics(data);
-      // }
+      if (!data.phonetic && !data.audio) {
+        fetchPronunciationAndPhonetics(data);
+      }
     };
     if (id) {
       fetchData();
@@ -71,20 +71,16 @@ const WordDetail: React.FC = () => {
   const fetchPronunciationAndPhonetics = async (d: Word) => {
     const data = await fetchWordInfoFromDictionaryApi(d.word);
     console.log('phonetics', data.phonetics);
-    const usData = data.phonetics?.find(p => p.audio.includes('-us'));
+    const usPhonetics = data.phonetics?.find(p => p.audio.includes('-us'));
 
-    console.log(
-      'usData',
-      usData.text,
-      usData.audio,
-      usData?.audio?.includes('mp3'),
-    );
-    if (usData?.text && usData?.audio) {
-      const audio = usData?.audio?.includes('mp3') ? usData?.audio : '';
+    if (usPhonetics?.text && usPhonetics?.audio) {
+      const audio = usPhonetics?.audio?.includes('mp3')
+        ? usPhonetics?.audio
+        : '';
       console.log('audio', audio);
       const newWord = {
         ...d,
-        phonetic: usData?.text || d?.phonetic,
+        phonetic: usPhonetics?.text || d?.phonetic,
         audio,
       };
       await saveWord(newWord);

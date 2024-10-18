@@ -186,15 +186,21 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
                     values?.word || '',
                   );
                   if (data.meanings && data.meanings.length > 0) {
-                    const {meanings, examples} = data;
+                    const {meanings, examples, phonetics} = data;
+                    const usPhonetics = phonetics?.find(p =>
+                      p.audio.includes('-us'),
+                    );
+                    const audio = usPhonetics?.audio?.includes('mp3')
+                      ? usPhonetics?.audio
+                      : '';
                     setValues({
                       ...values,
                       meaning: meanings[0] || '',
                       example1: examples[0] || '',
                       example2: examples[1] || '',
                       example3: examples[2] || '',
-                      phonetic: data.phonetics?.[0]?.text || '',
-                      audio: data.phonetics?.[0]?.audio || '',
+                      phonetic: usPhonetics?.text || values?.phonetic,
+                      audio,
                     });
                   } else {
                     Alert.alert('The word is not found.');
