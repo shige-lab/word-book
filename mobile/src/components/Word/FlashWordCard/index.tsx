@@ -10,6 +10,7 @@ import {saveWord} from '../../../sqlite/queries/words/wordQuery';
 import {useSound} from '../../../hooks/common/useSound';
 import {fetchWordInfoFromDictionaryApi} from '../../../hooks/api/fetchWordInfoFromDictionaryApi';
 import ProficiencyAndFrequencyTagBadge from '../../Tag/ProficiencyAndFrequencyTagBadge';
+import AudioButton from '../../Common/AudioButton';
 
 interface FlashWordCardProps {
   word: Word;
@@ -109,19 +110,12 @@ const FlashWordCard: React.FC<FlashWordCardProps> = ({word}) => {
               setSelectedWord={setSelectedWord}
             /> */}
           </Div>
-          <TouchableOpacity
-            onPress={() => {
-              playSound(selectedWord?.audio);
-            }}>
-            <Div>
-              <Icon
-                name="volume-high"
-                fontSize={26}
-                color="white"
-                fontFamily="MaterialCommunityIcons"
-              />
-            </Div>
-          </TouchableOpacity>
+          <AudioButton
+            audio={selectedWord.audio}
+            word={selectedWord.word}
+            size={30}
+            color="white"
+          />
         </Div>
         <Div alignItems="center" mt={100} mx="lg">
           {isFlipped ? backCard() : frontCard()}
