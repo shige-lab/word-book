@@ -101,7 +101,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
         <ModalField label="Word" isRequired={true}>
           <Input
             ref={wordInputRef}
-            placeholder="Word"
+            placeholder="e.g. Apple"
             value={values.word}
             onChangeText={handleChange('word')}
             returnKeyType="next"
@@ -211,7 +211,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
           }>
           <Input
             ref={meaningInputRef}
-            placeholder="Meaning"
+            placeholder="e.g. A fruit"
             value={values.meaning}
             onChangeText={handleChange('meaning')}
             multiline={true}
@@ -221,14 +221,18 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
           <Input
             mb="sm"
             bg="base1"
-            placeholder="Example1"
+            placeholder="e.g. I like apple."
             value={values.example1}
             onChangeText={handleChange('example1')}
             multiline={true}
           />
           <Input
             mb="sm"
-            placeholder={!values.example1 ? 'Fill Example1 first' : 'Example2'}
+            placeholder={
+              !values.example1
+                ? 'Fill Example1 first'
+                : 'e.g. She eats an apple.'
+            }
             editable={!!values.example1}
             value={values.example2}
             onChangeText={handleChange('example2')}
@@ -237,7 +241,11 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
           <Input
             value={values.example3}
             editable={!!values.example2}
-            placeholder={!values.example2 ? 'Fill Example2 first' : 'Example3'}
+            placeholder={
+              !values.example2
+                ? 'Fill Example2 first'
+                : 'e.g. This apple is very sweet.'
+            }
             onChangeText={handleChange('example3')}
             multiline={true}
           />
@@ -245,7 +253,7 @@ const WordFormModal: React.FC<WordFormModalProps> = ({
         <ModalField label="Note">
           <Div pb={50}>
             <Input
-              placeholder="Note"
+              placeholder="e.g. Synonyms: Malus pumila, "
               value={values.note}
               onChangeText={t => {
                 setValues({...values, note: t});
