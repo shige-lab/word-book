@@ -2,17 +2,17 @@ import {openDb} from '../../openDb';
 
 export const createProficiencyAndFrequency = () => {
   const proficiencyLevels = [
-    {name: 'Beginner', order_index: 0},
-    {name: 'Intermediate', order_index: 1},
-    {name: 'Advanced', order_index: 2},
-    {name: 'Expert', order_index: 3},
+    {name: 'Unfamiliar', icon: 'tired', order_index: 0},
+    {name: 'Recognize', icon: 'meh', order_index: 1},
+    {name: 'Know', icon: 'grin', order_index: 2},
+    {name: 'Master', icon: 'grin-beam', order_index: 3},
   ];
 
   const frequencyLevels = [
-    {name: 'Very Frequent', order_index: 0},
-    {name: 'Frequent', order_index: 1},
-    {name: 'Occasional', order_index: 2},
-    {name: 'Rare', order_index: 3},
+    {name: 'Very Frequent', color: 'red', order_index: 0},
+    {name: 'Frequent', color: 'orange', order_index: 1},
+    {name: 'Occasional', color: 'yellow', order_index: 2},
+    {name: 'Rare', color: 'blue', order_index: 3},
   ];
   const db = openDb();
 
@@ -35,8 +35,8 @@ export const createProficiencyAndFrequency = () => {
             // Insert proficiency levels
             proficiencyLevels.forEach(level => {
               tx.executeSql(
-                'INSERT INTO proficiency (name, `order_index`) VALUES (?, ?)',
-                [level.name, level.order_index],
+                'INSERT INTO proficiency (name, icon, `order_index`) VALUES (?, ?, ?)',
+                [level.name, level.icon, level.order_index],
                 (tx, result) => {
                   console.log(`Inserted proficiency: ${level.name}`);
                 },
@@ -52,8 +52,8 @@ export const createProficiencyAndFrequency = () => {
             // Insert frequency levels
             frequencyLevels.forEach(level => {
               tx.executeSql(
-                'INSERT INTO frequency (name, `order_index`) VALUES (?, ?)',
-                [level.name, level.order_index],
+                'INSERT INTO frequency (name, color, `order_index`) VALUES (?, ?, ?)',
+                [level.name, level.color, level.order_index],
                 (tx, result) => {
                   console.log(`Inserted frequency: ${level.name}`);
                 },

@@ -12,6 +12,7 @@ import {
   proficiencyTagColor,
 } from '../../../utils/color/getTagColor';
 import {saveWord} from '../../../sqlite/queries/words/wordQuery';
+import {handleSetWord} from '../../../utils/word/handleSetWord';
 
 interface ProficiencyAndFrequencyTagProps {
   word: Word;
@@ -22,10 +23,12 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
   word,
   setSelectedWord,
 }) => {
-  const {proficiencies, frequencies} = useStateStore(
+  const {proficiencies, frequencies, categories, setCategories} = useStateStore(
     useShallow(state => ({
       proficiencies: state.proficiencies,
       frequencies: state.frequencies,
+      categories: state.categories,
+      setCategories: state.setCategories,
     })),
   );
   const selectProficiencyRef = useRef<SelectRef>(null);
@@ -60,6 +63,12 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
             ...word,
             proficiency_id: v,
           });
+          handleSetWord({
+            word: w,
+            categories,
+            setCategories,
+            isUpdate: true,
+          });
           if (setSelectedWord) {
             setSelectedWord(w);
           }
@@ -84,6 +93,12 @@ const ProficiencyAndFrequencyTag: React.FC<ProficiencyAndFrequencyTagProps> = ({
           const w = await saveWord({
             ...word,
             frequency_id: v,
+          });
+          handleSetWord({
+            word: w,
+            categories,
+            setCategories,
+            isUpdate: true,
           });
           if (setSelectedWord) {
             setSelectedWord(w);

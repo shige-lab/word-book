@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import MainLayout from '../../components/MainLayout';
-import {Div, Text, Icon} from 'react-native-magnus';
+import {Div, Text} from 'react-native-magnus';
 import useStateStore from '../../hooks/zustand/useStateStore';
 import {useShallow} from 'zustand/react/shallow';
 import {Word} from '../../types/navigator/type';
@@ -13,14 +13,12 @@ import {
   saveWord,
 } from '../../sqlite/queries/words/wordQuery';
 import InAppBrowser from 'react-native-inappbrowser-reborn';
-import axios from 'axios';
-import {useSound} from '../../hooks/common/useSound';
-import ProficiencyAndFrequencyTag from '../../components/Tag/ProficiencyAndFrequencyTag';
-import {getProficiencyAndFrequency} from '../../sqlite/queries/tags/tagsQuery';
 import WordFormModal from '../../components/Word/WordFormModal';
 import SelectCategoryModal from '../../components/Category/SelectCategoryModal';
 import {handleDeleteWord} from '../../utils/word/handleDeleteword';
 import {fetchWordInfoFromDictionaryApi} from '../../hooks/api/fetchWordInfoFromDictionaryApi';
+import ProficiencyAndFrequencyTagBadge from '../../components/Tag/ProficiencyAndFrequencyTagBadge';
+import AudioButton from '../../components/Common/AudioButton';
 
 const WordDetail: React.FC = () => {
   const route = useRoute<WordRoute>();
@@ -28,8 +26,6 @@ const WordDetail: React.FC = () => {
   const id = route.params.id;
   const [selectedWord, setSelectedWord] = useState<Word>();
   const [isOpened, setIsOpened] = useState(false);
-
-  const {playSound, stopSound} = useSound();
 
   const performSearch = async () => {
     if ((await InAppBrowser.isAvailable()) && selectedWord?.word?.trim()) {
@@ -59,9 +55,9 @@ const WordDetail: React.FC = () => {
     const fetchData = async () => {
       const data = await getWordDetail(id);
       setSelectedWord(data);
-      if (!data.phonetic && !data.audio) {
-        fetchPronunciationAndPhonetics(data);
-      }
+      // if (!data.phonetic && !data.audio) {
+      fetchPronunciationAndPhonetics(data);
+      // }
     };
     if (id) {
       fetchData();
@@ -71,14 +67,25 @@ const WordDetail: React.FC = () => {
 
   const [isVisibleSelectCategoryModal, setVisibleSelectCategoryModal] =
     useState(false);
+
   const fetchPronunciationAndPhonetics = async (d: Word) => {
     const data = await fetchWordInfoFromDictionaryApi(d.word);
+    console.log('phonetics', data.phonetics);
+    const usData = data.phonetics?.find(p => p.audio.includes('-us'));
 
-    if (data.phonetics && data.phonetics.length > 0) {
+    console.log(
+      'usData',
+      usData.text,
+      usData.audio,
+      usData?.audio?.includes('mp3'),
+    );
+    if (usData?.text && usData?.audio) {
+      const audio = usData?.audio?.includes('mp3') ? usData?.audio : '';
+      console.log('audio', audio);
       const newWord = {
         ...d,
-        phonetic: data.phonetics[0]?.text || d?.phonetic,
-        audio: data.phonetics[0]?.audio || d?.audio,
+        phonetic: usData?.text || d?.phonetic,
+        audio,
       };
       await saveWord(newWord);
       setSelectedWord(newWord as Word);
@@ -174,41 +181,37 @@ const WordDetail: React.FC = () => {
         />
       )}
       <Div w="100%">
-        <Text fontSize={30} fontWeight="bold">
-          {selectedWord?.word}
-        </Text>
+        <Div w="100%" row alignItems="center">
+          <Text fontSize={30} fontWeight="bold" maxW="90%">
+            {selectedWord?.word}
+          </Text>
+          {!!selectedWord && (
+            <Div w={26} flex={1} mt={3} ml="sm">
+              <ProficiencyAndFrequencyTagBadge
+                proficiency_id={selectedWord?.proficiency_id}
+                frequency_id={selectedWord?.frequency_id}
+                size={26}
+              />
+            </Div>
+          )}
+        </Div>
         {(!!selectedWord?.audio || !!selectedWord?.phonetic) && (
           <Div w="100%" flexDir="row" alignItems="center">
-            <Text color="brand500" fontSize={16}>
+            <Text color="brand500" fontSize={16} mr={2}>
               {selectedWord?.phonetic}
             </Text>
-            <TouchableOpacity
-              onPress={() => {
-                playSound(selectedWord?.audio);
-              }}>
-              <Div ml={2}>
-                <Icon
-                  name="volume-high"
-                  fontSize={24}
-                  color="brand500"
-                  fontFamily="MaterialCommunityIcons"
-                />
-              </Div>
-            </TouchableOpacity>
-          </Div>
-        )}
-        {!!selectedWord && (
-          <Div mt="md">
-            <ProficiencyAndFrequencyTag
-              word={selectedWord}
-              setSelectedWord={setSelectedWord}
-            />
+            <AudioButton audio={selectedWord.audio} word={selectedWord.word} />
           </Div>
         )}
         <Div mt="md" mb="lg">
-          <Text mb="sm" fontSize={16} fontWeight="bold">
-            meaning:
-          </Text>
+          <Div row alignItems="center" mb="sm">
+            <Text fontSize={16} fontWeight="bold">
+              meaning:
+            </Text>
+            {/* {!!selectedWord?.meaning && (
+              <AudioButton size={20} word={selectedWord?.meaning} />
+            )} */}
+          </Div>
           <Text fontSize={16}>{selectedWord?.meaning}</Text>
         </Div>
         {(!!selectedWord?.example1 ||

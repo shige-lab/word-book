@@ -88,6 +88,7 @@ export const createTables = (init?: boolean) => {
         `CREATE TABLE IF NOT EXISTS proficiency (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT DEFAULT "",
+        icon TEXT DEFAULT "",
         order_index INTEGER NOT NULL
       );`,
         [],
@@ -104,6 +105,7 @@ export const createTables = (init?: boolean) => {
         `CREATE TABLE IF NOT EXISTS frequency (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT DEFAULT "",
+        color TEXT DEFAULT "",
         order_index INTEGER NOT NULL
       );`,
         [],
